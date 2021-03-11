@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic;
 using System.Threading.Tasks;
 
 namespace BreakpointManagement.Data
@@ -42,7 +43,12 @@ namespace BreakpointManagement.Data
                             CompanyName = client.CompanyName,
                             ClientType = client.ClientType
                         };
-            return await query.Distinct().Skip(skip).Take(top).ToArrayAsync().ConfigureAwait(false);
+            var pagedQuery = query.Distinct().Skip(skip).Take(top);
+            if (string.IsNullOrWhiteSpace(sort))
+            {
+                return await pagedQuery.ToArrayAsync().ConfigureAwait(false);
+            }
+            return await pagedQuery.OrderBy(sort).ToArrayAsync().ConfigureAwait(false);
         }
         public async Task<int> GetBreakpointProjectCount()
         {
@@ -72,7 +78,12 @@ namespace BreakpointManagement.Data
                             Resistant = bkpt.Resistant
                         };
 
-            return await query.Skip(skip).Take(top).ToArrayAsync().ConfigureAwait(false);
+            var pagedQuery = query.Distinct().Skip(skip).Take(top);
+            if (string.IsNullOrWhiteSpace(sort))
+            {
+                return await pagedQuery.ToArrayAsync().ConfigureAwait(false);
+            }
+            return await pagedQuery.OrderBy(sort).ToArrayAsync().ConfigureAwait(false);
         }
         public async Task<int> GetBreakpointByProjectCount(int projectId)
         {
@@ -115,8 +126,13 @@ namespace BreakpointManagement.Data
         {
             var query = (from drug in _context.TblDrugs
                          orderby drug.DrugId
-                         select drug).Skip(skip).Take(top);
-            return await query.ToArrayAsync().ConfigureAwait(false);
+                         select drug);
+            var pagedQuery = query.Skip(skip).Take(top);
+            if (string.IsNullOrWhiteSpace(sort))
+            {
+                return await pagedQuery.ToArrayAsync().ConfigureAwait(false);
+            }
+            return await pagedQuery.OrderBy(sort).ToArrayAsync().ConfigureAwait(false);
         }
         public async Task<int> GetDrugCount()
         {
@@ -126,8 +142,13 @@ namespace BreakpointManagement.Data
         {
             var query = (from organism in _context.TblOrganismNames
                          orderby organism.OrganismId
-                         select organism).Skip(skip).Take(top);
-            return await query.ToArrayAsync().ConfigureAwait(false);
+                         select organism);
+            var pagedQuery = query.Skip(skip).Take(top);
+            if (string.IsNullOrWhiteSpace(sort))
+            {
+                return await pagedQuery.ToArrayAsync().ConfigureAwait(false);
+            }
+            return await pagedQuery.OrderBy(sort).ToArrayAsync().ConfigureAwait(false);
         }
         public async Task<int> GetOrganismCount()
         {
@@ -137,8 +158,13 @@ namespace BreakpointManagement.Data
         {
             var query = (from breakpoint in _context.TblBreakpointStandards
                         orderby breakpoint.BpstandardId
-                        select breakpoint).Skip(skip).Take(top);
-            return await query.ToArrayAsync().ConfigureAwait(false);
+                        select breakpoint);
+            var pagedQuery = query.Skip(skip).Take(top);
+            if (string.IsNullOrWhiteSpace(sort))
+            {
+                return await pagedQuery.ToArrayAsync().ConfigureAwait(false);
+            }
+            return await pagedQuery.OrderBy(sort).ToArrayAsync().ConfigureAwait(false);
         }
         public async Task<int> GetBreakpointStandardCount()
         {

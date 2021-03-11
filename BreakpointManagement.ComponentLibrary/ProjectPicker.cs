@@ -67,15 +67,7 @@ namespace BreakpointManagement.ComponentLibrary
             }
             else
             {
-                var order = parameters.OrderBy.Split(" ");
-                if (order.Length >= 2)
-                {
-                    results = await _dataService.GetBreakpointProject(parameters.Top.Value, parameters.Skip.Value, order[0]);
-                }
-                else
-                {
-                    results = await _dataService.GetBreakpointProject(parameters.Top.Value, parameters.Skip.Value);
-                }
+                results = await _dataService.GetBreakpointProject(parameters.Top.Value, parameters.Skip.Value, parameters.OrderBy);
             }
             var count = await _dataService.GetBreakpointProjectCount();
             return new PaginationResult<BreakpointProjectSummary>

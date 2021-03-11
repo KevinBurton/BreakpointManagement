@@ -3,6 +3,7 @@ using BlazorTable;
 using BreakpointManagement.Services;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Net.Http;
 using System.Reflection;
@@ -16,12 +17,8 @@ namespace BreakpointManagement.App.Client
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
-            var httpClient = new HttpClient
-            {
-                BaseAddress = new Uri("https://localhost:44370/")
-            };
-            //httpClient.DefaultRequestHeaders.Add("Origin", "https://localhost:44311/");
-            builder.Services.AddScoped(sp => httpClient);
+            builder.Logging.AddConfiguration(
+                builder.Configuration.GetSection("Logging"));
             builder.Services.AddHttpClient<IBreakpointManagementDataService, BreakpointManagementDataService>(client => client.BaseAddress = new Uri("https://localhost:44370/"));
             builder.Services.AddBlazorTable();
             builder.Services.AddBlazorState
