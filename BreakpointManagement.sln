@@ -17,13 +17,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BreakpointManagement.Shared
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BreakpointManagement.Test.Components", "BreakpointManagement.Test.Components\BreakpointManagement.Test.Components.csproj", "{538553D7-AF8C-4926-B0F0-F8E72F56EB08}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BreakpointManagement.Test.Integration", "BereakpointManagement.Test.Integration\BreakpointManagement.Test.Integration.csproj", "{A33F1BD8-AEAD-4ED2-85B8-BCB4F6C02CB4}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BreakpointManagement.Test.Unit", "BreakpointManagement.Test.Unit\BreakpointManagement.Test.Unit.csproj", "{D3EDAB0B-48AC-4160-8766-3CB48E6A6E5E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BreakpointManagement.Test.UI", "BreakpointManagement.Test.UI\BreakpointManagement.Test.UI.csproj", "{6DE5964D-5E80-4ED4-ABBA-95E4D269694B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BreakpointManagement.ComponentLibrary", "BreakpointManagement.ComponentLibrary\BreakpointManagement.ComponentLibrary.csproj", "{535F1D7F-CE57-496F-925B-20DA7B4126E6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BreakpointManagement.Test.Integration", "BreakpointManagement.Test.Integration\BreakpointManagement.Test.Integration.csproj", "{BB328265-B36A-46A6-9CD2-314E55262167}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,10 +59,6 @@ Global
 		{538553D7-AF8C-4926-B0F0-F8E72F56EB08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{538553D7-AF8C-4926-B0F0-F8E72F56EB08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{538553D7-AF8C-4926-B0F0-F8E72F56EB08}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A33F1BD8-AEAD-4ED2-85B8-BCB4F6C02CB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A33F1BD8-AEAD-4ED2-85B8-BCB4F6C02CB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A33F1BD8-AEAD-4ED2-85B8-BCB4F6C02CB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A33F1BD8-AEAD-4ED2-85B8-BCB4F6C02CB4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D3EDAB0B-48AC-4160-8766-3CB48E6A6E5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D3EDAB0B-48AC-4160-8766-3CB48E6A6E5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3EDAB0B-48AC-4160-8766-3CB48E6A6E5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -75,6 +71,10 @@ Global
 		{535F1D7F-CE57-496F-925B-20DA7B4126E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{535F1D7F-CE57-496F-925B-20DA7B4126E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{535F1D7F-CE57-496F-925B-20DA7B4126E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB328265-B36A-46A6-9CD2-314E55262167}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB328265-B36A-46A6-9CD2-314E55262167}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB328265-B36A-46A6-9CD2-314E55262167}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB328265-B36A-46A6-9CD2-314E55262167}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
