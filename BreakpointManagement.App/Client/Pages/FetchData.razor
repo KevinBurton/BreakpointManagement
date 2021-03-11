@@ -1,0 +1,45 @@
+﻿@page "/fetchdata"
+@using BreakpointManagement.App.Client.Pages
+
+<h1>Breakpoint Summary</h1>
+
+@if (BreakpointSummary == null)
+{
+    <p><em>Loading Breakpoints...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Project</th>
+                <th>Group</th>
+                <th>Standard</th>
+                <th>Drug</th>
+                <th>Organism</th>
+                <th>Method</th>
+                <th>Susceptible</th>
+                <th>Low Intermediate</th>
+                <th>Intermediate</th>
+                <th>Resistant</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var breakpoint in BreakpointSummary)
+            {
+                <tr>
+                    <td>@breakpoint.ProjectId</td>
+                    <td>@breakpoint.GroupName</td>
+                    <td>@breakpoint.Standard</td>
+                    <td>@breakpoint.DrugName</td>
+                    <td>@breakpoint.OrganismName</td>
+                    <td>@breakpoint.Method</td>
+                    <td>@breakpoint.Susceptible</td>
+                    <td>@breakpoint.LowIntermediate</td>
+                    <td>@breakpoint.Intermediate</td>
+                    <td>@breakpoint.Resistant</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

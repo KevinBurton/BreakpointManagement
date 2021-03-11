@@ -1,0 +1,20 @@
+﻿@using BlazorTable
+<h2>Drugs</h2>
+<Table TableItem="Drug" DataLoader="_loader" Items="data" PageSize="5" SelectionType="selectionType" RowClickAction="RowClick" SelectedItems="selectedItems" ShowSearchBar="false">
+    <Column TableItem="Drug" Title="Id" Field="@(x => x.DrugId)" Sortable="true" Width="10%" DefaultSortColumn="true" />
+    <Column TableItem="Drug" Title="Subclass Id" Field="@(x => x.DrugSubclassId)" Sortable="true" Width="5%" />
+    <Column TableItem="Drug" Title="Name" Field="@(x => x.DrugName)" Sortable="true" Width="20%" />
+    <Column TableItem="Drug" Title="Abbr" Field="@(x => x.DrugAbbr)" Sortable="true" Width="5%" />
+    <Column TableItem="Drug" Title="Public" Field="@(x => x.ForPublicUse)" Sortable="true" Width="5%" />
+    <Column TableItem="Drug" Title="Created By" Field="@(x => x.CreatedBy)" Sortable="true" Width="5%" />
+    <Column TableItem="Drug" Title="Created Date" Field="@(x => x.CreatedDate)" Sortable="true" Width="5%">
+        <Template>
+            @(context.CreatedDate.ToShortDateString())
+        </Template>
+    </Column>
+    <Column TableItem="Drug" Title="Combination Drug" Field="@(x => x.CombinationDrug)" Sortable="true" Width="5%" />
+    <Column TableItem="Drug" Title="Fixed Ratio" Field="@(x => x.FixedRatio)" Sortable="true" Width="5%" />
+    <Column TableItem="Drug" Title="Proportion" Field="@(x => x.Proportion)" Sortable="true" Width="10%" />
+    <Column TableItem="Drug" Title="Active" Field="@(x => x.Active)" Sortable="true" Width="20%" />
+    <Pager ShowPageNumber="true" ShowTotalCount="true" />
+</Table>

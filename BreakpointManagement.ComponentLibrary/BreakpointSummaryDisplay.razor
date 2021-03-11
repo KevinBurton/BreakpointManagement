@@ -1,0 +1,19 @@
+﻿
+@using BlazorTable
+@using BlazorState
+@inherits BlazorStateComponent
+<h3>BreakpointSummary</h3>
+<Table TableItem="BreakpointSummary" DataLoader="_loader" Items="data" PageSize="5" SelectionType="selectionType" RowClickAction="RowClick" SelectedItems="selectedItems" ShowSearchBar="false">
+    <Column TableItem="BreakpointSummary" Title="Id" Field="@(x => x.ProjectId)" Sortable="true" Width="10%" DefaultSortColumn="true" />
+    <Column TableItem="BreakpointSummary" Title="Group Name" Field="@(x => x.GroupName)" Sortable="true" Width="5%" />
+    <Column TableItem="BreakpointSummary" Title="Method" Field="@(x => x.Method)" Sortable="true" Width="20%" />
+    <Column TableItem="BreakpointSummary" Title="Drug Name" Field="@(x => x.DrugName)" Sortable="true" Width="5%" />
+    <Column TableItem="BreakpointSummary" Title="Suseptiple" Field="@(x => x.Susceptible)" Width="5%" />
+    <Column TableItem="BreakpointSummary" Title="Low Intermediate" Field="@(x => x.LowIntermediate)" Width="5%" />
+    <Column TableItem="BreakpointSummary" Title="Intermediate" Field="@(x => x.Intermediate)" Width="5%" />
+    <Column TableItem="BreakpointSummary" Title="Resistant" Field="@(x => x.Resistant)" Width="5%" />
+    <Column TableItem="BreakpointSummary" Title="Organism Name" Field="@(x => x.OrganismName)" Sortable="true" Width="5%" />
+    <Column TableItem="BreakpointSummary" Title="Standard" Field="@(x => x.Standard)" Sortable="true" Width="5%" />
+    <Pager ShowPageNumber="true" ShowTotalCount="true" />
+</Table>
+
