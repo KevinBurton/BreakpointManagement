@@ -47,8 +47,13 @@ namespace BreakpointManagement.Services
         }
         public async Task<IList<BreakpointSummary>> GetBreakpointByProject(int projectId, int top = 100, int skip = 0, string sort = null)
         {
+            var url = $"api/breakpoint/project/{projectId}?top={top}&skip={skip}";
+            if (!string.IsNullOrWhiteSpace(sort))
+            {
+                url += $"&sort={sort}";
+            }
             return await JsonSerializer.DeserializeAsync<List<BreakpointSummary>>
-                    (await _httpClient.GetStreamAsync($"api/breakpoint/project/{projectId}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+                    (await _httpClient.GetStreamAsync(url), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
         public async Task<string> GetBreakpointByProjectCount(int projectId)
         {

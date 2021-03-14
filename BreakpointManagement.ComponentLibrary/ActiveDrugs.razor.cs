@@ -1,22 +1,47 @@
-﻿using BlazorTable;
+﻿using BlazorState.Redux.Blazor;
+using BlazorState.Redux.Interfaces;
+using BlazorTable;
 using BlazorTable.Components.ServerSide;
 using BlazorTable.Interfaces;
 using BreakpointManagement.Services;
-using BreakpointManagement.Shared.Features.BreakpointManagement;
 using BreakpointManagement.Shared.Models;
-using MediatR;
+using BreakpointManagement.Shared.State.Actions;
+using BreakpointManagement.Shared.State.BreakpointManagement;
+using BreakpointManagement.Shared.State.Props;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BreakpointManagement.ComponentLibrary
 {
+    public class ActiveDrugsConnect
+    {
+        public static RenderFragment Get()
+        {
+            var c = new ActiveDrugsConnect();
+            return ComponentConnector.Connect<ActiveDrugs, BreakpointManagementState, DrugProps>(c.MapStateToProps, c.MapDispatchToProps);
+        }
+
+        private void MapStateToProps(BreakpointManagementState state, DrugProps props)
+        {
+            props.Drug = state?.Drug ?? new Drug();
+        }
+
+        private void MapDispatchToProps(IStore<BreakpointManagementState> store, DrugProps props)
+        {
+            props.UpdateDrug = EventCallback.Factory.Create<Drug>(this, drug =>
+            {
+                store.Dispatch(new UpdateDrugAction { Drug = drug });
+            });
+        }
+    }
     public partial class ActiveDrugs
     {
         [Inject]
         private IBreakpointManagementDataService dataService { get; set; }
-        [Inject]
-        private IMediator Mediator { get; set; }
+
+        [Parameter]
+        public DrugProps Props { get; set; }
 
         private IDataLoader<Drug> _loader;
 
@@ -31,13 +56,16 @@ namespace BreakpointManagement.ComponentLibrary
         protected override async Task OnInitializedAsync()
         {
             _loader = new DrugDataLoader(dataService);
-            data = (await _loader.LoadDataAsync(null)).Records;
+            data = (await _loader.LoadDataAsync(new FilterData() { OrderBy = "", Skip = 0, Top = 10 })).Records;
         }
         public void RowClick(Drug data)
         {
             selected = data;
             StateHasChanged();
-            Mediator.Send(new BreakpointManagementState.UpdateDrugAction { Drug = data });
+            if (Props != null)
+            {
+                Props.UpdateDrug.InvokeAsync(data);
+            }
         }
     }
 

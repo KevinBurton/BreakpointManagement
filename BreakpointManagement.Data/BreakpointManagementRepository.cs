@@ -87,7 +87,16 @@ namespace BreakpointManagement.Data
         }
         public async Task<int> GetBreakpointByProjectCount(int projectId)
         {
-            return await _context.TblBreakpoints.Where(b => b.ProjectId == projectId).Select(e => e.ProjectId).Distinct().CountAsync().ConfigureAwait(false);
+            var query = from bkpt in _context.TblBreakpoints
+                        join bkptgrp in _context.TblBreakpointgroups on bkpt.BpgroupId equals bkptgrp.BpgroupId
+                        join bkptgrpmem in _context.TblBreakpointgroupmembers on bkpt.BpgroupId equals bkptgrpmem.BpgroupId
+                        join bkptstd in _context.TblBreakpointStandards on bkptgrp.BpstandardId equals bkptstd.BpstandardId
+                        join drug in _context.TblDrugs on bkpt.DrugId equals drug.DrugId
+                        join orgnm in _context.TblOrganismNames on bkptgrpmem.OrganismId equals orgnm.OrganismId
+                        where bkpt.ProjectId == projectId
+                        orderby bkpt.BreakpointId
+                        select bkpt;
+            return await query.Distinct().CountAsync().ConfigureAwait(false);
         }
         public PagedResult<TblBreakpoint> PagedBreakpoint(int projectId, int page = 1)
         {

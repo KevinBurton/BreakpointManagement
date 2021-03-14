@@ -1,22 +1,47 @@
-﻿using BlazorTable;
+﻿using BlazorState.Redux.Blazor;
+using BlazorState.Redux.Interfaces;
+using BlazorTable;
 using BlazorTable.Components.ServerSide;
 using BlazorTable.Interfaces;
 using BreakpointManagement.Services;
-using BreakpointManagement.Shared.Features.BreakpointManagement;
 using BreakpointManagement.Shared.Models;
-using MediatR;
+using BreakpointManagement.Shared.State.Actions;
+using BreakpointManagement.Shared.State.BreakpointManagement;
+using BreakpointManagement.Shared.State.Props;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BreakpointManagement.ComponentLibrary
 {
+    public class OrganismPickerConnect
+    {
+        public static RenderFragment Get()
+        {
+            var c = new OrganismPickerConnect();
+            return ComponentConnector.Connect<OrganismPicker, BreakpointManagementState, OrganismProp>(c.MapStateToProps, c.MapDispatchToProps);
+        }
+
+        private void MapStateToProps(BreakpointManagementState state, OrganismProp props)
+        {
+            props.Organism = state?.Organism ?? new OrganismName();
+        }
+
+        private void MapDispatchToProps(IStore<BreakpointManagementState> store, OrganismProp props)
+        {
+            props.UpdateOrganism = EventCallback.Factory.Create<OrganismName>(this, organism =>
+            {
+                store.Dispatch(new UpdateOrganismAction { Organism = organism });
+            });
+        }
+    }
     public partial class OrganismPicker
     {
         [Inject]
         private IBreakpointManagementDataService dataService { get; set; }
-        [Inject]
-        private IMediator Mediator { get; set; }
+
+        [Parameter]
+        public OrganismProp Props { get; set; }
 
         private IDataLoader<OrganismName> _loader;
 
@@ -31,13 +56,16 @@ namespace BreakpointManagement.ComponentLibrary
         protected override async Task OnInitializedAsync()
         {
             _loader = new OrganismDataLoader(dataService);
-            data = (await _loader.LoadDataAsync(null)).Records;
+            data = (await _loader.LoadDataAsync(new FilterData() { Skip = 0, Top = 10 })).Records;
         }
         public void RowClick(OrganismName data)
         {
             selected = data;
             StateHasChanged();
-            Mediator.Send(new BreakpointManagementState.UpdateOrganismAction { Organism = data });
+            if (Props != null)
+            {
+                Props.UpdateOrganism.InvokeAsync(data);
+            }
         }
     }
 

@@ -18,3 +18,11 @@
     <Column TableItem="Drug" Title="Active" Field="@(x => x.Active)" Sortable="true" Width="20%" />
     <Pager ShowPageNumber="true" ShowTotalCount="true" />
 </Table>
+@if (string.IsNullOrWhiteSpace(Props.Drug.DrugName))
+{
+    <p><em>Click on a row to select a drug</em></p>
+}
+else
+{
+    <p>Current standard: @Props.Drug.DrugName</p>
+}

@@ -7,3 +7,12 @@
     <Column TableItem="BreakpointProjectSummary" Title="Clent Type" Field="@(x => x.ClientType)" Sortable="true" Width="10%" DefaultSortColumn="true" />
     <Pager ShowPageNumber="true" ShowTotalCount="true" />
 </Table>
+
+@if (string.IsNullOrWhiteSpace(Props.Project.ProjectName))
+{
+    <p><em>Click on a row to select a project</em></p>
+}
+else
+{
+    <p>Current project: @Props.Project.ProjectName</p>
+}

@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Blazor-State" Version="3.4.4" />
+    <PackageReference Include="BlazorState.Redux" Version="1.0.4" />
     <PackageReference Include="BlazorTable" Version="1.15.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.3" />
   </ItemGroup>

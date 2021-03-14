@@ -1,23 +1,52 @@
-﻿using BlazorTable;
+﻿using BlazorState.Redux.Blazor;
+using BlazorState.Redux.Interfaces;
+using BlazorTable;
 using BlazorTable.Components.ServerSide;
 using BlazorTable.Interfaces;
 using BreakpointManagement.Services;
-using BreakpointManagement.Shared.Features.BreakpointManagement;
 using BreakpointManagement.Shared.Models;
-using MediatR;
+using BreakpointManagement.Shared.State.Actions;
+using BreakpointManagement.Shared.State.BreakpointManagement;
+using BreakpointManagement.Shared.State.Props;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BreakpointManagement.ComponentLibrary
 {
+    public class ProjectPickerConnect
+    {
+        public static RenderFragment Get()
+        {
+            var c = new ProjectPickerConnect();
+            return ComponentConnector.Connect<ProjectPicker, BreakpointManagementState, ProjectProps>(c.MapStateToProps, c.MapDispatchToProps);
+        }
+
+        private void MapStateToProps(BreakpointManagementState state, ProjectProps props)
+        {
+            props.Project = state?.Project ?? new BreakpointProjectSummary();
+        }
+
+        private void MapDispatchToProps(IStore<BreakpointManagementState> store, ProjectProps props)
+        {
+            props.UpdateProject = EventCallback.Factory.Create<BreakpointProjectSummary>(this, project =>
+            {
+                store.Dispatch(new UpdateProjectAction { Project = project });
+            });
+        }
+    }
     public partial class ProjectPicker
     {
+        static ProjectPicker()
+        {
+            ProjectPickerConnect.Get();
+        }
+
         [Inject]
         private IBreakpointManagementDataService dataService { get; set; }
-        [Inject]
-        private IMediator Mediator { get; set; }
 
+        [Parameter] 
+        public ProjectProps Props { get; set; }
 
         private IDataLoader<BreakpointProjectSummary> _loader;
 
@@ -32,13 +61,16 @@ namespace BreakpointManagement.ComponentLibrary
         protected override async Task OnInitializedAsync()
         {
             _loader = new ProjectDataLoader(dataService);
-            data = (await _loader.LoadDataAsync(null)).Records;
+            data = (await _loader.LoadDataAsync(new FilterData() { OrderBy = "", Skip = 0, Top = 10 })).Records;
         }
         public void RowClick(BreakpointProjectSummary data)
         {
             selected = data;
             StateHasChanged();
-            Mediator.Send(new BreakpointManagementState.UpdateProjectAction { Project = data });
+            if (Props != null)
+            {
+                Props.UpdateProject.InvokeAsync(data);
+            }
         }
     }
 

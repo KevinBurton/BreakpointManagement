@@ -11,3 +11,11 @@
     </Column>
     <Pager ShowPageNumber="true" ShowTotalCount="true" />
 </Table>
+@if (string.IsNullOrWhiteSpace(Props.Standard.Bpstandard))
+{
+    <p><em>Click on a row to select a standard</em></p>
+}
+else
+{
+    <p>Current standard: @Props.Standard.Bpstandard</p>
+}

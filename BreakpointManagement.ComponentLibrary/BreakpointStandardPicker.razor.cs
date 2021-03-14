@@ -1,22 +1,47 @@
-﻿using BlazorTable;
+﻿using BlazorState.Redux.Blazor;
+using BlazorState.Redux.Interfaces;
+using BlazorTable;
 using BlazorTable.Components.ServerSide;
 using BlazorTable.Interfaces;
 using BreakpointManagement.Services;
-using BreakpointManagement.Shared.Features.BreakpointManagement;
 using BreakpointManagement.Shared.Models;
-using MediatR;
+using BreakpointManagement.Shared.State.Actions;
+using BreakpointManagement.Shared.State.BreakpointManagement;
+using BreakpointManagement.Shared.State.Props;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BreakpointManagement.ComponentLibrary
 {
+    public class BreakpointStandardPickerConnect
+    {
+        public static RenderFragment Get()
+        {
+            var c = new BreakpointStandardPickerConnect();
+            return ComponentConnector.Connect<BreakpointStandardPicker, BreakpointManagementState, StandardProp>(c.MapStateToProps, c.MapDispatchToProps);
+        }
+
+        private void MapStateToProps(BreakpointManagementState state, StandardProp props)
+        {
+            props.Standard = state?.Standard ?? new BreakpointStandard();
+        }
+
+        private void MapDispatchToProps(IStore<BreakpointManagementState> store, StandardProp props)
+        {
+            props.UpdateStandard = EventCallback.Factory.Create<BreakpointStandard>(this, standard =>
+            {
+                store.Dispatch(new UpdateStandardAction { Standard = standard });
+            });
+        }
+    }
     public partial class BreakpointStandardPicker
     {
         [Inject]
         private IBreakpointManagementDataService dataService { get; set; }
-        [Inject]
-        private IMediator Mediator { get; set; }
+
+        [Parameter]
+        public StandardProp Props { get; set; }
 
         private IDataLoader<BreakpointStandard> _loader;
 
@@ -31,13 +56,16 @@ namespace BreakpointManagement.ComponentLibrary
         protected override async Task OnInitializedAsync()
         {
             _loader = new BreakpointStandardDataLoader(dataService);
-            data = (await _loader.LoadDataAsync(null)).Records;
+            data = (await _loader.LoadDataAsync(new FilterData() { Skip = 0, Top = 10 })).Records;
         }
         public void RowClick(BreakpointStandard data)
         {
             selected = data;
             StateHasChanged();
-            Mediator.Send(new BreakpointManagementState.UpdateStandardAction { Standard = data });
+            if (Props != null)
+            {
+                Props.UpdateStandard.InvokeAsync(data);
+            }
         }
     }
 

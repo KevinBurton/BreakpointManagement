@@ -1,7 +1,5 @@
-﻿
-@using BlazorTable
-@using BlazorState
-@inherits BlazorStateComponent
+﻿@using BlazorTable
+
 <h3>BreakpointSummary</h3>
 <Table TableItem="BreakpointSummary" DataLoader="_loader" Items="data" PageSize="5" SelectionType="selectionType" RowClickAction="RowClick" SelectedItems="selectedItems" ShowSearchBar="false">
     <Column TableItem="BreakpointSummary" Title="Id" Field="@(x => x.ProjectId)" Sortable="true" Width="10%" DefaultSortColumn="true" />
@@ -17,3 +15,11 @@
     <Pager ShowPageNumber="true" ShowTotalCount="true" />
 </Table>
 
+@if (string.IsNullOrWhiteSpace(Props.Summary.GroupName))
+{
+    <p><em>Click on a row to select a summary</em></p>
+}
+else
+{
+    <p>Current standard: @Props.Summary.GroupName</p>
+}
