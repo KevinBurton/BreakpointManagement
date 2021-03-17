@@ -28,7 +28,8 @@ namespace BreakpointManagement.App.Client
         }
         public static void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddBlazorTable();
+            services.AddHttpClient<IBreakpointManagementDataService, BreakpointManagementDataService>(client => client.BaseAddress = new Uri("https://localhost:44370/"));
             services.AddReduxStore<BreakpointManagementState>(cfg =>
             {
                 cfg.UseReduxDevTools();
@@ -39,13 +40,10 @@ namespace BreakpointManagement.App.Client
                 // Register reducers
                 cfg.Map<DrugReducer, Drug>(s => s.Drug);
                 cfg.Map<OrganismReducer, OrganismName>(s => s.Organism);
-                cfg.Map<ProjectReducer, BreakpointProjectSummary>(s => s.Project);
+                cfg.Map<BreakpointProjectReducer, BreakpointProjectSummary>(s => s.BreakpointProject);
                 cfg.Map<StandardReducer, BreakpointStandard>(s => s.Standard);
-                cfg.Map<SummaryReducer, BreakpointSummary>(s => s.Summary);
+                cfg.Map<GroupReducer, Breakpointgroup>(s => s.Group);
             });
-            services.AddHttpClient<IBreakpointManagementDataService, BreakpointManagementDataService>(client => client.BaseAddress = new Uri("https://localhost:44370/"));
-            services.AddBlazorTable();
-
         }
     }
 }

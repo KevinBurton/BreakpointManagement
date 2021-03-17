@@ -14,12 +14,12 @@ using System.Threading.Tasks;
 
 namespace BreakpointManagement.ComponentLibrary
 {
-    public class ActiveDrugsConnect
+    public class ActiveDrugPickerConnect
     {
         public static RenderFragment Get()
         {
-            var c = new ActiveDrugsConnect();
-            return ComponentConnector.Connect<ActiveDrugs, BreakpointManagementState, DrugProps>(c.MapStateToProps, c.MapDispatchToProps);
+            var c = new ActiveDrugPickerConnect();
+            return ComponentConnector.Connect<ActiveDrugPicker, BreakpointManagementState, DrugProps>(c.MapStateToProps, c.MapDispatchToProps);
         }
 
         private void MapStateToProps(BreakpointManagementState state, DrugProps props)
@@ -35,7 +35,7 @@ namespace BreakpointManagement.ComponentLibrary
             });
         }
     }
-    public partial class ActiveDrugs
+    public partial class ActiveDrugPicker
     {
         [Inject]
         private IBreakpointManagementDataService dataService { get; set; }
@@ -55,7 +55,7 @@ namespace BreakpointManagement.ComponentLibrary
         
         protected override async Task OnInitializedAsync()
         {
-            _loader = new DrugDataLoader(dataService);
+            _loader = new ActiveDrugPickerDrugDataLoader(dataService);
             data = (await _loader.LoadDataAsync(new FilterData() { OrderBy = "", Skip = 0, Top = 10 })).Records;
         }
         public void RowClick(Drug data)
@@ -69,10 +69,10 @@ namespace BreakpointManagement.ComponentLibrary
         }
     }
 
-    public class DrugDataLoader : IDataLoader<Drug>
+    public class ActiveDrugPickerDrugDataLoader : IDataLoader<Drug>
     {
         private readonly IBreakpointManagementDataService _dataService;
-        public DrugDataLoader(IBreakpointManagementDataService dataService)
+        public ActiveDrugPickerDrugDataLoader(IBreakpointManagementDataService dataService)
         {
             _dataService = dataService;
         }

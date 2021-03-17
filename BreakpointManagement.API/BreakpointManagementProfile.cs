@@ -29,6 +29,8 @@ namespace BreakpointManagement.API
 			CreateMap<TblOrganismSubfamily, OrganismSubfamily>()
 								.ForSourceMember(source => source.OrganismFamily, opt => opt.DoNotValidate());
 			CreateMap<TblOrganismSubfamilyLanguage, OrganismSubfamilyLanguage>();
+			CreateMap<TblProject, Project>();
+			CreateMap<TblClient, Client>();
 		}
 	}
 }

@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
 using BreakpointManagement.Data;
+using BreakpointManagement.Data.Models;
+using BreakpointManagement.Shared.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace BreakpointManagement.API.Controllers
 {
@@ -24,6 +27,30 @@ namespace BreakpointManagement.API.Controllers
         public ActionResult Details(int id)
         {
             return View();
+        }
+
+        [HttpGet("api/breakpointgroupmember/group/{groupId:int}")]
+        public async Task<OrganismName[]> GetOrganismByGroup(int groupId, int top = 100, int skip = 0, string sort = null)
+        {
+            var queryResult = await _repository.GetOrganismByGroup(groupId, top, skip, sort).ConfigureAwait(false);
+            return _mapper.Map<TblOrganismName[], OrganismName[]>(queryResult);
+        }
+        [HttpGet("api/breakpointgroupmember/group/{groupId:int}/count")]
+        public async Task<int> GetOrganismByGroupCount(int groupId)
+        {
+            return await _repository.GetOrganismByGroupCount(groupId);
+        }
+
+        [HttpGet("api/breakpointgroupmember/notgroup/{groupId:int}")]
+        public async Task<OrganismName[]> GetOrganismByExcludedGroup(int groupId, int top = 100, int skip = 0, string sort = null)
+        {
+            var queryResult = await _repository.GetOrganismByExcludedGroup(groupId, top, skip, sort).ConfigureAwait(false);
+            return _mapper.Map<TblOrganismName[], OrganismName[]>(queryResult);
+        }
+        [HttpGet("api/breakpointgroupmember/notgroup/{groupId:int}/count")]
+        public async Task<int> GetOrganismByExcludedGroupCount(int groupId)
+        {
+            return await _repository.GetOrganismByExcludedGroupCount(groupId);
         }
 
         // GET: BreakpointGroupMemberController/Create

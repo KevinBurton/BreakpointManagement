@@ -5,7 +5,7 @@ namespace BreakpointManagement.Shared.State.Props
 {
     public class ProjectProps
     {
-        public BreakpointProjectSummary Project;
-        public EventCallback<BreakpointProjectSummary> UpdateProject { get; set; }
+        public Project Project;
+        public EventCallback<Project> UpdateProject { get; set; }
     }
 }

@@ -98,6 +98,51 @@ namespace BreakpointManagement.Data
                         select bkpt;
             return await query.Distinct().CountAsync().ConfigureAwait(false);
         }
+        public async Task<BreakpointSummary[]> GetBreakpointByProjectGroup(int projectId, int groupId, int top = 100, int skip = 0, string sort = null)
+        {
+            var query = from bkpt in _context.TblBreakpoints
+                        join bkptgrp in _context.TblBreakpointgroups on bkpt.BpgroupId equals bkptgrp.BpgroupId
+                        join bkptgrpmem in _context.TblBreakpointgroupmembers on bkpt.BpgroupId equals bkptgrpmem.BpgroupId
+                        join bkptstd in _context.TblBreakpointStandards on bkptgrp.BpstandardId equals bkptstd.BpstandardId
+                        join drug in _context.TblDrugs on bkpt.DrugId equals drug.DrugId
+                        join orgnm in _context.TblOrganismNames on bkptgrpmem.OrganismId equals orgnm.OrganismId
+                        where bkpt.ProjectId == projectId && bkpt.BpgroupId == groupId
+                        orderby bkpt.BreakpointId
+                        select new BreakpointSummary
+                        {
+                            ProjectId = projectId,
+                            GroupId = bkpt.BpgroupId,
+                            OrganismName = orgnm.OrganismName,
+                            Standard = bkptstd.Bpstandard,
+                            GroupName = bkptgrp.BpgroupName,
+                            Method = bkpt.ResultType,
+                            DrugName = drug.DrugName,
+                            Susceptible = bkpt.Susceptible,
+                            LowIntermediate = bkpt.LowIntermediate,
+                            Intermediate = bkpt.Intermediate,
+                            Resistant = bkpt.Resistant
+                        };
+
+            var pagedQuery = query.Distinct().Skip(skip).Take(top);
+            if (string.IsNullOrWhiteSpace(sort))
+            {
+                return await pagedQuery.ToArrayAsync().ConfigureAwait(false);
+            }
+            return await pagedQuery.OrderBy(sort).ToArrayAsync().ConfigureAwait(false);
+        }
+        public async Task<int> GetBreakpointByProjectGroupCount(int projectId, int groupId)
+        {
+            var query = from bkpt in _context.TblBreakpoints
+                        join bkptgrp in _context.TblBreakpointgroups on bkpt.BpgroupId equals bkptgrp.BpgroupId
+                        join bkptgrpmem in _context.TblBreakpointgroupmembers on bkpt.BpgroupId equals bkptgrpmem.BpgroupId
+                        join bkptstd in _context.TblBreakpointStandards on bkptgrp.BpstandardId equals bkptstd.BpstandardId
+                        join drug in _context.TblDrugs on bkpt.DrugId equals drug.DrugId
+                        join orgnm in _context.TblOrganismNames on bkptgrpmem.OrganismId equals orgnm.OrganismId
+                        where bkpt.ProjectId == projectId && bkpt.BpgroupId == groupId
+                        orderby bkpt.BreakpointId
+                        select bkpt;
+            return await query.Distinct().CountAsync().ConfigureAwait(false);
+        }
         public PagedResult<TblBreakpoint> PagedBreakpoint(int projectId, int page = 1)
         {
             var query = from bkpt in _context.TblBreakpoints
@@ -178,6 +223,73 @@ namespace BreakpointManagement.Data
         public async Task<int> GetBreakpointStandardCount()
         {
             return await _context.TblBreakpointStandards.CountAsync().ConfigureAwait(false);
+        }
+
+        public async Task<TblBreakpointgroup[]> GetBreakpointGroupByStandard(int standardId, int top = 100, int skip = 0, string sort = null)
+        {
+            var query = (from gp in _context.TblBreakpointgroups
+                         where gp.BpstandardId == standardId
+                         select gp);
+            var pagedQuery = query.Skip(skip).Take(top);
+            if (string.IsNullOrWhiteSpace(sort))
+            {
+                return await pagedQuery.ToArrayAsync().ConfigureAwait(false);
+            }
+            return await pagedQuery.OrderBy(sort).ToArrayAsync().ConfigureAwait(false);
+        }
+
+        public async Task<int> GetBreakpointGroupByStandardCount(int standardId)
+        {
+            var query = (from gp in _context.TblBreakpointgroups
+                         where gp.BpstandardId == standardId
+                         select gp);
+            return await query.Distinct().CountAsync().ConfigureAwait(false);
+        }
+
+        public async Task<TblOrganismName[]> GetOrganismByGroup(int groupId, int top = 100, int skip = 0, string sort = null)
+        {
+            var query = (from bgm in _context.TblBreakpointgroupmembers
+                         join organism in _context.TblOrganismNames on bgm.OrganismId equals organism.OrganismId
+                         where bgm.BpgroupId == groupId
+                         select organism);
+            var pagedQuery = query.Skip(skip).Take(top);
+            if (string.IsNullOrWhiteSpace(sort))
+            {
+                return await pagedQuery.ToArrayAsync().ConfigureAwait(false);
+            }
+            return await pagedQuery.OrderBy(sort).ToArrayAsync().ConfigureAwait(false);
+        }
+
+        public async Task<int> GetOrganismByGroupCount(int groupId)
+        {
+            var query = (from bgm in _context.TblBreakpointgroupmembers
+                         join organism in _context.TblOrganismNames on bgm.OrganismId equals organism.OrganismId
+                         where bgm.BpgroupId == groupId
+                         select organism);
+            return await query.Distinct().CountAsync().ConfigureAwait(false);
+        }
+
+        public async Task<TblOrganismName[]> GetOrganismByExcludedGroup(int groupId, int top = 100, int skip = 0, string sort = null)
+        {
+            var query = (from bgm in _context.TblBreakpointgroupmembers
+                         join organism in _context.TblOrganismNames on bgm.OrganismId equals organism.OrganismId
+                         where bgm.BpgroupId != groupId
+                         select organism);
+            var pagedQuery = query.Skip(skip).Take(top);
+            if (string.IsNullOrWhiteSpace(sort))
+            {
+                return await pagedQuery.ToArrayAsync().ConfigureAwait(false);
+            }
+            return await pagedQuery.OrderBy(sort).ToArrayAsync().ConfigureAwait(false);
+        }
+
+        public async Task<int> GetOrganismByExcludedGroupCount(int groupId)
+        {
+            var query = (from bgm in _context.TblBreakpointgroupmembers
+                         join organism in _context.TblOrganismNames on bgm.OrganismId equals organism.OrganismId
+                         where bgm.BpgroupId != groupId
+                         select organism);
+            return await query.Distinct().CountAsync().ConfigureAwait(false);
         }
     }
 }

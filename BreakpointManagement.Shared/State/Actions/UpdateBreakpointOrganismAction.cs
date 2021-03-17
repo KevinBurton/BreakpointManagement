@@ -3,8 +3,8 @@ using BreakpointManagement.Shared.Models;
 
 namespace BreakpointManagement.Shared.State.Actions
 {
-    public class UpdateSummaryAction : IAction
+    public class UpdateBreakpointOrganismAction : IAction
     {
-        public BreakpointSummary Summary { get; set; }
+        public BreakpointSummary BreakpointOrganism { get; set; }
     }
 }

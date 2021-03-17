@@ -14,34 +14,35 @@ using System.Threading.Tasks;
 
 namespace BreakpointManagement.ComponentLibrary
 {
-    public class BreakpointSummaryDisplayConnect
+    public class BreakpointOrganismPickerConnect
     {
         public static RenderFragment Get()
         {
-            var c = new BreakpointSummaryDisplayConnect();
-            return ComponentConnector.Connect<BreakpointSummaryDisplay, BreakpointManagementState, SummaryProps>(c.MapStateToProps, c.MapDispatchToProps);
+            var c = new BreakpointOrganismPickerConnect();
+            return ComponentConnector.Connect<BreakpointOrganismPicker, BreakpointManagementState, BreakpointOrganismProp>(c.MapStateToProps, c.MapDispatchToProps);
         }
 
-        private void MapStateToProps(BreakpointManagementState state, SummaryProps props)
+        private void MapStateToProps(BreakpointManagementState state, BreakpointOrganismProp props)
         {
-            props.Summary = state?.Summary ?? new BreakpointSummary();
+            props.BreakpointGroup = state?.BreakpointGroup ?? new BreakpointSummary();
+            props.BreakpointProject = state?.BreakpointProject ?? new BreakpointProjectSummary();
         }
 
-        private void MapDispatchToProps(IStore<BreakpointManagementState> store, SummaryProps props)
+        private void MapDispatchToProps(IStore<BreakpointManagementState> store, BreakpointOrganismProp props)
         {
-            props.UpdateSummary = EventCallback.Factory.Create<BreakpointSummary>(this, summary =>
+            props.UpdateBreakpointOrganism = EventCallback.Factory.Create<BreakpointSummary>(this, organism =>
             {
-                store.Dispatch(new UpdateSummaryAction { Summary = summary });
+                store.Dispatch(new UpdateBreakpointOrganismAction { BreakpointOrganism = organism });
             });
         }
     }
-    public partial class BreakpointSummaryDisplay
+    public partial class BreakpointOrganismPicker
     {
         [Inject]
         private IBreakpointManagementDataService dataService { get; set; }
 
         [Parameter]
-        public SummaryProps Props { get; set; }
+        public BreakpointOrganismProp Props { get; set; }
 
         private IDataLoader<BreakpointSummary> _loader;
 
@@ -53,13 +54,9 @@ namespace BreakpointManagement.ComponentLibrary
 
         private List<BreakpointSummary> selectedItems = new List<BreakpointSummary>();
 
-        private BreakpointManagementState BreakpointManagementStateState => null;//GetState<BreakpointManagementState>();
-
-        private BreakpointProjectSummary currentProject => BreakpointManagementStateState?.Project;
-
         protected override async Task OnInitializedAsync()
         {
-            _loader = new BreakpointSummaryDataLoader(dataService, currentProject);
+            _loader = new BreakpointOrganismPickerDataLoader(dataService, Props.BreakpointProject, Props.BreakpointGroup);
             data = (await _loader.LoadDataAsync(new FilterData() { OrderBy = "ProjectId asc", Skip = 0, Top = 10 })).Records;
         }
         public void RowClick(BreakpointSummary data)
@@ -68,39 +65,40 @@ namespace BreakpointManagement.ComponentLibrary
             StateHasChanged();
             if (Props != null)
             {
-                Props.UpdateSummary.InvokeAsync(data);
+                Props.UpdateBreakpointOrganism.InvokeAsync();
             }
         }
     }
-
-    public class BreakpointSummaryDataLoader : IDataLoader<BreakpointSummary>
+    public class BreakpointOrganismPickerDataLoader : IDataLoader<BreakpointSummary>
     {
         private readonly IBreakpointManagementDataService _dataService;
         private readonly BreakpointProjectSummary _currentProject;
-        public BreakpointSummaryDataLoader(IBreakpointManagementDataService dataService, BreakpointProjectSummary currentProject = null)
+        private readonly BreakpointSummary _currentGroup;
+        public BreakpointOrganismPickerDataLoader(IBreakpointManagementDataService dataService, BreakpointProjectSummary currentProject = null, BreakpointSummary currentGroup = null)
         {
             _dataService = dataService;
             _currentProject = currentProject;
+            _currentGroup = currentGroup;
         }
         public async Task<PaginationResult<BreakpointSummary>> LoadDataAsync(FilterData parameters)
         {
 
             int projectId = _currentProject == null ? 0 : _currentProject.ProjectId;
-
+            int groupId = _currentGroup == null ? 0 : _currentGroup.GroupId;
             IList<BreakpointSummary> results;
             if (parameters.Top == null)
             {
-                results = await _dataService.GetBreakpointByProject(projectId);
+                results = await _dataService.GetBreakpointByProjectGroup(projectId, groupId);
             }
             else if (string.IsNullOrWhiteSpace(parameters.OrderBy))
             {
-                results = await _dataService.GetBreakpointByProject(projectId, parameters.Top.Value, parameters.Skip.Value);
+                results = await _dataService.GetBreakpointByProjectGroup(projectId, groupId, parameters.Top.Value, parameters.Skip.Value);
             }
             else
             {
-                results = await _dataService.GetBreakpointByProject(projectId, parameters.Top.Value, parameters.Skip.Value, parameters.OrderBy);
+                results = await _dataService.GetBreakpointByProjectGroup(projectId, groupId, parameters.Top.Value, parameters.Skip.Value, parameters.OrderBy);
             }
-            var count = await _dataService.GetBreakpointByProjectCount(projectId);
+            var count = await _dataService.GetBreakpointByProjectGroupCount(projectId, groupId);
             return new PaginationResult<BreakpointSummary>
             {
                 Records = results,

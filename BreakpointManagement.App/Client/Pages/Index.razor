@@ -1,17 +1,3 @@
 ﻿@page "/"
 
 <h1>Breakpoint Management!</h1>
-
-@ProjectPickerCmp
-@BreakpointStandardCmp
-@ActiveDrugsCmp
-@OrganismPickerCmp
-@BreakpointSummaryCmp
-
-@code {
-    RenderFragment ProjectPickerCmp = ProjectPickerConnect.Get();
-    RenderFragment BreakpointStandardCmp = BreakpointStandardPickerConnect.Get();
-    RenderFragment ActiveDrugsCmp = ActiveDrugsConnect.Get();
-    RenderFragment OrganismPickerCmp = OrganismPickerConnect.Get();
-    RenderFragment BreakpointSummaryCmp = BreakpointSummaryDisplayConnect.Get();
-}

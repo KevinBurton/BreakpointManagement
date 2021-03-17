@@ -15,6 +15,8 @@ namespace BreakpointManagement.Data
         Task<int> GetBreakpointProjectCount();
         Task<BreakpointSummary[]> GetBreakpointByProject(int projectId, int top = 100, int skip = 0, string sort = null);
         Task<int> GetBreakpointByProjectCount(int projectId);
+        Task<BreakpointSummary[]> GetBreakpointByProjectGroup(int projectId, int groupId, int top = 100, int skip = 0, string sort = null);
+        Task<int> GetBreakpointByProjectGroupCount(int projectId, int groupId);
         Task<int> BreakpointGroupCount();
         IAsyncEnumerable<TblBreakpointgroup> GetAllBreakpointGroups();
         Task<TblBreakpointgroup> GetBreakpointGroup(int breakpointGroupId);
@@ -24,5 +26,11 @@ namespace BreakpointManagement.Data
         Task<int> GetOrganismCount();
         Task<TblBreakpointStandard[]> GetAllBreakpointStandards(int top = 100, int skip = 0, string sort = null);
         Task<int> GetBreakpointStandardCount();
+        Task<TblBreakpointgroup[]> GetBreakpointGroupByStandard(int standardId, int top = 100, int skip = 0, string sort = null);
+        Task<int> GetBreakpointGroupByStandardCount(int standardId);
+        Task<TblOrganismName[]> GetOrganismByGroup(int groupId, int top = 100, int skip = 0, string sort = null);
+        Task<int> GetOrganismByGroupCount(int groupId);
+        Task<TblOrganismName[]> GetOrganismByExcludedGroup(int groupId, int top = 100, int skip = 0, string sort = null);
+        Task<int> GetOrganismByExcludedGroupCount(int groupId);
     }
 }

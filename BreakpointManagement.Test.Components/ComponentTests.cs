@@ -46,7 +46,7 @@ namespace BreakpointManagement.Test.Components
             Services.AddSingleton<IBreakpointManagementDataService>(mockService.Object);
 
             //Act
-            var cut = RenderComponent<ProjectPicker>();
+            var cut = RenderComponent<BreakpointProjectPicker>();
 
             // Assert
             cut.MarkupMatches(expectedMarkup);
@@ -92,7 +92,7 @@ namespace BreakpointManagement.Test.Components
             Services.AddSingleton<IBreakpointManagementDataService>(mockService.Object);
 
             //Act
-            var cut = RenderComponent<ActiveDrugs>();
+            var cut = RenderComponent<ActiveDrugPicker>();
 
             // Assert
             cut.MarkupMatches(expectedMarkup);

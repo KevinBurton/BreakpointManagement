@@ -1,0 +1,27 @@
+﻿@using BlazorTable
+
+@if (string.IsNullOrWhiteSpace(Props.Standard.Bpstandard))
+{
+    <h3>Group by standard @Props.Standard.BpstandardId (standard not selected)</h3>
+}
+else
+{
+    <h3>Group by standard @Props.Standard.BpstandardId</h3>
+    <Table TableItem="Breakpointgroup" DataLoader="_loader" Items="data" PageSize="5" SelectionType="selectionType" RowClickAction="RowClick" SelectedItems="selectedItems" ShowSearchBar="false">
+        <Column TableItem="Breakpointgroup" Title="Group Id" Field="@(x => x.BpgroupId)" Sortable="true" Width="10%" DefaultSortColumn="true" />
+        <Column TableItem="Breakpointgroup" Title="Group Name" Field="@(x => x.BpgroupName)" Sortable="true" Width="5%" />
+        <Column TableItem="Breakpointgroup" Title="Standard Id" Field="@(x => x.BpstandardId)" Sortable="true" Width="10%" />
+        <Column TableItem="Breakpointgroup" Title="Created By" Field="@(x => x.CreatedBy)" Sortable="true" Width="5%" />
+        <Column TableItem="Breakpointgroup" Title="Created Date" Field="@(x => x.CreatedDate)" Width="20%" />
+        <Pager ShowPageNumber="true" ShowTotalCount="true" />
+    </Table>
+}
+
+@if (string.IsNullOrWhiteSpace(Props.Group.BpgroupName))
+{
+    <p><em>Click on a row to select a group</em></p>
+}
+else
+{
+    <p>Current group: @Props.Group.BpgroupName</p>
+}

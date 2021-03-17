@@ -3,6 +3,7 @@
     public class BreakpointSummary
     {
         public int ProjectId { get; set; }
+        public int GroupId { get; set; }
         public string GroupName { get; set; }
         public string Method { get; set; }
         public string DrugName { get; set; }

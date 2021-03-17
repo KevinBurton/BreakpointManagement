@@ -8,11 +8,11 @@
     <Pager ShowPageNumber="true" ShowTotalCount="true" />
 </Table>
 
-@if (string.IsNullOrWhiteSpace(Props.Project.ProjectName))
+@if (string.IsNullOrWhiteSpace(Props.BreakpointProject.ProjectName))
 {
     <p><em>Click on a row to select a project</em></p>
 }
 else
 {
-    <p>Current project: @Props.Project.ProjectName</p>
+    <p>Current project: @Props.BreakpointProject.ProjectName</p>
 }

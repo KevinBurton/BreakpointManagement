@@ -14,39 +14,39 @@ using System.Threading.Tasks;
 
 namespace BreakpointManagement.ComponentLibrary
 {
-    public class ProjectPickerConnect
+    public class BreakpointProjectPickerConnect
     {
         public static RenderFragment Get()
         {
-            var c = new ProjectPickerConnect();
-            return ComponentConnector.Connect<ProjectPicker, BreakpointManagementState, ProjectProps>(c.MapStateToProps, c.MapDispatchToProps);
+            var c = new BreakpointProjectPickerConnect();
+            return ComponentConnector.Connect<BreakpointProjectPicker, BreakpointManagementState, BreakpointProjectProps>(c.MapStateToProps, c.MapDispatchToProps);
         }
 
-        private void MapStateToProps(BreakpointManagementState state, ProjectProps props)
+        private void MapStateToProps(BreakpointManagementState state, BreakpointProjectProps props)
         {
-            props.Project = state?.Project ?? new BreakpointProjectSummary();
+            props.BreakpointProject = state?.BreakpointProject ?? new BreakpointProjectSummary();
         }
 
-        private void MapDispatchToProps(IStore<BreakpointManagementState> store, ProjectProps props)
+        private void MapDispatchToProps(IStore<BreakpointManagementState> store, BreakpointProjectProps props)
         {
-            props.UpdateProject = EventCallback.Factory.Create<BreakpointProjectSummary>(this, project =>
+            props.UpdateBreakpointProject = EventCallback.Factory.Create<BreakpointProjectSummary>(this, project =>
             {
-                store.Dispatch(new UpdateProjectAction { Project = project });
+                store.Dispatch(new UpdateBreakpointProjectAction { BreakpointProject = project });
             });
         }
     }
-    public partial class ProjectPicker
+    public partial class BreakpointProjectPicker
     {
-        static ProjectPicker()
+        static BreakpointProjectPicker()
         {
-            ProjectPickerConnect.Get();
+            BreakpointProjectPickerConnect.Get();
         }
 
         [Inject]
         private IBreakpointManagementDataService dataService { get; set; }
 
         [Parameter] 
-        public ProjectProps Props { get; set; }
+        public BreakpointProjectProps Props { get; set; }
 
         private IDataLoader<BreakpointProjectSummary> _loader;
 
@@ -60,7 +60,7 @@ namespace BreakpointManagement.ComponentLibrary
 
         protected override async Task OnInitializedAsync()
         {
-            _loader = new ProjectDataLoader(dataService);
+            _loader = new BreakpointProjectPickerDataLoader(dataService);
             data = (await _loader.LoadDataAsync(new FilterData() { OrderBy = "", Skip = 0, Top = 10 })).Records;
         }
         public void RowClick(BreakpointProjectSummary data)
@@ -69,15 +69,15 @@ namespace BreakpointManagement.ComponentLibrary
             StateHasChanged();
             if (Props != null)
             {
-                Props.UpdateProject.InvokeAsync(data);
+                Props.UpdateBreakpointProject.InvokeAsync(data);
             }
         }
     }
 
-    public class ProjectDataLoader : IDataLoader<BreakpointProjectSummary>
+    public class BreakpointProjectPickerDataLoader : IDataLoader<BreakpointProjectSummary>
     {
         private readonly IBreakpointManagementDataService _dataService;
-        public ProjectDataLoader(IBreakpointManagementDataService dataService)
+        public BreakpointProjectPickerDataLoader(IBreakpointManagementDataService dataService)
         {
             _dataService = dataService;
         }

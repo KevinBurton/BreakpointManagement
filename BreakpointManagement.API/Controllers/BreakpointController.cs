@@ -61,7 +61,19 @@ namespace BreakpointManagement.API.Controllers
         {
             return await _repository.GetBreakpointByProjectCount(projectId);
         }
- 
+        [HttpGet("api/breakpoint/project/{projectId:int}/group/{groupId:int}")]
+        // GET: BreakpointController/Project/5
+        public async Task<BreakpointSummary[]> GetBreakpointByProjectGroup(int projectId, int groupId, int top = 100, int skip = 0, string sort = null)
+        {
+            return await _repository.GetBreakpointByProjectGroup(projectId, groupId, top, skip, sort);
+        }
+        [HttpGet("api/breakpoint/project/{projectId:int}/group/{groupId:int}/count")]
+        // GET: BreakpointController/Project/5/Count
+        public async Task<int> GetBreakpointByProjectGroupCount(int projectId, int groupId)
+        {
+            return await _repository.GetBreakpointByProjectGroupCount(projectId, groupId);
+        }
+
         // GET: BreakpointController/Details/5
         [HttpGet("api/breakpoint/breakpointbugroup/{id:int}")]
         public async Task<Breakpoint> Details(int id)

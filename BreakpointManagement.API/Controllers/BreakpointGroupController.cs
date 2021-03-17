@@ -35,6 +35,18 @@ namespace BreakpointManagement.API.Controllers
             return _mapper.Map<TblBreakpointgroup, Breakpointgroup>(queryResult);
         }
 
+        [HttpGet("api/breakpointgroup/standard/{standardId:int}")]
+        public async Task<Breakpointgroup[]> GetBreakpointGroupByStandard(int standardId, int top = 100, int skip = 0, string sort = null)
+        {
+            var queryResult = await _repository.GetBreakpointGroupByStandard(standardId, top, skip, sort).ConfigureAwait(false);
+            return _mapper.Map<TblBreakpointgroup[], Breakpointgroup[]>(queryResult);
+        }
+        [HttpGet("api/breakpointgroup/standard/{standardId:int}/count")]
+        public async Task<int> GetBreakpointByStandardCount(int standardId)
+        {
+            return await _repository.GetBreakpointGroupByStandardCount(standardId);
+        }
+
         // GET: BreakpointGroupController/Create
         public ActionResult Create()
         {

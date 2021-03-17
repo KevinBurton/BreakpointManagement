@@ -21,7 +21,7 @@ namespace BereakpointManagement.Test.Integration
             Services.AddSingleton<IBreakpointManagementDataService>(service);
 
             //Act
-            var cut = RenderComponent<ProjectPicker>();
+            var cut = RenderComponent<BreakpointProjectPicker>();
             cut.WaitForState(() => cut.FindAll("label").FirstOrDefault()?.TextContent == "Project: ", TimeSpan.FromSeconds(5));
 
             // Assert
@@ -39,7 +39,7 @@ namespace BereakpointManagement.Test.Integration
             Services.AddSingleton<IBreakpointManagementDataService>(service);
 
             //Act
-            var cut = RenderComponent<ActiveDrugs>();
+            var cut = RenderComponent<ActiveDrugPicker>();
             cut.WaitForState(() => cut.FindAll("label").FirstOrDefault()?.TextContent == "Drug: ", TimeSpan.FromSeconds(30));
 
             // Assert
