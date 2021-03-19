@@ -8,7 +8,7 @@
 
 
 @if (string.IsNullOrWhiteSpace(Props.Standard.Bpstandard) ||
- string.IsNullOrWhiteSpace(Props.Group.BpgroupName))
+string.IsNullOrWhiteSpace(Props.Group.BpgroupName))
 {
     <h3> Standard or Group not selected</h3>
 }
@@ -34,11 +34,10 @@ else
         </Column>
         <Pager ShowPageNumber="true" ShowTotalCount="true" />
     </Table>
-}
 
-@if (!string.IsNullOrWhiteSpace(Props.Standard.Bpstandard) &&
-     !string.IsNullOrWhiteSpace(Props.Group.BpgroupName))
-{
+    <button >Up</button>
+    <button >Down</button>
+
     <h3>Organisms in this group @Props.Standard.BpstandardId, @Props.Group.BpgroupId</h3>
     <Table TableItem="OrganismName" DataLoader="_groupingLoader" Items="_groupingData" PageSize="5" SelectionType="SelectionType.Multiple" SelectedItems="_selectedOrganisms" ShowSearchBar="false">
         <Column TableItem="OrganismName" Title="Organism Id" Field="@(x => x.OrganismId)" Sortable="true" Width="10%" DefaultSortColumn="true" />
@@ -59,4 +58,51 @@ else
         </Column>
         <Pager ShowPageNumber="true" ShowTotalCount="true" />
     </Table>
+
+    @if (_selectedExcludedOrganisms.Count > 0)
+    {
+        <Table TableItem="OrganismName" Items="_selectedExcludedOrganisms" PageSize="10" ShowSearchBar="false">
+            <Column TableItem="OrganismName" Title="Organism Id" Field="@(x => x.OrganismId)" Sortable="true" Width="10%" DefaultSortColumn="true" />
+            <Column TableItem="OrganismName" Title="Organism Name" Field="@(x => x.Name)" Sortable="true" Width="20%" />
+            <Column TableItem="OrganismName" Title="Family Id" Field="@(x => x.OrganismFamilyId)" Sortable="true" Width="5%" />
+            <Column TableItem="OrganismName" Title="SubFamily Id" Field="@(x => x.OrganismSubfamilyId)" Sortable="true" Width="5%" />
+            <Column TableItem="OrganismName" Title="Genus Id" Field="@(x => x.GenusId)" Sortable="true" Width="5%" />
+            <Column TableItem="OrganismName" Title="Print On Code List" Field="@(x => x.PrintOnCodeList)" Sortable="true" Width="5%" />
+            <Column TableItem="OrganismName" Title="Remap To" Field="@(x => x.RemapTo)" Sortable="true" Width="5%" />
+            <Column TableItem="OrganismName" Title="Aerobic" Field="@(x => x.Aerobic)" Sortable="true" Width="5%" />
+            <Column TableItem="OrganismName" Title="Anaerobic" Field="@(x => x.Anaerobic)" Sortable="true" Width="5%" />
+            <Column TableItem="OrganismName" Title="Fungal" Field="@(x => x.Fungal)" Sortable="true" Width="5%" />
+            <Column TableItem="OrganismName" Title="CreatedBy" Field="@(x => x.CreatedBy)" Sortable="true" Width="10%" />
+            <Column TableItem="OrganismName" Title="Created Date" Field="@(x => x.CreatedDate)" Sortable="true" Width="20%">
+                <Template>
+                    @(context.CreatedDate.ToShortDateString())
+                </Template>
+            </Column>
+            <Pager ShowPageNumber="true" ShowTotalCount="true" />
+        </Table>
+    }
+
+    @if (_selectedOrganisms.Count > 0)
+    {
+        <Table TableItem="OrganismName" Items="_selectedOrganisms" PageSize="10" ShowSearchBar="false">
+            <Column TableItem="OrganismName" Title="Organism Id" Field="@(x => x.OrganismId)" Sortable="true" Width="10%" DefaultSortColumn="true" />
+            <Column TableItem="OrganismName" Title="Organism Name" Field="@(x => x.Name)" Sortable="true" Width="20%" />
+            <Column TableItem="OrganismName" Title="Family Id" Field="@(x => x.OrganismFamilyId)" Sortable="true" Width="5%" />
+            <Column TableItem="OrganismName" Title="SubFamily Id" Field="@(x => x.OrganismSubfamilyId)" Sortable="true" Width="5%" />
+            <Column TableItem="OrganismName" Title="Genus Id" Field="@(x => x.GenusId)" Sortable="true" Width="5%" />
+            <Column TableItem="OrganismName" Title="Print On Code List" Field="@(x => x.PrintOnCodeList)" Sortable="true" Width="5%" />
+            <Column TableItem="OrganismName" Title="Remap To" Field="@(x => x.RemapTo)" Sortable="true" Width="5%" />
+            <Column TableItem="OrganismName" Title="Aerobic" Field="@(x => x.Aerobic)" Sortable="true" Width="5%" />
+            <Column TableItem="OrganismName" Title="Anaerobic" Field="@(x => x.Anaerobic)" Sortable="true" Width="5%" />
+            <Column TableItem="OrganismName" Title="Fungal" Field="@(x => x.Fungal)" Sortable="true" Width="5%" />
+            <Column TableItem="OrganismName" Title="CreatedBy" Field="@(x => x.CreatedBy)" Sortable="true" Width="10%" />
+            <Column TableItem="OrganismName" Title="Created Date" Field="@(x => x.CreatedDate)" Sortable="true" Width="20%">
+                <Template>
+                    @(context.CreatedDate.ToShortDateString())
+                </Template>
+            </Column>
+            <Pager ShowPageNumber="true" ShowTotalCount="true" />
+        </Table>
+    }
 }
+

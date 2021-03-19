@@ -1,0 +1,6 @@
+﻿@using BlazorTable
+<Table TableItem="BreakpointManagement.Shared.Models.BreakpointProjectReport" DataLoader="_loader" Items="data" PageSize="5" SelectionType="selectionType" RowClickAction="RowClick" SelectedItems="selectedItems" ShowSearchBar="false">
+    <Column TableItem="BreakpointManagement.Shared.Models.BreakpointProjectReport" Title="Project" Field="@(x => x.Project)" Sortable="true" Width="10%" DefaultSortColumn="true" />
+    <Column TableItem="BreakpointManagement.Shared.Models.BreakpointProjectReport" Title="Comment" Field="@(x => x.Comment)" Sortable="true" Width="5%" />
+    <Pager ShowPageNumber="true" ShowTotalCount="true" />
+</Table>

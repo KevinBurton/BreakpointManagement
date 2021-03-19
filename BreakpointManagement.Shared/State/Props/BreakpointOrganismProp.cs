@@ -5,9 +5,9 @@ namespace BreakpointManagement.Shared.State.Props
 {
     public class BreakpointOrganismProp
     {
-        public BreakpointProjectSummary BreakpointProject { get; set; }
-        public BreakpointSummary BreakpointGroup { get; set; }
-        public BreakpointSummary BreakpointOrganism { get; set; }
-        public EventCallback<BreakpointSummary> UpdateBreakpointOrganism { get; set; }
+        public Project Project { get; set; }
+        public Breakpointgroup Group { get; set; }
+        public OrganismName Organism { get; set; }
+        public EventCallback<OrganismName> UpdateOrganism { get; set; }
     }
 }

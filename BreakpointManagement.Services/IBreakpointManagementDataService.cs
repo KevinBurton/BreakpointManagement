@@ -10,13 +10,11 @@ namespace BreakpointManagement.Services
         HttpClient Client { get; }
         Task<IEnumerable<Breakpoint>> GetAllBreakpoints();
         Task<Breakpoint> GetBreakpointDetails(int breakpointId);
-        Task<IList<BreakpointProjectSummary>> GetBreakpointProject(int top = 100, int skip = 0, string sort = null);
-        Task<string> GetBreakpointProjectCount();
         Task<string> GetBreakpointCount(int projectId);
-        Task<IList<BreakpointSummary>> GetBreakpointByProject(int projectId, int top = 100, int skip = 0, string sort = null);
+        Task<IList<Breakpoint>> GetBreakpointByProject(int projectId, int top = 100, int skip = 0, string sort = null);
         Task<string> GetBreakpointByProjectCount(int projectId);
-        Task<IList<BreakpointSummary>> GetBreakpointByProjectGroup(int projectId, int groupId, int top = 100, int skip = 0, string sort = null);
-        Task<string> GetBreakpointByProjectGroupCount(int projectId, int groupId);
+        Task<IList<OrganismName>> GetOrganismByProjectGroup(int projectId, int groupId, int top = 100, int skip = 0, string sort = null);
+        Task<string> GetOrganismByProjectGroupCount(int projectId, int groupId);
 
         Task<IEnumerable<Breakpointgroup>> GetAllBreakpointGroups();
         Task<Breakpointgroup> GetBreadpointGroupDetails(int breakpointGroupId);
@@ -38,5 +36,17 @@ namespace BreakpointManagement.Services
 
         Task<IList<OrganismName>> GetOrganismByExcludedGroup(int groupId, int top = 100, int skip = 0, string sort = null);
         Task<string> GetOrganismByExcludedGroupCount(int groupId);
+
+        Task<IList<BreakpointGroupingReport>> GetBreakpointGroupingReport(int top = 100, int skip = 0, string sort = null);
+        Task<string> GetBreakpointGroupingReportCount();
+
+        Task<IList<BreakpointProjectReport>> GetBreakpointProjectReport(int top = 100, int skip = 0, string sort = null);
+        Task<string> GetBreakpointProjectReportCount();
+
+        Task<IList<Breakpoint>> GetBreakpointByStandardProjectGroupResultType(int standardId, int projectId, int groupId, string resultType, int top = 100, int skip = 0, string sort = null);
+        Task<string> GetBreakpointByStandardProjectGroupResultTypeCount(int standardId, int projectId, int groupId, string resultType);
+
+        Task<IList<Project>> GetBreakpointProject(int top = 100, int skip = 0, string sort = null);
+        Task<string> GetBreakpointProjectCount();
     }
 }

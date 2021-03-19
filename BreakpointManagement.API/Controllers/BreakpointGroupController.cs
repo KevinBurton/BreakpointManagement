@@ -47,6 +47,16 @@ namespace BreakpointManagement.API.Controllers
             return await _repository.GetBreakpointGroupByStandardCount(standardId);
         }
 
+        [HttpGet("api/breakpointgroup/report")]
+        public async Task<BreakpointGroupingReport[]> GetBreakpointGroupingReport(int top = 100, int skip = 0, string sort = null)
+        {
+            return await _repository.GetBreakpointGroupingReport(top, skip, sort).ConfigureAwait(false);
+        }
+        [HttpGet("api/breakpointgroup/report/count")]
+        public async Task<int> GetBreakpointGroupingReportdCount()
+        {
+            return await _repository.GetBreakpointGroupingReportCount();
+        }
         // GET: BreakpointGroupController/Create
         public ActionResult Create()
         {

@@ -16,24 +16,24 @@ namespace BreakpointManagement.Test.Components
         [Fact]
         public void ProjectListComponentRenders()
         {
-            var mockProjectList = new List<BreakpointProjectSummary>() { 
-                new BreakpointProjectSummary()
+            var mockProjectList = new List<Project>() { 
+                new Project()
                 {
                     ProjectId = 0
                 },
-                new BreakpointProjectSummary()
+                new Project()
                 {
                     ProjectId = 1
                 }, 
-                new BreakpointProjectSummary()
+                new Project()
                 {
                     ProjectId = 2
                 }, 
-                new BreakpointProjectSummary()
+                new Project()
                 {
                     ProjectId = 3
                 }, 
-                new BreakpointProjectSummary()
+                new Project()
                 {
                     ProjectId = 4
                 }

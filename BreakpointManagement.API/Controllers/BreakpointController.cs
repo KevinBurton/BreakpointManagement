@@ -30,48 +30,66 @@ namespace BreakpointManagement.API.Controllers
                 if (count-- >= 0) break;
                 yield return _mapper.Map<TblBreakpoint, Breakpoint>(result);
             }
-         }
+        }
+
         [HttpGet("api/breakpoint/count")]
-        // GET: BreakpointController/BreakpointCount
         public async Task<int> BreakpointCount()
         {
             return await _repository.BreakpointCount();
         }
         [HttpGet("api/breakpoint/breakpointproject")]
-        // GET: BreakpointController/BreakpointProject
-        public Task<BreakpointProjectSummary[]> GetBreakpointProject(int top = 100, int skip = 0, string sort = null)
+        public async Task<Project[]> GetBreakpointProject(int top = 100, int skip = 0, string sort = null)
         {
-            return _repository.GetBreakpointProject(top, skip, sort);
+            var result = await _repository.GetBreakpointProject(top, skip, sort);
+            return _mapper.Map<TblProject[], Project[]>(result);
         }
         [HttpGet("api/breakpoint/breakpointproject/count")]
-        // GET: BreakpointController/BreakpointProject/Count
-        public async Task<int> GetBreakpointProjectCount(int projectId)
+        public async Task<int> GetBreakpointProjectCount()
         {
             return await _repository.GetBreakpointProjectCount();
         }
         [HttpGet("api/breakpoint/project/{projectId:int}")]
-        // GET: BreakpointController/Project/5
-        public async Task<BreakpointSummary[]> GetBreakpointByProject(int projectId, int top = 100, int skip = 0, string sort = null)
+        public async Task<Breakpoint[]> GetBreakpointByProject(int projectId, int top = 100, int skip = 0, string sort = null)
         {
-            return await _repository.GetBreakpointByProject(projectId, top, skip, sort);
+            var queryResults = await _repository.GetBreakpointByProject(projectId, top, skip, sort);
+            return _mapper.Map<TblBreakpoint[], Breakpoint[]>(queryResults);
         }
         [HttpGet("api/breakpoint/project/{projectId:int}/count")]
-        // GET: BreakpointController/Project/5/Count
         public async Task<int> GetBreakpointByProjectCount(int projectId)
         {
             return await _repository.GetBreakpointByProjectCount(projectId);
         }
         [HttpGet("api/breakpoint/project/{projectId:int}/group/{groupId:int}")]
-        // GET: BreakpointController/Project/5
-        public async Task<BreakpointSummary[]> GetBreakpointByProjectGroup(int projectId, int groupId, int top = 100, int skip = 0, string sort = null)
+        public async Task<OrganismName[]> GetOrganismByProjectGroup(int projectId, int groupId, int top = 100, int skip = 0, string sort = null)
         {
-            return await _repository.GetBreakpointByProjectGroup(projectId, groupId, top, skip, sort);
+            var queryResults = await _repository.GetOrganismByProjectGroup(projectId, groupId, top, skip, sort);
+            return _mapper.Map<TblOrganismName[], OrganismName[]>(queryResults);
         }
         [HttpGet("api/breakpoint/project/{projectId:int}/group/{groupId:int}/count")]
-        // GET: BreakpointController/Project/5/Count
-        public async Task<int> GetBreakpointByProjectGroupCount(int projectId, int groupId)
+        public async Task<int> GetOrganismByProjectGroupCount(int projectId, int groupId)
         {
-            return await _repository.GetBreakpointByProjectGroupCount(projectId, groupId);
+            return await _repository.GetOrganismByProjectGroupCount(projectId, groupId);
+        }
+        [HttpGet("api/breakpoint/project/report")]
+        public async Task<BreakpointProjectReport[]> GetBreakpointProjectReport(int top = 100, int skip = 0, string sort = null)
+        {
+            return await _repository.GetBreakpointProjectReport(top, skip, sort);
+        }
+        [HttpGet("api/breakpoint/project/report/count")]
+        public async Task<int> GetBreakpointProjectReportCount()
+        {
+            return await _repository.GetBreakpointProjectReportCount();
+        }
+        [HttpGet("api/breakpoint/standard/{standardId:int}/project/{projectId:int/group/{groupId:int}/type/{resultType}")]
+        public async Task<Breakpoint[]> GetBreakpointByStandardProjectGroupResultType(int standardId, int projectId, int groupId, string resultType, int top = 100, int skip = 0, string sort = null)
+        {
+            var result = await _repository.GetBreakpointByStandardProjectGroupResultType(standardId, projectId, groupId, resultType, top, skip, sort);
+            return _mapper.Map<TblBreakpoint[], Breakpoint[]>(result);
+        }
+        [HttpGet("api/breakpoint/standard/{standardId:int}/project/{projectId:int/group/{groupId:int}/type/{resultType}/count")]
+        public async Task<int> GetBreakpointByStandardProjectGroupResultTypeCount(int standardId, int projectId, int groupId, string resultType)
+        {
+            return await _repository.GetBreakpointByStandardProjectGroupResultTypeCount(standardId, projectId, groupId, resultType);
         }
 
         // GET: BreakpointController/Details/5

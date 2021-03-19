@@ -21,4 +21,9 @@
     <ProjectReference Include="..\..\BreakpointManagement.Shared\BreakpointManagement.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\css\font-awesome\js\" />
+    <Folder Include="wwwroot\css\font-awesome\webfonts\" />
+  </ItemGroup>
+
 </Project>

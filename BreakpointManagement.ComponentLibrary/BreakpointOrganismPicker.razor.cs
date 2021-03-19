@@ -24,15 +24,15 @@ namespace BreakpointManagement.ComponentLibrary
 
         private void MapStateToProps(BreakpointManagementState state, BreakpointOrganismProp props)
         {
-            props.BreakpointGroup = state?.BreakpointGroup ?? new BreakpointSummary();
-            props.BreakpointProject = state?.BreakpointProject ?? new BreakpointProjectSummary();
+            props.Group = state?.Group ?? new Breakpointgroup();
+            props.Project = state?.Project ?? new Project();
         }
 
         private void MapDispatchToProps(IStore<BreakpointManagementState> store, BreakpointOrganismProp props)
         {
-            props.UpdateBreakpointOrganism = EventCallback.Factory.Create<BreakpointSummary>(this, organism =>
+            props.UpdateOrganism = EventCallback.Factory.Create<OrganismName>(this, organism =>
             {
-                store.Dispatch(new UpdateBreakpointOrganismAction { BreakpointOrganism = organism });
+                store.Dispatch(new UpdateOrganismAction { Organism = organism });
             });
         }
     }
@@ -44,62 +44,62 @@ namespace BreakpointManagement.ComponentLibrary
         [Parameter]
         public BreakpointOrganismProp Props { get; set; }
 
-        private IDataLoader<BreakpointSummary> _loader;
+        private IDataLoader<OrganismName> _loader;
 
-        private IEnumerable<BreakpointSummary> data;
+        private IEnumerable<OrganismName> data;
 
-        private BreakpointSummary selected;
+        private OrganismName selected;
 
         private SelectionType selectionType = SelectionType.Single;
 
-        private List<BreakpointSummary> selectedItems = new List<BreakpointSummary>();
+        private List<OrganismName> selectedItems = new List<OrganismName>();
 
         protected override async Task OnInitializedAsync()
         {
-            _loader = new BreakpointOrganismPickerDataLoader(dataService, Props.BreakpointProject, Props.BreakpointGroup);
+            _loader = new BreakpointOrganismPickerDataLoader(dataService, Props.Project, Props.Group);
             data = (await _loader.LoadDataAsync(new FilterData() { OrderBy = "ProjectId asc", Skip = 0, Top = 10 })).Records;
         }
-        public void RowClick(BreakpointSummary data)
+        public void RowClick(OrganismName data)
         {
             selected = data;
             StateHasChanged();
             if (Props != null)
             {
-                Props.UpdateBreakpointOrganism.InvokeAsync();
+                Props.UpdateOrganism.InvokeAsync();
             }
         }
     }
-    public class BreakpointOrganismPickerDataLoader : IDataLoader<BreakpointSummary>
+    public class BreakpointOrganismPickerDataLoader : IDataLoader<OrganismName>
     {
         private readonly IBreakpointManagementDataService _dataService;
-        private readonly BreakpointProjectSummary _currentProject;
-        private readonly BreakpointSummary _currentGroup;
-        public BreakpointOrganismPickerDataLoader(IBreakpointManagementDataService dataService, BreakpointProjectSummary currentProject = null, BreakpointSummary currentGroup = null)
+        private readonly Project _currentProject;
+        private readonly Breakpointgroup _currentGroup;
+        public BreakpointOrganismPickerDataLoader(IBreakpointManagementDataService dataService, Project currentProject = null, Breakpointgroup currentGroup = null)
         {
             _dataService = dataService;
             _currentProject = currentProject;
             _currentGroup = currentGroup;
         }
-        public async Task<PaginationResult<BreakpointSummary>> LoadDataAsync(FilterData parameters)
+        public async Task<PaginationResult<OrganismName>> LoadDataAsync(FilterData parameters)
         {
 
             int projectId = _currentProject == null ? 0 : _currentProject.ProjectId;
-            int groupId = _currentGroup == null ? 0 : _currentGroup.GroupId;
-            IList<BreakpointSummary> results;
+            int groupId = _currentGroup == null ? 0 : _currentGroup.BpgroupId;
+            IList<OrganismName> results;
             if (parameters.Top == null)
             {
-                results = await _dataService.GetBreakpointByProjectGroup(projectId, groupId);
+                results = await _dataService.GetOrganismByProjectGroup(projectId, groupId);
             }
             else if (string.IsNullOrWhiteSpace(parameters.OrderBy))
             {
-                results = await _dataService.GetBreakpointByProjectGroup(projectId, groupId, parameters.Top.Value, parameters.Skip.Value);
+                results = await _dataService.GetOrganismByProjectGroup(projectId, groupId, parameters.Top.Value, parameters.Skip.Value);
             }
             else
             {
-                results = await _dataService.GetBreakpointByProjectGroup(projectId, groupId, parameters.Top.Value, parameters.Skip.Value, parameters.OrderBy);
+                results = await _dataService.GetOrganismByProjectGroup(projectId, groupId, parameters.Top.Value, parameters.Skip.Value, parameters.OrderBy);
             }
-            var count = await _dataService.GetBreakpointByProjectGroupCount(projectId, groupId);
-            return new PaginationResult<BreakpointSummary>
+            var count = await _dataService.GetOrganismByProjectGroupCount(projectId, groupId);
+            return new PaginationResult<OrganismName>
             {
                 Records = results,
                 Skip = parameters?.Skip ?? 0,

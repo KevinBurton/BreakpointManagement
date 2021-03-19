@@ -1,0 +1,7 @@
+﻿@using BlazorTable
+<Table TableItem="BreakpointManagement.Shared.Models.BreakpointGroupingReport" DataLoader="_loader" Items="data" PageSize="5" SelectionType="selectionType" RowClickAction="RowClick" SelectedItems="selectedItems" ShowSearchBar="false">
+    <Column TableItem="BreakpointManagement.Shared.Models.BreakpointGroupingReport" Title="Standard" Field="@(x => x.Standard)" Sortable="true" Width="10%" DefaultSortColumn="true" />
+    <Column TableItem="BreakpointManagement.Shared.Models.BreakpointGroupingReport" Title="Group" Field="@(x => x.Group)" Sortable="true" Width="5%" />
+    <Column TableItem="BreakpointManagement.Shared.Models.BreakpointGroupingReport" Title="Organism" Field="@(x => x.Organism)" Sortable="true" Width="20%" />
+    <Pager ShowPageNumber="true" ShowTotalCount="true" />
+</Table>

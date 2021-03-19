@@ -19,19 +19,19 @@ namespace BreakpointManagement.ComponentLibrary
         public static RenderFragment Get()
         {
             var c = new BreakpointProjectPickerConnect();
-            return ComponentConnector.Connect<BreakpointProjectPicker, BreakpointManagementState, BreakpointProjectProps>(c.MapStateToProps, c.MapDispatchToProps);
+            return ComponentConnector.Connect<BreakpointProjectPicker, BreakpointManagementState, ProjectProps>(c.MapStateToProps, c.MapDispatchToProps);
         }
 
-        private void MapStateToProps(BreakpointManagementState state, BreakpointProjectProps props)
+        private void MapStateToProps(BreakpointManagementState state, ProjectProps props)
         {
-            props.BreakpointProject = state?.BreakpointProject ?? new BreakpointProjectSummary();
+            props.Project = state?.Project ?? new Project();
         }
 
-        private void MapDispatchToProps(IStore<BreakpointManagementState> store, BreakpointProjectProps props)
+        private void MapDispatchToProps(IStore<BreakpointManagementState> store, ProjectProps props)
         {
-            props.UpdateBreakpointProject = EventCallback.Factory.Create<BreakpointProjectSummary>(this, project =>
+            props.UpdateProject = EventCallback.Factory.Create<Project>(this, project =>
             {
-                store.Dispatch(new UpdateBreakpointProjectAction { BreakpointProject = project });
+                store.Dispatch(new UpdateProjectAction { Project = project });
             });
         }
     }
@@ -46,45 +46,45 @@ namespace BreakpointManagement.ComponentLibrary
         private IBreakpointManagementDataService dataService { get; set; }
 
         [Parameter] 
-        public BreakpointProjectProps Props { get; set; }
+        public ProjectProps Props { get; set; }
 
-        private IDataLoader<BreakpointProjectSummary> _loader;
+        private IDataLoader<Project> _loader;
 
-        private IEnumerable<BreakpointProjectSummary> data;
+        private IEnumerable<Project> data;
 
-        private BreakpointProjectSummary selected;
+        private Project selected;
 
         private SelectionType selectionType = SelectionType.Single;
 
-        private List<BreakpointProjectSummary> selectedItems = new List<BreakpointProjectSummary>();
+        private List<Project> selectedItems = new List<Project>();
 
         protected override async Task OnInitializedAsync()
         {
             _loader = new BreakpointProjectPickerDataLoader(dataService);
             data = (await _loader.LoadDataAsync(new FilterData() { OrderBy = "", Skip = 0, Top = 10 })).Records;
         }
-        public void RowClick(BreakpointProjectSummary data)
+        public void RowClick(Project data)
         {
             selected = data;
             StateHasChanged();
             if (Props != null)
             {
-                Props.UpdateBreakpointProject.InvokeAsync(data);
+                Props.UpdateProject.InvokeAsync(data);
             }
         }
     }
 
-    public class BreakpointProjectPickerDataLoader : IDataLoader<BreakpointProjectSummary>
+    public class BreakpointProjectPickerDataLoader : IDataLoader<Project>
     {
         private readonly IBreakpointManagementDataService _dataService;
         public BreakpointProjectPickerDataLoader(IBreakpointManagementDataService dataService)
         {
             _dataService = dataService;
         }
-        public async Task<PaginationResult<BreakpointProjectSummary>> LoadDataAsync(FilterData parameters)
+        public async Task<PaginationResult<Project>> LoadDataAsync(FilterData parameters)
         {
-            if (parameters == null) return new PaginationResult<BreakpointProjectSummary>();
-            IList<BreakpointProjectSummary> results;
+            if (parameters == null) return new PaginationResult<Project>();
+            IList<Project> results;
             if (parameters == null)
             {
                 results = await _dataService.GetBreakpointProject();
@@ -102,7 +102,7 @@ namespace BreakpointManagement.ComponentLibrary
                 results = await _dataService.GetBreakpointProject(parameters.Top.Value, parameters.Skip.Value, parameters.OrderBy);
             }
             var count = await _dataService.GetBreakpointProjectCount();
-            return new PaginationResult<BreakpointProjectSummary>
+            return new PaginationResult<Project>
             {
                 Records = results,
                 Skip = parameters?.Skip ?? 0,

@@ -4,14 +4,14 @@ using BreakpointManagement.Shared.State.Actions;
 
 namespace BreakpointManagement.Shared.State.Reducers
 {
-    public class BreakpointProjectReducer : IReducer<BreakpointProjectSummary>
+    public class ProjectReducer : IReducer<Project>
     {
-        public BreakpointProjectSummary Reduce(BreakpointProjectSummary state, IAction action)
+        public Project Reduce(Project state, IAction action)
         {
             switch (action)
             {
-                case UpdateBreakpointProjectAction:
-                    return ((UpdateBreakpointProjectAction)action).BreakpointProject;
+                case UpdateProjectAction:
+                    return ((UpdateProjectAction)action).Project;
                 default:
                     return state;
             }

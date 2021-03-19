@@ -40,7 +40,7 @@ namespace BreakpointManagement.App.Client
                 // Register reducers
                 cfg.Map<DrugReducer, Drug>(s => s.Drug);
                 cfg.Map<OrganismReducer, OrganismName>(s => s.Organism);
-                cfg.Map<BreakpointProjectReducer, BreakpointProjectSummary>(s => s.BreakpointProject);
+                cfg.Map<ProjectReducer, Project>(s => s.Project);
                 cfg.Map<StandardReducer, BreakpointStandard>(s => s.Standard);
                 cfg.Map<GroupReducer, Breakpointgroup>(s => s.Group);
             });

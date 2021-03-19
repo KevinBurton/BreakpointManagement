@@ -11,12 +11,10 @@ namespace BreakpointManagement.Data
         IAsyncEnumerable<TblBreakpoint> GetAllBreakpoints();
         Task<TblBreakpoint> GetBreakpoint(int breakpointId);
         PagedResult<TblBreakpoint> PagedBreakpoint(int projectId, int page = 1);
-        Task<BreakpointProjectSummary[]> GetBreakpointProject(int top = 100, int skip = 0, string sort = null);
-        Task<int> GetBreakpointProjectCount();
-        Task<BreakpointSummary[]> GetBreakpointByProject(int projectId, int top = 100, int skip = 0, string sort = null);
+        Task<TblBreakpoint[]> GetBreakpointByProject(int projectId, int top = 100, int skip = 0, string sort = null);
         Task<int> GetBreakpointByProjectCount(int projectId);
-        Task<BreakpointSummary[]> GetBreakpointByProjectGroup(int projectId, int groupId, int top = 100, int skip = 0, string sort = null);
-        Task<int> GetBreakpointByProjectGroupCount(int projectId, int groupId);
+        Task<TblOrganismName[]> GetOrganismByProjectGroup(int projectId, int groupId, int top = 100, int skip = 0, string sort = null);
+        Task<int> GetOrganismByProjectGroupCount(int projectId, int groupId);
         Task<int> BreakpointGroupCount();
         IAsyncEnumerable<TblBreakpointgroup> GetAllBreakpointGroups();
         Task<TblBreakpointgroup> GetBreakpointGroup(int breakpointGroupId);
@@ -32,5 +30,13 @@ namespace BreakpointManagement.Data
         Task<int> GetOrganismByGroupCount(int groupId);
         Task<TblOrganismName[]> GetOrganismByExcludedGroup(int groupId, int top = 100, int skip = 0, string sort = null);
         Task<int> GetOrganismByExcludedGroupCount(int groupId);
+        Task<BreakpointGroupingReport[]> GetBreakpointGroupingReport(int top = 100, int skip = 0, string sort = null);
+        Task<int> GetBreakpointGroupingReportCount();
+        Task<BreakpointProjectReport[]> GetBreakpointProjectReport(int top = 100, int skip = 0, string sort = null);
+        Task<int> GetBreakpointProjectReportCount();
+        Task<TblBreakpoint[]> GetBreakpointByStandardProjectGroupResultType(int standardId, int projectId, int groupId, string resultType, int top = 100, int skip = 0, string sort = null);
+        Task<int> GetBreakpointByStandardProjectGroupResultTypeCount(int standardId, int projectId, int groupId, string resultType);
+        Task<TblProject[]> GetBreakpointProject(int top = 100, int skip = 0, string sort = null);
+        Task<int> GetBreakpointProjectCount();
     }
 }

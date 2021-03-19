@@ -1,34 +1,39 @@
 ﻿@using BlazorTable
 
-@if (!string.IsNullOrWhiteSpace(Props.BreakpointProject.ProjectName) ||
-     !string.IsNullOrWhiteSpace(Props.BreakpointGroup.GroupName))
+@if (!string.IsNullOrWhiteSpace(Props.Project.ProjectName) ||
+     !string.IsNullOrWhiteSpace(Props.Group.BpgroupName))
 {
     <h3>Breakpoint by project (project/group not selected)</h3>
-    <Table TableItem="BreakpointSummary" DataLoader="_loader" Items="data" PageSize="5" SelectionType="selectionType" RowClickAction="RowClick" SelectedItems="selectedItems" ShowSearchBar="false">
-        <Column TableItem="BreakpointSummary" Title="Id" Field="@(x => x.ProjectId)" Sortable="true" Width="10%" DefaultSortColumn="true" />
-        <Column TableItem="BreakpointSummary" Title="Group Id" Field="@(x => x.GroupId)" Sortable="true" Width="10%" />
-        <Column TableItem="BreakpointSummary" Title="Group Name" Field="@(x => x.GroupName)" Sortable="true" Width="5%" />
-        <Column TableItem="BreakpointSummary" Title="Method" Field="@(x => x.Method)" Sortable="true" Width="20%" />
-        <Column TableItem="BreakpointSummary" Title="Drug Name" Field="@(x => x.DrugName)" Sortable="true" Width="5%" />
-        <Column TableItem="BreakpointSummary" Title="Suseptiple" Field="@(x => x.Susceptible)" Width="5%" />
-        <Column TableItem="BreakpointSummary" Title="Low Intermediate" Field="@(x => x.LowIntermediate)" Width="5%" />
-        <Column TableItem="BreakpointSummary" Title="Intermediate" Field="@(x => x.Intermediate)" Width="5%" />
-        <Column TableItem="BreakpointSummary" Title="Resistant" Field="@(x => x.Resistant)" Width="5%" />
-        <Column TableItem="BreakpointSummary" Title="Organism Name" Field="@(x => x.OrganismName)" Sortable="true" Width="5%" />
-        <Column TableItem="BreakpointSummary" Title="Standard" Field="@(x => x.Standard)" Sortable="true" Width="5%" />
+    <Table TableItem="OrganismName" DataLoader="_loader" Items="data" PageSize="5" SelectionType="selectionType" RowClickAction="RowClick" SelectedItems="selectedItems" ShowSearchBar="false">
+        <Column TableItem="OrganismName" Title="Organism Id" Field="@(x => x.OrganismId)" Sortable="true" Width="10%" DefaultSortColumn="true" />
+        <Column TableItem="OrganismName" Title="Organism Name" Field="@(x => x.Name)" Sortable="true" Width="5%" />
+        <Column TableItem="OrganismName" Title="Family Id" Field="@(x => x.OrganismFamilyId)" Sortable="true" Width="10%" />
+        <Column TableItem="OrganismName" Title="Sub-Family Id" Field="@(x => x.OrganismSubfamilyId)" Sortable="true" Width="10%" />
+        <Column TableItem="OrganismName" Title="Genus Id" Field="@(x => x.GenusId)" Sortable="true" Width="10%" />
+        <Column TableItem="OrganismName" Title="Print on code list" Field="@(x => x.PrintOnCodeList)" Sortable="true" Width="20%" />
+        <Column TableItem="OrganismName" Title="Remap To" Field="@(x => x.RemapTo)" Sortable="true" Width="5%" />
+        <Column TableItem="OrganismName" Title="Aerobic" Field="@(x => x.Aerobic)" Width="5%" />
+        <Column TableItem="OrganismName" Title="Anaerobic" Field="@(x => x.Anaerobic)" Width="5%" />
+        <Column TableItem="OrganismName" Title="Fungal" Field="@(x => x.Fungal)" Width="5%" />
+        <Column TableItem="OrganismName" Title="Created By" Field="@(x => x.CreatedBy)" Width="5%" />
+        <Column TableItem="OrganismName" Title="Created Date" Field="@(x => x.CreatedDate)" Sortable="true" Width="5%">
+            <Template>
+                @(context.CreatedDate.ToShortDateString())
+            </Template>
+        </Column>
         <Pager ShowPageNumber="true" ShowTotalCount="true" />
     </Table>
 
-    @if (string.IsNullOrWhiteSpace(Props.BreakpointOrganism?.OrganismName))
+    @if (string.IsNullOrWhiteSpace(Props.Organism?.Name))
     {
         <p><em>Click on a row to select an organism</em></p>
     }
     else
     {
-        <p>Current organism: @Props.BreakpointOrganism.OrganismName</p>
+        <p>Current organism: @Props.Organism.Name</p>
     }
 }
 else
 {
-    <h3>Breakpoint by project and group @Props.BreakpointProject.ProjectId/Props.BreakpointGroup.GroupId</h3>
+    <h3>Breakpoint by project and group @Props.Project.ProjectId/Props.BreakpointGroup.GroupId</h3>
 }

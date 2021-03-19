@@ -31,29 +31,14 @@ namespace BreakpointManagement.Services
             var response = await _httpClient.GetAsync($"api/breakpoint/count");
             return await response.Content.ReadAsStringAsync();
         }
-        public async Task<IList<BreakpointProjectSummary>> GetBreakpointProject(int top = 100, int skip = 0, string sort = null)
-        {
-            var url = $"api/breakpoint/breakpointproject?top={top}&skip={skip}";
-            if (!string.IsNullOrWhiteSpace(sort))
-            {
-                url += $"&sort={HttpUtility.UrlEncode(sort)}";
-            }
-            return await JsonSerializer.DeserializeAsync<IList<BreakpointProjectSummary>>
-                    (await _httpClient.GetStreamAsync(url), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
-        }
-        public async Task<string> GetBreakpointProjectCount()
-        {
-            var response = await _httpClient.GetAsync($"api/breakpoint/breakpointproject/count");
-            return await response.Content.ReadAsStringAsync();
-        }
-        public async Task<IList<BreakpointSummary>> GetBreakpointByProject(int projectId, int top = 100, int skip = 0, string sort = null)
+        public async Task<IList<Breakpoint>> GetBreakpointByProject(int projectId, int top = 100, int skip = 0, string sort = null)
         {
             var url = $"api/breakpoint/project/{projectId}?top={top}&skip={skip}";
             if (!string.IsNullOrWhiteSpace(sort))
             {
                 url += $"&sort={HttpUtility.UrlEncode(sort)}";
             }
-            return await JsonSerializer.DeserializeAsync<List<BreakpointSummary>>
+            return await JsonSerializer.DeserializeAsync<List<Breakpoint>>
                     (await _httpClient.GetStreamAsync(url), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
         public async Task<string> GetBreakpointByProjectCount(int projectId)
@@ -61,17 +46,17 @@ namespace BreakpointManagement.Services
             var response = await _httpClient.GetAsync($"api/breakpoint/project/{projectId}/count");
             return await response.Content.ReadAsStringAsync();
         }
-        public async Task<IList<BreakpointSummary>> GetBreakpointByProjectGroup(int projectId, int groupId, int top = 100, int skip = 0, string sort = null)
+        public async Task<IList<OrganismName>> GetOrganismByProjectGroup(int projectId, int groupId, int top = 100, int skip = 0, string sort = null)
         {
             var url = $"api/breakpoint/project/{projectId}/group/{groupId}?top={top}&skip={skip}";
             if (!string.IsNullOrWhiteSpace(sort))
             {
                 url += $"&sort={HttpUtility.UrlEncode(sort)}";
             }
-            return await JsonSerializer.DeserializeAsync<List<BreakpointSummary>>
+            return await JsonSerializer.DeserializeAsync<List<OrganismName>>
                     (await _httpClient.GetStreamAsync(url), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
-        public async Task<string> GetBreakpointByProjectGroupCount(int projectId, int groupId)
+        public async Task<string> GetOrganismByProjectGroupCount(int projectId, int groupId)
         {
             var response = await _httpClient.GetAsync($"api/breakpoint/project/{projectId}/group/{groupId}/count");
             return await response.Content.ReadAsStringAsync();
@@ -181,6 +166,72 @@ namespace BreakpointManagement.Services
         public async Task<string> GetOrganismByExcludedGroupCount(int groupId)
         {
             var response = await _httpClient.GetAsync($"api/breakpointgroupmember/notgroup/{groupId}/count");
+            return await response.Content.ReadAsStringAsync();
+        }
+
+        public async Task<IList<BreakpointGroupingReport>> GetBreakpointGroupingReport(int top = 100, int skip = 0, string sort = null)
+        {
+            var url = $"api/breakpointgroup/report?top={top}&skip={skip}";
+            if (!string.IsNullOrWhiteSpace(sort))
+            {
+                url += $"&sort={HttpUtility.UrlEncode(sort)}";
+            }
+            return await JsonSerializer.DeserializeAsync<IList<BreakpointGroupingReport>>
+                    (await _httpClient.GetStreamAsync(url), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+        }
+
+        public async Task<string> GetBreakpointGroupingReportCount()
+        {
+            var response = await _httpClient.GetAsync($"api/breakpointgroup/report/count");
+            return await response.Content.ReadAsStringAsync();
+        }
+
+        public async Task<IList<BreakpointProjectReport>> GetBreakpointProjectReport(int top = 100, int skip = 0, string sort = null)
+        {
+            var url = $"api/breakpoint/project/report?top={top}&skip={skip}";
+            if (!string.IsNullOrWhiteSpace(sort))
+            {
+                url += $"&sort={HttpUtility.UrlEncode(sort)}";
+            }
+            return await JsonSerializer.DeserializeAsync<IList<BreakpointProjectReport>>
+                    (await _httpClient.GetStreamAsync(url), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+        }
+
+        public async Task<string> GetBreakpointProjectReportCount()
+        {
+            var response = await _httpClient.GetAsync($"api/breakpoint/project/report/count");
+            return await response.Content.ReadAsStringAsync();
+        }
+
+        public async Task<IList<Breakpoint>> GetBreakpointByStandardProjectGroupResultType(int standardId, int projectId, int groupId, string resultType, int top = 100, int skip = 0, string sort = null)
+        {
+            var url = $"api/breakpoint/standard/{standardId}/project/{projectId}/group/{groupId}/type/{resultType}?top={top}&skip={skip}";
+            if (!string.IsNullOrWhiteSpace(sort))
+            {
+                url += $"&sort={HttpUtility.UrlEncode(sort)}";
+            }
+            return await JsonSerializer.DeserializeAsync<IList<Breakpoint>>
+                    (await _httpClient.GetStreamAsync(url), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+        }
+
+        public async Task<string> GetBreakpointByStandardProjectGroupResultTypeCount(int standardId, int projectId, int groupId, string resultType)
+        {
+            var response = await _httpClient.GetAsync($"api/breakpoint/standard/{standardId}/project/{projectId}/group/{groupId}/type/{resultType}/count");
+            return await response.Content.ReadAsStringAsync();
+        }
+        public async Task<IList<Project>> GetBreakpointProject(int top = 100, int skip = 0, string sort = null)
+        {
+            var url = $"api/breakpoint/breakpointproject?top={top}&skip={skip}";
+            if (!string.IsNullOrWhiteSpace(sort))
+            {
+                url += $"&sort={HttpUtility.UrlEncode(sort)}";
+            }
+            return await JsonSerializer.DeserializeAsync<IList<Project>>
+                    (await _httpClient.GetStreamAsync(url), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+        }
+        public async Task<string> GetBreakpointProjectCount()
+        {
+            var response = await _httpClient.GetAsync($"api/breakpoint/breakpointproject/count");
             return await response.Content.ReadAsStringAsync();
         }
     }
