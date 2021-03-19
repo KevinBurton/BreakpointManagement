@@ -1,0 +1,51 @@
+﻿@using BlazorTable
+<h3>EditBreakpoint</h3>
+<h4>Standard</h4>
+@BreakpointStandardCmp
+<h4>Project</h4>
+@BreakpointProjectCmp
+<h4>Group</h4>
+@BreakpointGroupCmp
+@if (string.IsNullOrWhiteSpace(Props.Standard.Bpstandard) ||
+  string.IsNullOrWhiteSpace(Props.Project.ProjectName) ||
+  string.IsNullOrWhiteSpace(Props.Group.BpgroupName))
+{
+    <h3> Breakpoints (standard, project, or group not selected)</h3>
+}
+else
+{
+    <h4>Breakpoints by MIC</h4>
+    <Table TableItem="Breakpoint" DataLoader="_micLoader" Items="micData" PageSize="5" SelectionType="SelectionType.Multiple" SelectedItems="selectedMICItems" ShowSearchBar="false">
+        <Column TableItem="Breakpoint" Title="Breakpoint ID" Field="@(x => x.BreakpointId)" Sortable="true" Width="10%" DefaultSortColumn="true" />
+        <Column TableItem="Breakpoint" Title="Result Type" Field="@(x => x.ResultType)" Sortable="true" Width="5%" />
+        <Column TableItem="Breakpoint" Title="Group ID" Field="@(x => x.BpgroupId)" Sortable="true" Width="5%" />
+        <Column TableItem="Breakpoint" Title="Drug ID" Field="@(x => x.DrugId)" Sortable="true" Width="5%" />
+        <Column TableItem="Breakpoint" Title="Susceptible" Field="@(x => x.Susceptible)" Sortable="true" Width="5%" />
+        <Column TableItem="Breakpoint" Title="Low Intermediate" Field="@(x => x.LowIntermediate)" Sortable="true" Width="5%" />
+        <Column TableItem="Breakpoint" Title="Intermediate" Field="@(x => x.Intermediate)" Sortable="true" Width="5%" />
+        <Column TableItem="Breakpoint" Title="Resistant" Field="@(x => x.Resistant)" Sortable="true" Width="5%" />
+        <Column TableItem="Breakpoint" Title="Displayed As" Field="@(x => x.DisplayedAs)" Sortable="true" Width="5%" />
+        <Column TableItem="Breakpoint" Title="Dosage" Field="@(x => x.Dosage)" Sortable="true" Width="5%" />
+        <Column TableItem="Breakpoint" Title="Dosage Type" Field="@(x => x.DosageType)" Sortable="true" Width="5%" />
+        <Column TableItem="Breakpoint" Title="Project Id" Field="@(x => x.ProjectId)" Sortable="true" Width="5%" />
+        <Column TableItem="Breakpoint" Title="Year" Field="@(x => x.Bpyear)" Sortable="true" Width="5%" />
+        <Pager ShowPageNumber="true" ShowTotalCount="true" />
+    </Table>
+    <h4>Breakpoints by Disk</h4>
+    <Table TableItem="Breakpoint" DataLoader="_diskLoader" Items="diskData" PageSize="5" SelectionType="SelectionType.Multiple" SelectedItems="selectedDiskItems" ShowSearchBar="false">
+        <Column TableItem="Breakpoint" Title="Breakpoint ID" Field="@(x => x.BreakpointId)" Sortable="true" Width="10%" DefaultSortColumn="true" />
+        <Column TableItem="Breakpoint" Title="Result Type" Field="@(x => x.ResultType)" Sortable="true" Width="5%" />
+        <Column TableItem="Breakpoint" Title="Group ID" Field="@(x => x.BpgroupId)" Sortable="true" Width="5%" />
+        <Column TableItem="Breakpoint" Title="Drug ID" Field="@(x => x.DrugId)" Sortable="true" Width="5%" />
+        <Column TableItem="Breakpoint" Title="Susceptible" Field="@(x => x.Susceptible)" Sortable="true" Width="5%" />
+        <Column TableItem="Breakpoint" Title="Low Intermediate" Field="@(x => x.LowIntermediate)" Sortable="true" Width="5%" />
+        <Column TableItem="Breakpoint" Title="Intermediate" Field="@(x => x.Intermediate)" Sortable="true" Width="5%" />
+        <Column TableItem="Breakpoint" Title="Resistant" Field="@(x => x.Resistant)" Sortable="true" Width="5%" />
+        <Column TableItem="Breakpoint" Title="Displayed As" Field="@(x => x.DisplayedAs)" Sortable="true" Width="5%" />
+        <Column TableItem="Breakpoint" Title="Dosage" Field="@(x => x.Dosage)" Sortable="true" Width="5%" />
+        <Column TableItem="Breakpoint" Title="Dosage Type" Field="@(x => x.DosageType)" Sortable="true" Width="5%" />
+        <Column TableItem="Breakpoint" Title="Project Id" Field="@(x => x.ProjectId)" Sortable="true" Width="5%" />
+        <Column TableItem="Breakpoint" Title="Year" Field="@(x => x.Bpyear)" Sortable="true" Width="5%" />
+        <Pager ShowPageNumber="true" ShowTotalCount="true" />
+    </Table>
+}

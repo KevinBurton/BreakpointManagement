@@ -80,13 +80,13 @@ namespace BreakpointManagement.API.Controllers
         {
             return await _repository.GetBreakpointProjectReportCount();
         }
-        [HttpGet("api/breakpoint/standard/{standardId:int}/project/{projectId:int/group/{groupId:int}/type/{resultType}")]
+        [HttpGet("api/breakpoint/standard/{standardId:int}/project/{projectId:int}/group/{groupId:int}/type/{resultType}")]
         public async Task<Breakpoint[]> GetBreakpointByStandardProjectGroupResultType(int standardId, int projectId, int groupId, string resultType, int top = 100, int skip = 0, string sort = null)
         {
             var result = await _repository.GetBreakpointByStandardProjectGroupResultType(standardId, projectId, groupId, resultType, top, skip, sort);
             return _mapper.Map<TblBreakpoint[], Breakpoint[]>(result);
         }
-        [HttpGet("api/breakpoint/standard/{standardId:int}/project/{projectId:int/group/{groupId:int}/type/{resultType}/count")]
+        [HttpGet("api/breakpoint/standard/{standardId:int}/project/{projectId:int}/group/{groupId:int}/type/{resultType}/count")]
         public async Task<int> GetBreakpointByStandardProjectGroupResultTypeCount(int standardId, int projectId, int groupId, string resultType)
         {
             return await _repository.GetBreakpointByStandardProjectGroupResultTypeCount(standardId, projectId, groupId, resultType);

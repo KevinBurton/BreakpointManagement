@@ -1,2 +1,6 @@
 ﻿@page "/set"
 <h3>Set Breakpoints</h3>
+@EditBreakpointCmp
+@code {
+    RenderFragment EditBreakpointCmp = EditBreakpointConnect.Get();
+}
