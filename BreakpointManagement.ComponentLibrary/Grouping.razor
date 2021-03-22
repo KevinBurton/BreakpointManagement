@@ -15,7 +15,7 @@ string.IsNullOrWhiteSpace(Props.Group.BpgroupName))
 else
 {
     <h3>Organisms NOT in this group @Props.Standard.BpstandardId, @Props.Group.BpgroupId</h3>
-    <Table TableItem="OrganismName" DataLoader="_groupingExcludedLoader" Items="_groupingExcludedData" PageSize="5" SelectionType="SelectionType.Multiple" SelectedItems="_selectedExcludedOrganisms" ShowSearchBar="false">
+    <Table TableItem="OrganismName" Items="_groupingExcludedData" PageSize="5" SelectionType="SelectionType.Multiple" SelectedItems="_selectedExcludedOrganisms" ShowSearchBar="false">
         <Column TableItem="OrganismName" Title="Organism Id" Field="@(x => x.OrganismId)" Sortable="true" Width="10%" DefaultSortColumn="true" />
         <Column TableItem="OrganismName" Title="Organism Name" Field="@(x => x.Name)" Sortable="true" Width="20%" />
         <Column TableItem="OrganismName" Title="Family Id" Field="@(x => x.OrganismFamilyId)" Sortable="true" Width="5%" />
@@ -35,11 +35,13 @@ else
         <Pager ShowPageNumber="true" ShowTotalCount="true" />
     </Table>
 
-    <button >Up</button>
-    <button >Down</button>
+    <button>Up</button>
+    <button>Down</button>
+    <button class="fas fa-angle-double-up">Up</button>
+    <button class="fas fa-angle-double-down">Down</button>
 
     <h3>Organisms in this group @Props.Standard.BpstandardId, @Props.Group.BpgroupId</h3>
-    <Table TableItem="OrganismName" DataLoader="_groupingLoader" Items="_groupingData" PageSize="5" SelectionType="SelectionType.Multiple" SelectedItems="_selectedOrganisms" ShowSearchBar="false">
+    <Table TableItem="OrganismName" Items="_groupingData" PageSize="5" SelectionType="SelectionType.Multiple" SelectedItems="_selectedOrganisms" ShowSearchBar="false">
         <Column TableItem="OrganismName" Title="Organism Id" Field="@(x => x.OrganismId)" Sortable="true" Width="10%" DefaultSortColumn="true" />
         <Column TableItem="OrganismName" Title="Organism Name" Field="@(x => x.Name)" Sortable="true" Width="20%" />
         <Column TableItem="OrganismName" Title="Family Id" Field="@(x => x.OrganismFamilyId)" Sortable="true" Width="5%" />

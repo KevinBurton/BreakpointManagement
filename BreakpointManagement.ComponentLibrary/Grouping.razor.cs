@@ -78,9 +78,9 @@ namespace BreakpointManagement.ComponentLibrary
         protected async override Task OnParametersSetAsync()
         {
             _groupingLoader = new OrgainismByGroupDataLoader(dataService, Props.Group);
-            _groupingData = (await _groupingLoader.LoadDataAsync(new FilterData() { Skip = 0, Top = 10 })).Records;
+            _groupingData = (await _groupingLoader.LoadDataAsync(null)).Records;
             _groupingExcludedLoader = new OrgainismByExcludedGroupDataLoader(dataService, Props.Group);
-            _groupingExcludedData = (await _groupingExcludedLoader.LoadDataAsync(new FilterData() { Skip = 0, Top = 10 })).Records;
+            _groupingExcludedData = (await _groupingExcludedLoader.LoadDataAsync(null)).Records;
         }
     }
     public class OrgainismByGroupDataLoader : IDataLoader<OrganismName>
@@ -103,7 +103,7 @@ namespace BreakpointManagement.ComponentLibrary
                 if(count > 0)
                 {
                     IList<OrganismName> results;
-                    if (parameters.Top == null)
+                    if (parameters == null || parameters.Top == null)
                     {
                         results = await _dataService.GetOrganismByGroup(groupId);
                     }
@@ -154,7 +154,7 @@ namespace BreakpointManagement.ComponentLibrary
                 if (count > 0)
                 {
                     IList<OrganismName> results;
-                    if (parameters.Top == null)
+                    if (parameters == null || parameters.Top == null)
                     {
                         results = await _dataService.GetOrganismByExcludedGroup(groupId);
                     }

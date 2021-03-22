@@ -49,8 +49,6 @@ namespace BreakpointManagement.ComponentLibrary
 
         private BreakpointStandard selected;
 
-        private SelectionType selectionType = SelectionType.Single;
-
         private List<BreakpointStandard> selectedItems = new List<BreakpointStandard>();
 
         protected override async Task OnInitializedAsync()
@@ -79,7 +77,6 @@ namespace BreakpointManagement.ComponentLibrary
         public async Task<PaginationResult<BreakpointStandard>> LoadDataAsync(FilterData parameters)
         {
             IList<BreakpointStandard> results;
-            if (parameters == null) return new PaginationResult<BreakpointStandard>();
             if (parameters == null)
             {
                 results = await _dataService.GetAllBreakpointStandards();

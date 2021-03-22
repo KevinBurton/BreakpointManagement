@@ -57,7 +57,7 @@ namespace BreakpointManagement.ComponentLibrary
         protected override async Task OnParametersSetAsync()
         {
             _loader = new BreakpointGroupPickerDataLoader(dataService, Props.Standard);
-            data = (await _loader.LoadDataAsync(new FilterData() { OrderBy = "BpgroupId asc", Skip = 0, Top = 10 })).Records;
+            data = (await _loader.LoadDataAsync(null)).Records;
         }
         public void RowClick(Breakpointgroup data)
         {
@@ -85,7 +85,7 @@ namespace BreakpointManagement.ComponentLibrary
             int standardId = _currentStandard == null ? 0 : _currentStandard.BpstandardId;
 
             IList<Breakpointgroup> results;
-            if (parameters.Top == null)
+            if (parameters == null || parameters.Top == null)
             {
                 results = await _dataService.GetBreakpointGroupByStandard(standardId);
             }

@@ -1,6 +1,6 @@
 ﻿@using BlazorTable
 <h2>Standards</h2>
-<Table TableItem="BreakpointStandard" DataLoader="_loader" Items="data" PageSize="5" SelectionType="selectionType" RowClickAction="RowClick" SelectedItems="selectedItems" ShowSearchBar="false">
+<Table TableItem="BreakpointStandard" Items="data" PageSize="5" SelectionType="SelectionType.Single" RowClickAction="RowClick" SelectedItems="selectedItems" ShowSearchBar="false">
     <Column TableItem="BreakpointStandard" Title="Id" Field="@(x => x.BpstandardId)" Sortable="true" Width="10%" DefaultSortColumn="true" />
     <Column TableItem="BreakpointStandard" Title="Standard" Field="@(x => x.Bpstandard)" Sortable="true" Width="5%" />
     <Column TableItem="BreakpointStandard" Title="Created By" Field="@(x => x.CreatedBy)" Sortable="true" Width="5%" />

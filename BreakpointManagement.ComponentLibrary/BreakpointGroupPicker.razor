@@ -7,7 +7,7 @@
 else
 {
     <h3>Group by standard @Props.Standard.BpstandardId</h3>
-    <Table TableItem="Breakpointgroup" DataLoader="_loader" Items="data" PageSize="5" SelectionType="selectionType" RowClickAction="RowClick" SelectedItems="selectedItems" ShowSearchBar="false">
+    <Table TableItem="Breakpointgroup" Items="data" PageSize="5" SelectionType="SelectionType.Single" RowClickAction="RowClick" SelectedItems="selectedItems" ShowSearchBar="false">
         <Column TableItem="Breakpointgroup" Title="Group Id" Field="@(x => x.BpgroupId)" Sortable="true" Width="10%" DefaultSortColumn="true" />
         <Column TableItem="Breakpointgroup" Title="Group Name" Field="@(x => x.BpgroupName)" Sortable="true" Width="5%" />
         <Column TableItem="Breakpointgroup" Title="Standard Id" Field="@(x => x.BpstandardId)" Sortable="true" Width="10%" />
