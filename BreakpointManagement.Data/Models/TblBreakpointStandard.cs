@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -21,5 +22,7 @@ namespace BreakpointManagement.Data.Models
         public string CreatedBy { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime CreatedDate { get; set; }
+
+        public virtual ICollection<TblBreakpointgroup> Groups { get; set; }
     }
 }

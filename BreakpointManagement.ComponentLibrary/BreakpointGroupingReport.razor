@@ -1,7 +1,11 @@
-﻿@using BlazorTable
-<Table TableItem="BreakpointManagement.Shared.Models.BreakpointGroupingReport" DataLoader="_loader" Items="data" PageSize="5" SelectionType="selectionType" RowClickAction="RowClick" SelectedItems="selectedItems" ShowSearchBar="false">
-    <Column TableItem="BreakpointManagement.Shared.Models.BreakpointGroupingReport" Title="Standard" Field="@(x => x.Standard)" Sortable="true" Width="10%" DefaultSortColumn="true" />
-    <Column TableItem="BreakpointManagement.Shared.Models.BreakpointGroupingReport" Title="Group" Field="@(x => x.Group)" Sortable="true" Width="5%" />
-    <Column TableItem="BreakpointManagement.Shared.Models.BreakpointGroupingReport" Title="Organism" Field="@(x => x.Organism)" Sortable="true" Width="20%" />
-    <Pager ShowPageNumber="true" ShowTotalCount="true" />
-</Table>
+﻿@using Radzen
+@using Radzen.Blazor
+
+<RadzenGrid AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterMode="FilterMode.Advanced" AllowPaging="true" PageSize="4"
+            AllowSorting="true" Data="@data" TItem="BreakpointManagement.Shared.Models.BreakpointGroupingReport" ColumnWidth="200px" AllowColumnResize="true">
+    <Columns>
+        <RadzenGridColumn TItem="BreakpointManagement.Shared.Models.BreakpointGroupingReport" Property="Standard" Title="Standard" />
+        <RadzenGridColumn TItem="BreakpointManagement.Shared.Models.BreakpointGroupingReport" Property="Group" Title="Group" />
+        <RadzenGridColumn TItem="BreakpointManagement.Shared.Models.BreakpointGroupingReport" Property="Organism" Title="Organism" />
+    </Columns>
+</RadzenGrid>

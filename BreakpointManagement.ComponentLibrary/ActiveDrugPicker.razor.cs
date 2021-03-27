@@ -1,8 +1,5 @@
 ﻿using BlazorState.Redux.Blazor;
 using BlazorState.Redux.Interfaces;
-using BlazorTable;
-using BlazorTable.Components.ServerSide;
-using BlazorTable.Interfaces;
 using BreakpointManagement.Services;
 using BreakpointManagement.Shared.Models;
 using BreakpointManagement.Shared.State.Actions;
@@ -43,20 +40,15 @@ namespace BreakpointManagement.ComponentLibrary
         [Parameter]
         public DrugProps Props { get; set; }
 
-        private IDataLoader<Drug> _loader;
-
         private IEnumerable<Drug> data;
 
         private Drug selected;
-
-        private SelectionType selectionType = SelectionType.Single;
 
         private List<Drug> selectedItems = new List<Drug>();
         
         protected override async Task OnInitializedAsync()
         {
-            _loader = new ActiveDrugPickerDrugDataLoader(dataService);
-            data = (await _loader.LoadDataAsync(new FilterData() { OrderBy = "", Skip = 0, Top = 10 })).Records;
+            data = await dataService.GetAllDrugs();
         }
         public void RowClick(Drug data)
         {
@@ -66,52 +58,6 @@ namespace BreakpointManagement.ComponentLibrary
             {
                 Props.UpdateDrug.InvokeAsync(data);
             }
-        }
-    }
-
-    public class ActiveDrugPickerDrugDataLoader : IDataLoader<Drug>
-    {
-        private readonly IBreakpointManagementDataService _dataService;
-        public ActiveDrugPickerDrugDataLoader(IBreakpointManagementDataService dataService)
-        {
-            _dataService = dataService;
-        }
-        public async Task<PaginationResult<Drug>> LoadDataAsync(FilterData parameters)
-        {
-            IList<Drug> results;
-            if (parameters == null) return new PaginationResult<Drug>();
-            if (parameters == null)
-            {
-                results = await _dataService.GetAllDrugs();
-            }
-            else if (parameters.Top == null)
-            {
-                results = await _dataService.GetAllDrugs();
-            }
-            else if (string.IsNullOrWhiteSpace(parameters.OrderBy))
-            {
-                results = await _dataService.GetAllDrugs(parameters.Top.Value, parameters.Skip.Value);
-            }
-            else
-            {
-                var order = parameters.OrderBy.Split(" ");
-                if (order.Length >= 2)
-                {
-                    results = await _dataService.GetAllDrugs(parameters.Top.Value, parameters.Skip.Value, order[0]);
-                }
-                else
-                {
-                    results = await _dataService.GetAllDrugs(parameters.Top.Value, parameters.Skip.Value);
-                }
-            }
-            var count = await _dataService.GetDrugCount();
-            return new PaginationResult<Drug>
-            {
-                Records = results,
-                Skip = parameters?.Skip ?? 0,
-                Total = int.Parse(count),
-                Top = parameters?.Top ?? 0
-            };
         }
     }
 }

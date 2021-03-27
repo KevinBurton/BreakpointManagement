@@ -8,7 +8,10 @@ namespace BreakpointManagement.API
 	{
 		public BreakpointManagementProfile()
 		{
-			CreateMap<TblBreakpoint, Breakpoint>();
+			CreateMap<TblBreakpoint, Breakpoint>()
+				.ForMember(dest => dest.Drug, opt => opt.MapFrom(src => src.Drug))
+				.ForMember(dest => dest.Group, opt => opt.MapFrom(src => src.Bpgroup))
+				.ForMember(dest => dest.Project, opt => opt.MapFrom(src => src.Project));
 			CreateMap<TblBreakpointException, BreakpointException>();
 			CreateMap<TblBreakpointgroup, Breakpointgroup>();
 			CreateMap<TblBreakpointHistory, BreakpointHistory>();

@@ -22,7 +22,8 @@ namespace BreakpointManagement.API.Controllers
         // GET: BreakpointStandardController
         public async Task<BreakpointStandard[]> Index(int top = 100, int skip = 0, string sort = null)
         {
-            return _mapper.Map<TblBreakpointStandard[], BreakpointStandard[]>(await _repository.GetAllBreakpointStandards(top, skip, sort));
+            var queryResults = await _repository.GetAllBreakpointStandards(top, skip, sort).ConfigureAwait(false); ;
+            return _mapper.Map<TblBreakpointStandard[], BreakpointStandard[]>(queryResults);
         }
         [HttpGet("api/breakpointstandard/count")]
         // GET: BreakpointStandardController/Count

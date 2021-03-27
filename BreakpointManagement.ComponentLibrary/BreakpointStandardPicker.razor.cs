@@ -1,8 +1,5 @@
 ﻿using BlazorState.Redux.Blazor;
 using BlazorState.Redux.Interfaces;
-using BlazorTable;
-using BlazorTable.Components.ServerSide;
-using BlazorTable.Interfaces;
 using BreakpointManagement.Services;
 using BreakpointManagement.Shared.Models;
 using BreakpointManagement.Shared.State.Actions;
@@ -11,6 +8,7 @@ using BreakpointManagement.Shared.State.Props;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace BreakpointManagement.ComponentLibrary
 {
@@ -33,6 +31,10 @@ namespace BreakpointManagement.ComponentLibrary
             {
                 store.Dispatch(new UpdateStandardAction { Standard = standard });
             });
+            props.UpdateStandardList = EventCallback.Factory.Create<List<BreakpointStandard>>(this, standardList =>
+            {
+                store.Dispatch(new UpdateStandardListAction { StandardList = standardList });
+            });
         }
     }
     public partial class BreakpointStandardPicker
@@ -43,18 +45,13 @@ namespace BreakpointManagement.ComponentLibrary
         [Parameter]
         public StandardProp Props { get; set; }
 
-        private IDataLoader<BreakpointStandard> _loader;
-
-        private IEnumerable<BreakpointStandard> data;
+        private IList<BreakpointStandard> standardListData;
 
         private BreakpointStandard selected;
 
-        private List<BreakpointStandard> selectedItems = new List<BreakpointStandard>();
-
-        protected override async Task OnInitializedAsync()
+        protected override async Task OnParametersSetAsync()
         {
-            _loader = new BreakpointStandardDataLoader(dataService);
-            data = (await _loader.LoadDataAsync(new FilterData() { Skip = 0, Top = 10 })).Records;
+            standardListData = await dataService.GetAllBreakpointStandards();
         }
         public void RowClick(BreakpointStandard data)
         {
@@ -63,52 +60,8 @@ namespace BreakpointManagement.ComponentLibrary
             if (Props != null)
             {
                 Props.UpdateStandard.InvokeAsync(data);
+                Props.UpdateStandardList.InvokeAsync((standardListData.Where(s => s != null)).ToList());
             }
-        }
-    }
-
-    public class BreakpointStandardDataLoader : IDataLoader<BreakpointStandard>
-    {
-        private readonly IBreakpointManagementDataService _dataService;
-        public BreakpointStandardDataLoader(IBreakpointManagementDataService dataService)
-        {
-            _dataService = dataService;
-        }
-        public async Task<PaginationResult<BreakpointStandard>> LoadDataAsync(FilterData parameters)
-        {
-            IList<BreakpointStandard> results;
-            if (parameters == null)
-            {
-                results = await _dataService.GetAllBreakpointStandards();
-            }
-            else if (parameters.Top == null)
-            {
-                results = await _dataService.GetAllBreakpointStandards();
-            }
-            else if (string.IsNullOrWhiteSpace(parameters.OrderBy))
-            {
-                results = await _dataService.GetAllBreakpointStandards(parameters.Top.Value, parameters.Skip.Value);
-            }
-            else
-            {
-                var order = parameters.OrderBy.Split(" ");
-                if (order.Length >= 2)
-                {
-                    results = await _dataService.GetAllBreakpointStandards(parameters.Top.Value, parameters.Skip.Value, order[0]);
-                }
-                else
-                {
-                    results = await _dataService.GetAllBreakpointStandards(parameters.Top.Value, parameters.Skip.Value);
-                }
-            }
-            var count = await _dataService.GetBreakpointStandardCount();
-            return new PaginationResult<BreakpointStandard>
-            {
-                Records = results,
-                Skip = parameters?.Skip ?? 0,
-                Total = int.Parse(count),
-                Top = parameters?.Top ?? 0
-            };
         }
     }
 }

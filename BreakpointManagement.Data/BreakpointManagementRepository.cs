@@ -155,12 +155,11 @@ namespace BreakpointManagement.Data
             var query = (from breakpoint in _context.TblBreakpointStandards
                         orderby breakpoint.BpstandardId
                         select breakpoint);
-            var pagedQuery = query.Skip(skip).Take(top);
             if (string.IsNullOrWhiteSpace(sort))
             {
-                return await pagedQuery.ToArrayAsync().ConfigureAwait(false);
+                return await query.OrderBy(b => b.BpstandardId).Include(s => s.Groups).Skip(skip).Take(top).ToArrayAsync().ConfigureAwait(false);
             }
-            return await pagedQuery.OrderBy(sort).ToArrayAsync().ConfigureAwait(false);
+            return await query.OrderBy(sort).Include(s => s.Groups).Skip(skip).Take(top).ToArrayAsync().ConfigureAwait(false);
         }
         public async Task<int> GetBreakpointStandardCount()
         {
@@ -195,9 +194,9 @@ namespace BreakpointManagement.Data
                          select organism);
             if (string.IsNullOrWhiteSpace(sort))
             {
-                return await query.OrderBy(b => b.OrganismId).Skip(skip).Take(top).ToArrayAsync().ConfigureAwait(false);
+                return await query.Distinct().OrderBy(b => b.OrganismId).Skip(skip).Take(top).ToArrayAsync().ConfigureAwait(false);
             }
-            return await query.OrderBy(sort).Skip(skip).Take(top).ToArrayAsync().ConfigureAwait(false);
+            return await query.Distinct().OrderBy(sort).Skip(skip).Take(top).ToArrayAsync().ConfigureAwait(false);
         }
 
         public async Task<int> GetOrganismByGroupCount(int groupId)
@@ -217,9 +216,9 @@ namespace BreakpointManagement.Data
                          select organism);
             if (string.IsNullOrWhiteSpace(sort))
             {
-                return await query.OrderBy(b => b.OrganismId).Skip(skip).Take(top).ToArrayAsync().ConfigureAwait(false);
+                return await query.Distinct().OrderBy(b => b.OrganismId).Skip(skip).Take(top).ToArrayAsync().ConfigureAwait(false);
             }
-            return await query.OrderBy(sort).Skip(skip).Take(top).ToArrayAsync().ConfigureAwait(false);
+            return await query.Distinct().OrderBy(sort).Skip(skip).Take(top).ToArrayAsync().ConfigureAwait(false);
         }
 
         public async Task<int> GetOrganismByExcludedGroupCount(int groupId)
@@ -287,7 +286,8 @@ namespace BreakpointManagement.Data
             {
                 return await query.Distinct().OrderBy("BpgroupId asc").Skip(skip).Take(top).ToArrayAsync().ConfigureAwait(false);
             }
-            return await query.Distinct().OrderBy(sort).Skip(skip).Take(top).ToArrayAsync().ConfigureAwait(false);
+            var breakpoints = await query.Distinct().OrderBy(sort).Skip(skip).Take(top).Include("Drug").Include("Bpgroup").Include("Project").ToArrayAsync().ConfigureAwait(false);
+            return breakpoints;
         }
 
         public async Task<int> GetBreakpointByStandardProjectGroupResultTypeCount(int standardId, int projectId, int groupId, string resultType)

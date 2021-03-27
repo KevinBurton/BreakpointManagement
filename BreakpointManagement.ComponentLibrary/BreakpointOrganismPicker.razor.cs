@@ -1,8 +1,5 @@
 ﻿using BlazorState.Redux.Blazor;
 using BlazorState.Redux.Interfaces;
-using BlazorTable;
-using BlazorTable.Components.ServerSide;
-using BlazorTable.Interfaces;
 using BreakpointManagement.Services;
 using BreakpointManagement.Shared.Models;
 using BreakpointManagement.Shared.State.Actions;
@@ -44,20 +41,15 @@ namespace BreakpointManagement.ComponentLibrary
         [Parameter]
         public BreakpointOrganismProp Props { get; set; }
 
-        private IDataLoader<OrganismName> _loader;
-
         private IEnumerable<OrganismName> data;
 
         private OrganismName selected;
-
-        private SelectionType selectionType = SelectionType.Single;
 
         private List<OrganismName> selectedItems = new List<OrganismName>();
 
         protected override async Task OnInitializedAsync()
         {
-            _loader = new BreakpointOrganismPickerDataLoader(dataService, Props.Project, Props.Group);
-            data = (await _loader.LoadDataAsync(new FilterData() { OrderBy = "ProjectId asc", Skip = 0, Top = 10 })).Records;
+            data = await dataService.GetOrganismByProjectGroup(Props.Project.ProjectId, Props.Group.BpgroupId);
         }
         public void RowClick(OrganismName data)
         {
@@ -67,45 +59,6 @@ namespace BreakpointManagement.ComponentLibrary
             {
                 Props.UpdateOrganism.InvokeAsync();
             }
-        }
-    }
-    public class BreakpointOrganismPickerDataLoader : IDataLoader<OrganismName>
-    {
-        private readonly IBreakpointManagementDataService _dataService;
-        private readonly Project _currentProject;
-        private readonly Breakpointgroup _currentGroup;
-        public BreakpointOrganismPickerDataLoader(IBreakpointManagementDataService dataService, Project currentProject = null, Breakpointgroup currentGroup = null)
-        {
-            _dataService = dataService;
-            _currentProject = currentProject;
-            _currentGroup = currentGroup;
-        }
-        public async Task<PaginationResult<OrganismName>> LoadDataAsync(FilterData parameters)
-        {
-
-            int projectId = _currentProject == null ? 0 : _currentProject.ProjectId;
-            int groupId = _currentGroup == null ? 0 : _currentGroup.BpgroupId;
-            IList<OrganismName> results;
-            if (parameters.Top == null)
-            {
-                results = await _dataService.GetOrganismByProjectGroup(projectId, groupId);
-            }
-            else if (string.IsNullOrWhiteSpace(parameters.OrderBy))
-            {
-                results = await _dataService.GetOrganismByProjectGroup(projectId, groupId, parameters.Top.Value, parameters.Skip.Value);
-            }
-            else
-            {
-                results = await _dataService.GetOrganismByProjectGroup(projectId, groupId, parameters.Top.Value, parameters.Skip.Value, parameters.OrderBy);
-            }
-            var count = await _dataService.GetOrganismByProjectGroupCount(projectId, groupId);
-            return new PaginationResult<OrganismName>
-            {
-                Records = results,
-                Skip = parameters?.Skip ?? 0,
-                Total = int.Parse(count),
-                Top = parameters?.Top ?? 0
-            };
         }
     }
 }

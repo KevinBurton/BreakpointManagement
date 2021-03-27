@@ -1,6 +1,5 @@
 using BlazorState.Redux.Extensions;
 using BlazorState.Redux.Storage;
-using BlazorTable;
 using BreakpointManagement.Services;
 using BreakpointManagement.Shared.Models;
 using BreakpointManagement.Shared.State.BreakpointManagement;
@@ -9,6 +8,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BreakpointManagement.App.Client
@@ -28,7 +28,6 @@ namespace BreakpointManagement.App.Client
         }
         public static void ConfigureServices(IServiceCollection services)
         {
-            services.AddBlazorTable();
             services.AddHttpClient<IBreakpointManagementDataService, BreakpointManagementDataService>(client => client.BaseAddress = new Uri("https://localhost:44370/"));
             services.AddReduxStore<BreakpointManagementState>(cfg =>
             {
@@ -43,6 +42,13 @@ namespace BreakpointManagement.App.Client
                 cfg.Map<ProjectReducer, Project>(s => s.Project);
                 cfg.Map<StandardReducer, BreakpointStandard>(s => s.Standard);
                 cfg.Map<GroupReducer, Breakpointgroup>(s => s.Group);
+
+                cfg.Map<DrugListReducer, List<Drug>>(s => s.DrugList);
+                cfg.Map<OrganismListReducer, IList<OrganismName>>(s => s.OrganismList);
+                cfg.Map<ProjectListReducer, List<Project>>(s => s.ProjectList);
+                cfg.Map<StandardListReducer, List<BreakpointStandard>>(s => s.StandardList);
+                cfg.Map<GroupListReducer, List<Breakpointgroup>>(s => s.GroupList);
+
             });
         }
     }

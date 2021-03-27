@@ -26,5 +26,9 @@ namespace BreakpointManagement.Shared.Models
         public string ScrResistant { get; set; }
         public int ProjectId { get; set; }
         public string Bpyear { get; set; }
+
+        public Drug Drug { get; set; }
+        public Breakpointgroup Group { get; set; }
+        public Project Project { get; set; }
     }
 }

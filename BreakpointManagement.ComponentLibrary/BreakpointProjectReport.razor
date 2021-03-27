@@ -1,6 +1,11 @@
-﻿@using BlazorTable
-<Table TableItem="BreakpointManagement.Shared.Models.BreakpointProjectReport" DataLoader="_loader" Items="data" PageSize="5" SelectionType="selectionType" RowClickAction="RowClick" SelectedItems="selectedItems" ShowSearchBar="false">
-    <Column TableItem="BreakpointManagement.Shared.Models.BreakpointProjectReport" Title="Project" Field="@(x => x.Project)" Sortable="true" Width="10%" DefaultSortColumn="true" />
-    <Column TableItem="BreakpointManagement.Shared.Models.BreakpointProjectReport" Title="Comment" Field="@(x => x.Comment)" Sortable="true" Width="5%" />
-    <Pager ShowPageNumber="true" ShowTotalCount="true" />
-</Table>
+﻿@using Radzen
+@using Radzen.Blazor
+
+<RadzenGrid AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterMode="FilterMode.Advanced" AllowPaging="true" PageSize="4"
+            AllowSorting="true" Data="@data" TItem="BreakpointManagement.Shared.Models.BreakpointProjectReport" ColumnWidth="200px" AllowColumnResize="true"
+            RowClick="@RowClick">
+    <Columns>
+        <RadzenGridColumn TItem="BreakpointManagement.Shared.Models.BreakpointProjectReport" Property="Project" Title="Id" />
+        <RadzenGridColumn TItem="BreakpointManagement.Shared.Models.BreakpointProjectReport" Property="Comment" Title="Comment" />
+    </Columns>
+</RadzenGrid>

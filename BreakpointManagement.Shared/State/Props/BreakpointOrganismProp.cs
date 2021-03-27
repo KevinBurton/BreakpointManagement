@@ -1,5 +1,6 @@
 ﻿using BreakpointManagement.Shared.Models;
 using Microsoft.AspNetCore.Components;
+using System.Collections.Generic;
 
 namespace BreakpointManagement.Shared.State.Props
 {
@@ -9,5 +10,6 @@ namespace BreakpointManagement.Shared.State.Props
         public Breakpointgroup Group { get; set; }
         public OrganismName Organism { get; set; }
         public EventCallback<OrganismName> UpdateOrganism { get; set; }
+        public EventCallback<List<OrganismName>> UpdateOrganismList { get; set; }
     }
 }

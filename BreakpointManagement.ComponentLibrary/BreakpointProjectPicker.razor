@@ -1,18 +1,23 @@
-﻿@using BlazorTable
+﻿@using Radzen
+@using Radzen.Blazor
 <h2>Projects</h2>
-<Table TableItem="Project" DataLoader="_loader" Items="data" PageSize="5" SelectionType="selectionType" RowClickAction="RowClick" SelectedItems="selectedItems" ShowSearchBar="false">
-    <Column TableItem="Project" Title="Project Id" Field="@(x => x.ProjectId)" Sortable="true" Width="10%" DefaultSortColumn="true" />
-    <Column TableItem="Project" Title="Project Name" Field="@(x => x.ProjectName)" Sortable="true" Width="10%" DefaultSortColumn="true" />
-    <Column TableItem="Project" Title="Client Id" Field="@(x => x.ClientId)" Sortable="true" Width="10%" DefaultSortColumn="true" />
-    <Column TableItem="Project" Title="Clent Contact Id" Field="@(x => x.ClientContactId)" Sortable="true" Width="10%" DefaultSortColumn="true" />
-    <Column TableItem="Project" Title="Client Project Id" Field="@(x => x.ClientProjectId)" Sortable="true" Width="10%" DefaultSortColumn="true" />
-    <Column TableItem="Project" Title="Clent Project Name" Field="@(x => x.ClientProjectName)" Sortable="true" Width="10%" DefaultSortColumn="true" />
-    <Column TableItem="Project" Title="Clent Project Status" Field="@(x => x.ClientProjectStatus)" Sortable="true" Width="10%" DefaultSortColumn="true" />
-    <Column TableItem="Project" Title="Project Status" Field="@(x => x.ProjectStatus)" Sortable="true" Width="10%" DefaultSortColumn="true" />
-    <Column TableItem="Project" Title="Project Type" Field="@(x => x.ProjectType)" Sortable="true" Width="10%" DefaultSortColumn="true" />
-    <Column TableItem="Project" Title="Study Type" Field="@(x => x.StudyType)" Sortable="true" Width="10%" DefaultSortColumn="true" />
-    <Pager ShowPageNumber="true" ShowTotalCount="true" />
-</Table>
+
+<RadzenGrid AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterMode="FilterMode.Advanced" AllowPaging="true" PageSize="4"
+            AllowSorting="true" Data="@data" TItem="Project" ColumnWidth="200px" AllowColumnResize="true"
+            RowClick="@RowClick">
+    <Columns>
+        <RadzenGridColumn TItem="Project" Property="ProjectId" Title="Project Id" />
+        <RadzenGridColumn TItem="Project" Property="ProjectName" Title="Project Name" />
+        <RadzenGridColumn TItem="Project" Property="ClientId" Title="Client Id" />
+        <RadzenGridColumn TItem="Project" Property="ClientContactId" Title="Client Contact Id" />
+        <RadzenGridColumn TItem="Project" Property="ClientProjectId" Title="Client Project Id" />
+        <RadzenGridColumn TItem="Project" Property="ClientProjectName" Title="Client Project Name" />
+        <RadzenGridColumn TItem="Project" Property="ClientProjectStatus" Title="Client Project Status" />
+        <RadzenGridColumn TItem="Project" Property="ProjectStatus" Title="Project Status" />
+        <RadzenGridColumn TItem="Project" Property="ProjectType" Title="Project Type" />
+        <RadzenGridColumn TItem="Project" Property="StudyType" Title="Study Type" />
+    </Columns>
+</RadzenGrid>
 
 @if (string.IsNullOrWhiteSpace(Props.Project.ProjectName))
 {

@@ -1,10 +1,13 @@
 ﻿using BreakpointManagement.Shared.Models;
+using Microsoft.AspNetCore.Components;
+using System.Collections.Generic;
 
 namespace BreakpointManagement.Shared.State.Props
 {
     public class GroupingProps
     {
-        public Breakpointgroup Group { get; set; }
         public BreakpointStandard Standard { get; set; }
+        public Breakpointgroup Group { get; set; }
+        public Project Project { get; set; }
     }
 }

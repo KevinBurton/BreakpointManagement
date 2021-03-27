@@ -57,5 +57,12 @@ namespace BreakpointManagement.Data.Models
         [Column("BPYear")]
         [StringLength(255)]
         public string Bpyear { get; set; }
+
+        [ForeignKey(nameof(ProjectId))]
+        public TblProject Project { get; set; }
+        [ForeignKey(nameof(DrugId))]
+        public TblDrug Drug { get; set; }
+        [ForeignKey(nameof(BpgroupId))]
+        public TblBreakpointgroup Bpgroup { get; set; }
     }
 }

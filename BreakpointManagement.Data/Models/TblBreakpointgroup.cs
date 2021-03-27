@@ -23,5 +23,7 @@ namespace BreakpointManagement.Data.Models
         public string CreatedBy { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime CreatedDate { get; set; }
+
+        public TblBreakpointStandard Standard { get; set; }
     }
 }

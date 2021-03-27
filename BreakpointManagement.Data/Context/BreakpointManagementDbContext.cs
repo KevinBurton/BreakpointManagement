@@ -152,6 +152,12 @@ namespace BreakpointManagement.Data.Context
                 entity.Property(e => e.BpgroupName).IsUnicode(false);
 
                 entity.Property(e => e.CreatedBy).IsUnicode(false);
+
+                entity.HasOne(g => g.Standard)
+                      .WithMany(s => s.Groups)
+                      .HasForeignKey(g => g.BpstandardId)
+                      .HasPrincipalKey(s => s.BpstandardId);
+
             });
 
             modelBuilder.Entity<TblBreakpointgroupmember>(entity =>
