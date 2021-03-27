@@ -45,7 +45,7 @@ namespace BreakpointManagement.ComponentLibrary
         [Parameter] 
         public ProjectProps Props { get; set; }
 
-        private IList<Project> data;
+        private IList<Project> breakpointProjects;
 
         private Project selected;
 
@@ -53,7 +53,7 @@ namespace BreakpointManagement.ComponentLibrary
 
         protected override async Task OnInitializedAsync()
         {
-            data = await dataService.GetBreakpointProject();
+            breakpointProjects = await dataService.GetBreakpointProject();
         }
         public void RowClick(Project data)
         {

@@ -5,6 +5,7 @@ using BreakpointManagement.Shared.Models;
 using BreakpointManagement.Shared.State.BreakpointManagement;
 using BreakpointManagement.Shared.State.Props;
 using Microsoft.AspNetCore.Components;
+using Radzen;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -20,8 +21,6 @@ namespace BreakpointManagement.ComponentLibrary
 
         private void MapStateToProps(BreakpointManagementState state, EditBreakpointProps props)
         {
-            props.Group = state?.Group ?? new Breakpointgroup();
-            props.Standard = state?.Standard ?? new BreakpointStandard();
             props.Project = state?.Project ?? new Project();
             props.Drug = state?.Drug ?? new Drug();
         }
@@ -38,33 +37,53 @@ namespace BreakpointManagement.ComponentLibrary
         [Parameter]
         public EditBreakpointProps Props { get; set; }
 
-        private IEnumerable<Breakpoint> micData;
-        private IEnumerable<Breakpoint> diskData;
+        private IList<BreakpointStandard> standardList;
+
+        private IList<Breakpoint> micData;
+        private IList<Breakpoint> diskData;
 
         private List<Breakpoint> selectedMICItems = new List<Breakpoint>();
         private List<Breakpoint> selectedDiskItems = new List<Breakpoint>();
 
-        private RenderFragment BreakpointStandardCmp;
+        Breakpointgroup currentBreakpointGroup;
         private RenderFragment BreakpointProjectCmp;
-        private RenderFragment BreakpointGroupCmp;
 
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
-            BreakpointStandardCmp = BreakpointStandardPickerConnect.Get();
+            standardList = (await dataService.GetAllBreakpointStandards()) ?? new List<BreakpointStandard>();
             BreakpointProjectCmp = BreakpointProjectPickerConnect.Get();
-            BreakpointGroupCmp = BreakpointGroupPickerConnect.Get();
         }
 
         protected override async Task OnParametersSetAsync()
         {
-            micData = await dataService.GetBreakpointByStandardProjectGroupResultType(Props.Standard.BpstandardId,
-                Props.Project.ProjectId,
-                Props.Group.BpgroupId,
-                "Microdilution");
-            diskData = await dataService.GetBreakpointByStandardProjectGroupResultType(Props.Standard.BpstandardId,
-                Props.Project.ProjectId,
-                Props.Group.BpgroupId,
-                "Disk Diffusion");
+            micData = currentBreakpointGroup != null ? await dataService.GetBreakpointByStandardProjectGroupResultType(currentBreakpointGroup.BpstandardId,
+                                                                                                                       Props.Project.ProjectId,
+                                                                                                                       currentBreakpointGroup.BpgroupId,
+                                                                                                                       "Microdilution") :
+                                                       new List<Breakpoint>();
+            diskData = currentBreakpointGroup != null ? await dataService.GetBreakpointByStandardProjectGroupResultType(currentBreakpointGroup.BpstandardId,
+                                                                                                                        Props.Project.ProjectId,
+                                                                                                                        currentBreakpointGroup.BpgroupId,
+                                                                                                                        "Disk Diffusion") :
+                                                        new List<Breakpoint>();
+        }
+        protected void OnChange(TreeEventArgs args)
+        {
+            currentBreakpointGroup = args.Value as Breakpointgroup;
+        }
+        protected void OnExpand(TreeExpandEventArgs args)
+        {
+            System.Diagnostics.Debug.WriteLine(args.Text);
+        }
+        void OnLoad(TreeExpandEventArgs args)
+        {
+            var standard = args.Value as BreakpointStandard;
+
+            args.Children.Data = standard.Groups ?? new List<Breakpointgroup>();
+            args.Children.TextProperty = "BpgroupName";
+            args.Children.HasChildren = (group) => false;
+
+            OnExpand(args);
         }
     }
 }

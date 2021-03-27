@@ -309,9 +309,9 @@ namespace BreakpointManagement.Data
                         select proj;
             if (string.IsNullOrWhiteSpace(sort))
             {
-                return await query.Distinct().OrderBy("ProjectId").Skip(skip).Take(top).ToArrayAsync().ConfigureAwait(false);
+                return await query.Distinct().OrderBy("ProjectId").Include(p => p.Client).Skip(skip).Take(top).ToArrayAsync().ConfigureAwait(false);
             }
-            return await query.Distinct().OrderBy(sort).Skip(skip).Take(top).ToArrayAsync().ConfigureAwait(false);
+            return await query.Distinct().OrderBy(sort).Include(p => p.Client).Skip(skip).Take(top).ToArrayAsync().ConfigureAwait(false);
         }
         public async Task<int> GetBreakpointProjectCount()
         {

@@ -1,12 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 #nullable disable
 
 namespace BreakpointManagement.Data.Models
 {
+    [Table("tbl_Client")]
     public partial class TblClient
     {
+        [Key]
         public int CompanyId { get; set; }
         public string CompanyName { get; set; }
         public string ClientType { get; set; }

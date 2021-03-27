@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 #nullable disable
 
 namespace BreakpointManagement.Data.Models
 {
+    [Table("tbl_Project")]
     public partial class TblProject
     {
+        [Key]
         public int ProjectId { get; set; }
         public string ProjectName { get; set; }
         public int? ClientId { get; set; }
@@ -41,5 +45,9 @@ namespace BreakpointManagement.Data.Models
         public bool Abstract { get; set; }
         public bool Poster { get; set; }
         public bool SlideSet { get; set; }
+
+        [ForeignKey(nameof(ClientId))]
+        public TblClient Client { get; set; }
+
     }
 }

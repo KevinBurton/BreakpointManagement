@@ -42,5 +42,6 @@ namespace BreakpointManagement.Shared.Models
         public bool Abstract { get; set; }
         public bool Poster { get; set; }
         public bool SlideSet { get; set; }
+        public Client Client { get; set; }
     }
 }
