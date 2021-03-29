@@ -24,7 +24,7 @@ namespace BreakpointManagement.Data
             {
                 return await _context.TblBreakpoints.CountAsync().ConfigureAwait(false);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex);
                 throw;
@@ -153,8 +153,8 @@ namespace BreakpointManagement.Data
         public async Task<TblBreakpointStandard[]> GetAllBreakpointStandards(int top = 100, int skip = 0, string sort = null)
         {
             var query = (from breakpoint in _context.TblBreakpointStandards
-                        orderby breakpoint.BpstandardId
-                        select breakpoint);
+                         orderby breakpoint.BpstandardId
+                         select breakpoint);
             if (string.IsNullOrWhiteSpace(sort))
             {
                 return await query.OrderBy(b => b.BpstandardId).Include(s => s.Groups).Skip(skip).Take(top).ToArrayAsync().ConfigureAwait(false);
@@ -277,7 +277,7 @@ namespace BreakpointManagement.Data
         {
             var query = (from b in _context.TblBreakpoints
                          join g in _context.TblBreakpointgroups on b.BpgroupId equals g.BpgroupId
-                         where b.ResultType == resultType && 
+                         where b.ResultType == resultType &&
                                b.BpgroupId == groupId &&
                                b.ProjectId == projectId &&
                                g.BpstandardId == standardId
@@ -320,6 +320,16 @@ namespace BreakpointManagement.Data
                         orderby bkpt.ProjectId
                         select proj;
             return await query.Distinct().CountAsync().ConfigureAwait(false);
+        }
+        public IAsyncEnumerable<TblProject> GetAllProjects()
+        {
+            return _context.TblProjects.AsAsyncEnumerable<TblProject>();
+        }
+        public async Task<TblProject> GetProjectById(int projectId)
+        {
+            var query = from proj in _context.TblProjects
+                        select proj;
+            return await query.SingleAsync(p => p.ProjectId == projectId).ConfigureAwait(false);
         }
     }
 }

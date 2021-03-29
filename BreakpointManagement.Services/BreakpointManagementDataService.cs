@@ -234,5 +234,18 @@ namespace BreakpointManagement.Services
             var response = await _httpClient.GetAsync($"api/breakpoint/breakpointproject/count");
             return await response.Content.ReadAsStringAsync();
         }
+        public async Task<IList<Project>> GetAllProjects()
+        {
+            var url = $"api/project";
+            return await JsonSerializer.DeserializeAsync<IList<Project>>
+                    (await _httpClient.GetStreamAsync(url), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+        }
+
+        public async Task<Project> GetProjectById(int id)
+        {
+            var url = $"api/project/{id}";
+            return await JsonSerializer.DeserializeAsync<Project>
+                    (await _httpClient.GetStreamAsync(url), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+        }
     }
 }

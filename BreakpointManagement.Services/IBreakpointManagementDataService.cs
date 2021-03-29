@@ -48,5 +48,7 @@ namespace BreakpointManagement.Services
 
         Task<IList<Project>> GetBreakpointProject(int top = 100, int skip = 0, string sort = null);
         Task<string> GetBreakpointProjectCount();
+        Task<IList<Project>> GetAllProjects();
+        Task<Project> GetProjectById(int id);
     }
 }
