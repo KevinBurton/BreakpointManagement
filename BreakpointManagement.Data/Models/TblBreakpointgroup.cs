@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -25,5 +26,6 @@ namespace BreakpointManagement.Data.Models
         public DateTime CreatedDate { get; set; }
 
         public TblBreakpointStandard Standard { get; set; }
+        public ICollection<TblBreakpointException> Exceptions { get; set; }
     }
 }

@@ -118,7 +118,7 @@ namespace BreakpointManagement.Data
         }
         public async Task<TblBreakpointgroup> GetBreakpointGroup(int breakpointGroupId)
         {
-            return await _context.TblBreakpointgroups.SingleAsync<TblBreakpointgroup>(e => e.BpgroupId == breakpointGroupId).ConfigureAwait(false);
+            return await _context.TblBreakpointgroups.Include(g => g.Exceptions).SingleAsync<TblBreakpointgroup>(e => e.BpgroupId == breakpointGroupId).ConfigureAwait(false);
         }
         public async Task<TblDrug[]> GetAllDrugs(int top = 100, int skip = 0, string sort = null)
         {
@@ -152,9 +152,10 @@ namespace BreakpointManagement.Data
         }
         public async Task<TblBreakpointStandard[]> GetAllBreakpointStandards(int top = 100, int skip = 0, string sort = null)
         {
-            var query = (from breakpoint in _context.TblBreakpointStandards
-                         orderby breakpoint.BpstandardId
-                         select breakpoint);
+            var query = (from standard in _context.TblBreakpointStandards
+                         orderby standard.BpstandardId
+                         where standard != null
+                         select standard);
             if (string.IsNullOrWhiteSpace(sort))
             {
                 return await query.OrderBy(b => b.BpstandardId).Include(s => s.Groups).Skip(skip).Take(top).ToArrayAsync().ConfigureAwait(false);
@@ -321,15 +322,26 @@ namespace BreakpointManagement.Data
                         select proj;
             return await query.Distinct().CountAsync().ConfigureAwait(false);
         }
-        public IAsyncEnumerable<TblProject> GetAllProjects()
+        public  async Task<TblProject[]> GetAllProjects()
         {
-            return _context.TblProjects.AsAsyncEnumerable<TblProject>();
+            var query = from proj in _context.TblProjects
+                        orderby proj.ProjectId
+                        select proj;
+            return await query.Distinct().ToArrayAsync().ConfigureAwait(false);
         }
         public async Task<TblProject> GetProjectById(int projectId)
         {
             var query = from proj in _context.TblProjects
                         select proj;
             return await query.SingleAsync(p => p.ProjectId == projectId).ConfigureAwait(false);
+        }
+        public async Task<TblBreakpointStandard> GetBreakpointStandardById(int standardId)
+        {
+            var query = from stand in _context.TblBreakpointStandards
+                        select stand;
+            // https://stackoverflow.com/questions/3356541/entity-framework-linq-query-include-multiple-children-entities
+            // return await query.Include(s => s.Groups).ThenInclude(g => g.Exceptions).SingleAsync(p => p.BpstandardId == standardId).ConfigureAwait(false);
+            return await query.Include(s => s.Groups).SingleAsync(p => p.BpstandardId == standardId).ConfigureAwait(false);
         }
     }
 }

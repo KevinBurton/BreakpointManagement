@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Components;
 using Radzen;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace BreakpointManagement.ComponentLibrary
 {
@@ -38,6 +39,7 @@ namespace BreakpointManagement.ComponentLibrary
         public EditBreakpointProps Props { get; set; }
 
         private IList<BreakpointStandard> standardList;
+        private IList<Project> projectList;
 
         private IList<Breakpoint> micData;
         private IList<Breakpoint> diskData;
@@ -45,13 +47,20 @@ namespace BreakpointManagement.ComponentLibrary
         private List<Breakpoint> selectedMICItems = new List<Breakpoint>();
         private List<Breakpoint> selectedDiskItems = new List<Breakpoint>();
 
+        BreakpointStandard currentBreakpointStandard;
         Breakpointgroup currentBreakpointGroup;
-        private RenderFragment BreakpointProjectCmp;
+        Project currentProject;
+        int currentBreakpointStandardId;
+        int currentBreakpointGroupId;
+        int currentProjectId;
 
         protected override async Task OnInitializedAsync()
         {
             standardList = (await dataService.GetAllBreakpointStandards()) ?? new List<BreakpointStandard>();
-            BreakpointProjectCmp = BreakpointProjectPickerConnect.Get();
+            currentBreakpointStandard = standardList.FirstOrDefault();
+            currentBreakpointStandardId = currentBreakpointStandard.BpstandardId;
+            projectList = (await dataService.GetAllProjects()) ?? new List<Project>();
+            currentProjectId = 0;
         }
 
         protected override async Task OnParametersSetAsync()
@@ -67,9 +76,23 @@ namespace BreakpointManagement.ComponentLibrary
                                                                                                                         "Disk Diffusion") :
                                                         new List<Breakpoint>();
         }
-        protected void OnChange(TreeEventArgs args)
+        void OnStandardChange(object value, string id)
         {
-            currentBreakpointGroup = args.Value as Breakpointgroup;
+            var str = value is IEnumerable<object> ? string.Join(", ", (IEnumerable<object>)value) : value;
+
+            System.Diagnostics.Debug.WriteLine($"{id} value changed to {str}");
+        }
+        void OnGroupChange(object value, string id)
+        {
+            var str = value is IEnumerable<object> ? string.Join(", ", (IEnumerable<object>)value) : value;
+
+            System.Diagnostics.Debug.WriteLine($"{id} value changed to {str}");
+        }
+        void OnProjectChange(object value, string id)
+        {
+            var str = value is IEnumerable<object> ? string.Join(", ", (IEnumerable<object>)value) : value;
+
+            System.Diagnostics.Debug.WriteLine($"{id} value changed to {str}");
         }
         protected void OnExpand(TreeExpandEventArgs args)
         {

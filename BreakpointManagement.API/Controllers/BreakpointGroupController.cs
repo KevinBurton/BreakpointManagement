@@ -28,11 +28,13 @@ namespace BreakpointManagement.API.Controllers
             }
         }
 
-        // GET: BreakpointGroupController/Details/5
+        // GET: BreakpointGroupController/5
+        [HttpGet("api/breakpointgroup/{id:int}")]
         public async Task<Breakpointgroup> Details(int id)
         {
             var queryResult = await _repository.GetBreakpointGroup(id).ConfigureAwait(false);
-            return _mapper.Map<TblBreakpointgroup, Breakpointgroup>(queryResult);
+            var mappingResult = _mapper.Map<TblBreakpointgroup, Breakpointgroup>(queryResult);
+            return mappingResult;
         }
 
         [HttpGet("api/breakpointgroup/standard/{standardId:int}")]

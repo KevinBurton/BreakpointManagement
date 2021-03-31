@@ -22,5 +22,7 @@ namespace BreakpointManagement.Shared.Models
         public string Comment { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
+
+        public Breakpointgroup Group { get; set; }
     }
 }

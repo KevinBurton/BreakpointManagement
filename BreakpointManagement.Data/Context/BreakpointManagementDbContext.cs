@@ -110,6 +110,11 @@ namespace BreakpointManagement.Data.Context
                 entity.Property(e => e.Susceptible).HasComment("The measure used for determining a Susceptible result.");
 
                 entity.Property(e => e.TestMethodId).HasComment("The microbiology testing method used for this exception.  The default being microbroth dilution.");
+
+                entity.HasOne(e => e.Group)
+                      .WithMany(g => g.Exceptions)
+                      .HasForeignKey(e => e.BreakpointGroupId)
+                      .HasPrincipalKey(g => g.BpgroupId);
             });
 
             modelBuilder.Entity<TblBreakpointHistory>(entity =>
@@ -147,7 +152,7 @@ namespace BreakpointManagement.Data.Context
             modelBuilder.Entity<TblBreakpointgroup>(entity =>
             {
                 entity.HasKey(e => e.BpgroupId)
-                    .HasName("PK_tbl_breakpointgroup_2010");
+                    .HasName("PK_tbl_breakpointgroup");
 
                 entity.Property(e => e.BpgroupName).IsUnicode(false);
 

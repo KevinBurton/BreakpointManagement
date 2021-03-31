@@ -1,18 +1,24 @@
 ﻿@using Radzen
 @using Radzen.Blazor
-<h3>EditBreakpoint</h3>
-<RadzenTree Change=@OnChange Data=@standardList Expand=@OnLoad Style="width: 100%; height: 300px">
-    <RadzenTreeLevel TextProperty="BpStandard" />
-</RadzenTree>
+<RadzenDropDown AllowClear="true" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                TValue="int" Data=@standardList TextProperty="BpStandard" ValueProperty="BpStandardId" Change=@(args => OnStandardChange(args, "Standard Drop down")) Style="width:400px">
+    <Template>
+        Standard: @((context as BreakpointStandard).Bpstandard)
+    </Template>
+</RadzenDropDown>
+<RadzenDropDown AllowClear="true" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                TValue="int" Data=@projectList TextProperty="ProjectName" ValueProperty="ProjectId" Change=@(args => OnProjectChange(args, "Project Drop Down")) Style="width:400px">
+    <Template>
+        Project: @((context as Project).ProjectName)
+    </Template>
+</RadzenDropDown>
 @if (!string.IsNullOrWhiteSpace(currentBreakpointGroup?.BpgroupName))
 {
-    <h3>Selected Breakpoint Group: @currentBreakpointGroup.BpgroupName</h3>
+<h3>Selected Breakpoint Group: @currentBreakpointGroup.BpgroupName</h3>
 }
-@BreakpointProjectCmp
-@if (string.IsNullOrWhiteSpace(Props?.Project?.ProjectName) ||
-    string.IsNullOrWhiteSpace(currentBreakpointGroup?.BpgroupName))
+@if (string.IsNullOrWhiteSpace(currentBreakpointGroup?.BpgroupName))
 {
-    <h3> Breakpoints (standard, project, or group not selected)</h3>
+    <h3> Breakpoints (standard or group not selected)</h3>
 }
 else
 {

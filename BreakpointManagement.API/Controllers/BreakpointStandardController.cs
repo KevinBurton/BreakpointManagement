@@ -32,10 +32,12 @@ namespace BreakpointManagement.API.Controllers
             return await _repository.GetBreakpointStandardCount();
         }
 
-        // GET: BreakpointStandardController/Details/5
-        public ActionResult Details(int id)
+        [HttpGet("api/breakpointstandard/{id:int}")]
+        // GET: BreakpointStandardController/5
+        public async Task<BreakpointStandard> Details(int id)
         {
-            return View();
+            var queryResults = await _repository.GetBreakpointStandardById(id).ConfigureAwait(false); ;
+            return _mapper.Map<TblBreakpointStandard, BreakpointStandard>(queryResults);
         }
 
         // GET: BreakpointStandardController/Create

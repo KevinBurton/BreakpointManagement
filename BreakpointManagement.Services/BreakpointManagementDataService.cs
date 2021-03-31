@@ -109,8 +109,9 @@ namespace BreakpointManagement.Services
             {
                 url += $"&sort={HttpUtility.UrlEncode(sort)}";
             }
-            return await JsonSerializer.DeserializeAsync<IList<BreakpointStandard>>
-                    (await _httpClient.GetStreamAsync(url), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+            var queryResults = await JsonSerializer.DeserializeAsync<IList<BreakpointStandard>>
+                    (await _httpClient.GetStreamAsync(url), new JsonSerializerOptions() { IgnoreNullValues = true, PropertyNameCaseInsensitive = true });
+            return queryResults;
         }
         public async Task<string> GetBreakpointStandardCount()
         {

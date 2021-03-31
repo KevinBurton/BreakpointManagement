@@ -38,7 +38,8 @@ namespace BreakpointManagement.Data
         Task<int> GetBreakpointByStandardProjectGroupResultTypeCount(int standardId, int projectId, int groupId, string resultType);
         Task<TblProject[]> GetBreakpointProject(int top = 100, int skip = 0, string sort = null);
         Task<int> GetBreakpointProjectCount();
-        IAsyncEnumerable<TblProject> GetAllProjects();
+        Task<TblProject[]> GetAllProjects();
         Task<TblProject> GetProjectById(int projectId);
+        Task<TblBreakpointStandard> GetBreakpointStandardById(int standardId);
     }
 }

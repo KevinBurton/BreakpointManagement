@@ -22,15 +22,10 @@ namespace BreakpointManagement.API.Controllers
         }
         // GET: ProjectController
         [HttpGet("api/project")]
-        public async IAsyncEnumerable<Project> Index()
+        public async Task<Project[]> Index()
         {
-            var queryResults = _repository.GetAllProjects();
-            int count = 100;
-            await foreach (var result in queryResults.ConfigureAwait(false))
-            {
-                if (count-- >= 0) break;
-                yield return _mapper.Map<TblProject, Project>(result);
-            }
+            var queryResults = await _repository.GetAllProjects();
+            return _mapper.Map<TblProject[], Project[]>(queryResults);
         }
 
         // GET: ProjectController/5
