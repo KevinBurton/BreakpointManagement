@@ -7,6 +7,7 @@ using BreakpointManagement.Shared.State.BreakpointManagement;
 using BreakpointManagement.Shared.State.Props;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Telerik.Blazor.Components;
@@ -58,57 +59,47 @@ namespace BreakpointManagement.ComponentLibrary
         [Parameter]
         public GroupingProps Props { get; set; }
 
-        private IList<BreakpointStandard> standardList;
-        private BreakpointStandard selectedStandard;
+        private IEnumerable<OrganismName> selectedIncludedOrganisms { get; set; } = Enumerable.Empty<OrganismName>();
+        private IEnumerable<OrganismName> selectedExcludedOrganisms { get; set; } = Enumerable.Empty<OrganismName>();
+        private IEnumerable<OrganismName> includedOrganisms { get; set; } = Enumerable.Empty<OrganismName>();
+        private IEnumerable<OrganismName> excludedOrganisms { get; set; } = Enumerable.Empty<OrganismName>();
 
-        private IList<Project> _breakpointProjects;
-        private IList<OrganismName> _groupingData;
-        private IList<OrganismName> _groupingExcludedData;
-
-        BreakpointStandard breakpointStandardList;
-
-        Breakpointgroup currentBreakpointGroup;
         RenderFragment ProjectPickerCmp;
-        private List<OrganismName> _selectedOrganisms;
-        private List<OrganismName> _selectedExcludedOrganisms;
+        RenderFragment GroupPickerCmp;
+        RenderFragment StandardPickerCmp;
 
         protected override void OnInitialized()
         {
-            _selectedOrganisms = new List<OrganismName>();
-            _selectedExcludedOrganisms = new List<OrganismName>();
             ProjectPickerCmp = BreakpointProjectPickerConnect.Get();
-
+            GroupPickerCmp = BreakpointGroupPickerConnect.Get();
+            StandardPickerCmp = BreakpointStandardPickerConnect.Get();
         }
 
         protected async override Task OnParametersSetAsync()
         {
-            standardList = (await dataService.GetAllBreakpointStandards()) ?? new List<BreakpointStandard>();
-
             // Check to see that a group has been picked
             if (!string.IsNullOrWhiteSpace(Props.Group.BpgroupName) &&
-               !string.IsNullOrWhiteSpace(Props.Standard.Bpstandard))
+                !string.IsNullOrWhiteSpace(Props.Standard.Bpstandard))
             {
-                _groupingData = (await dataService.GetOrganismByGroup(Props.Group.BpgroupId)) ?? new List<OrganismName>();
-                _groupingExcludedData = (await dataService.GetOrganismByExcludedGroup(Props.Group.BpgroupId)) ?? new List<OrganismName>();
+                includedOrganisms = (await dataService.GetOrganismByGroup(Props.Group.BpgroupId)) ?? Enumerable.Empty<OrganismName>();
+                excludedOrganisms = (await dataService.GetOrganismByExcludedGroup(Props.Group.BpgroupId)) ?? Enumerable.Empty<OrganismName>();
             }
-        }
-        async Task RowClick(GridRowClickEventArgs args)
-        {
-            var data = args.Item as BreakpointStandard;
-            selectedStandard = data;
-            if (Props != null)
-            {
-                await Props.UpdateStandard.InvokeAsync(data).ConfigureAwait(false);
-            }
-            StateHasChanged();
         }
         async Task OnForwardClick()
         {
-
+            StateHasChanged();
         }
         async Task OnReverseClick()
         {
-
+            StateHasChanged();
+        }
+        protected void OnSelectIncluded(IEnumerable<OrganismName> selectedOrganisms)
+        {
+            selectedIncludedOrganisms = selectedOrganisms;
+        }
+        protected void OnSelectExcluded(IEnumerable<OrganismName> selectedOrganisms)
+        {
+            selectedExcludedOrganisms = selectedOrganisms;
         }
     }
 }
