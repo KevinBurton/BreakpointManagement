@@ -1,4 +1,4 @@
-﻿@using Radzen.Blazor
+﻿@using Telerik.Blazor.Components
 
 <h3>Breakpoint Grouping</h3>
 
@@ -8,12 +8,19 @@
 }
 else
 {
-    <RadzenTree Change=@OnChange Data=@standardList Expand=@OnLoad Style="width: 100%; height: 300px">
-        <RadzenTreeLevel TextProperty="BpStandard" />
-    </RadzenTree>
-
-    <RadzenButton Click=@(args => OnForwardClick("Forard button with icon")) Icon="fast_forward" Style="margin-bottom: 20px; width: 80px" />
-    <RadzenButton Click=@(args => OnReverseClick("Reverse button with icon")) Icon="fast_rewind" Style="margin-bottom: 20px; width: 80px" />
+    <TelerikGrid Data="@standardList" Height="400px"
+                 Pageable="true" Sortable="true" Groupable="true"
+                 FilterMode="Telerik.Blazor.GridFilterMode.FilterRow"
+                 Resizable="true" Reorderable="true"
+                 OnRowClick="@RowClick">
+        <GridColumns>
+            <GridColumn Field="@(nameof(BreakpointStandard.BpstandardId))" Title="Id" Width="120px" />
+            <GridColumn Field="@(nameof(BreakpointStandard.Bpstandard))" Title="Standard" Groupable="false" />
+        </GridColumns>
+    </TelerikGrid>
+ 
+    <TelerikButton class="GroupingButton" OnClick="@OnForwardClick">Forward</TelerikButton>
+    <TelerikButton class="GroupingButton" OnClick="@OnReverseClick">Backward!</TelerikButton>
 
     @if (!string.IsNullOrWhiteSpace(currentBreakpointGroup?.BpgroupName))
     {
@@ -23,7 +30,7 @@ else
     @ProjectPickerCmp
 
     @if (!string.IsNullOrWhiteSpace(currentBreakpointGroup?.BpgroupName) &&
-         !string.IsNullOrWhiteSpace(Props?.Project?.ProjectName))
+        !string.IsNullOrWhiteSpace(Props?.Project?.ProjectName))
     {
         <!-- Show selected items -->
 

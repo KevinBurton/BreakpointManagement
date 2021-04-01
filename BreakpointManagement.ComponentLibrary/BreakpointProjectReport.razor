@@ -1,11 +1,12 @@
-﻿@using Radzen
-@using Radzen.Blazor
+﻿@using Telerik.Blazor.Components
 
-<RadzenGrid AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterMode="FilterMode.Advanced" AllowPaging="true" PageSize="4"
-            AllowSorting="true" Data="@data" TItem="BreakpointManagement.Shared.Models.BreakpointProjectReport" ColumnWidth="200px" AllowColumnResize="true"
-            RowClick="@RowClick">
-    <Columns>
-        <RadzenGridColumn TItem="BreakpointManagement.Shared.Models.BreakpointProjectReport" Property="Project" Title="Id" />
-        <RadzenGridColumn TItem="BreakpointManagement.Shared.Models.BreakpointProjectReport" Property="Comment" Title="Comment" />
-    </Columns>
-</RadzenGrid>
+<TelerikGrid Data="@projectReportData" Height="400px"
+             Pageable="true" Sortable="true" Groupable="true"
+             FilterMode="Telerik.Blazor.GridFilterMode.FilterRow"
+             Resizable="true" Reorderable="true"
+             OnRowClick="@RowClick">
+    <GridColumns>
+        <GridColumn Field="@(nameof(BreakpointManagement.Shared.Models.BreakpointProjectReport.Project))" Title="Project" Width="120px" />
+        <GridColumn Field="@(nameof(BreakpointManagement.Shared.Models.BreakpointProjectReport.Comment))" Title="Comment" Groupable="false" />
+    </GridColumns>
+</TelerikGrid>

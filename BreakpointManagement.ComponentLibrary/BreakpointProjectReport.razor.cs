@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Model = BreakpointManagement.Shared.Models;
+using Telerik.Blazor.Components;
 
 namespace BreakpointManagement.ComponentLibrary
 {
@@ -11,7 +12,7 @@ namespace BreakpointManagement.ComponentLibrary
         [Inject]
         private IBreakpointManagementDataService dataService { get; set; }
 
-        private IEnumerable<Model.BreakpointProjectReport> data;
+        private IEnumerable<Model.BreakpointProjectReport> projectReportData;
 
         private Model.BreakpointProjectReport selected;
 
@@ -19,10 +20,11 @@ namespace BreakpointManagement.ComponentLibrary
 
         protected override async Task OnInitializedAsync()
         {
-            data = await dataService.GetBreakpointProjectReport();
+            projectReportData = await dataService.GetBreakpointProjectReport();
         }
-        public void RowClick(Model.BreakpointProjectReport data)
+        async Task RowClick(GridRowClickEventArgs args)
         {
+            var data = args.Item as Model.BreakpointProjectReport;
             selected = data;
             StateHasChanged();
         }

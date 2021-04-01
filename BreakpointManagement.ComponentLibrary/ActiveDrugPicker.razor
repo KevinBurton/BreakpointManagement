@@ -1,23 +1,26 @@
-﻿@using Radzen
-@using Radzen.Blazor
+﻿@using Telerik.Blazor.Components
 
 <h2>Drugs</h2>
-<RadzenGrid AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterMode="FilterMode.Advanced" AllowPaging="true" PageSize="4"
-            AllowSorting="true" Data="@data" TItem="Drug" ColumnWidth="200px" AllowColumnResize="true">
-    <Columns>
-        <RadzenGridColumn TItem="Drug" Property="DrugId" Title="Drug Id" />
-        <RadzenGridColumn TItem="Drug" Property="DrugSubclassId" Title="Drug Subclass Id" />
-        <RadzenGridColumn TItem="Drug" Property="DrugName" Title="Name" />
-        <RadzenGridColumn TItem="Drug" Property="DrugAbbr" Title="Abbr" />
-        <RadzenGridColumn TItem="Drug" Property="ForPublicUse" Title="For Public Use" />
-        <RadzenGridColumn TItem="Drug" Property="CreatedBy" Title="Created By" />
-        <RadzenGridColumn TItem="Drug" Property="CreatedDate" Title="Created Date" />
-        <RadzenGridColumn TItem="Drug" Property="CombinationDrug" Title="Combination Drug" />
-        <RadzenGridColumn TItem="Drug" Property="FixedRatio" Title="Fixed Ratio" />
-        <RadzenGridColumn TItem="Drug" Property="Proportion" Title="Proportion" />
-        <RadzenGridColumn TItem="Drug" Property="Active" Title="Active" />
-    </Columns>
-</RadzenGrid>
+<TelerikGrid Data="@drugList" Height="400px"
+             Pageable="true" Sortable="true" Groupable="true"
+             FilterMode="Telerik.Blazor.GridFilterMode.FilterRow"
+             Resizable="true" Reorderable="true"
+             OnRowClick="@RowClick">
+    <GridColumns>
+        <GridColumn Field="@(nameof(Drug.DrugId))" Title="Group Id" Width="120px" />
+        <GridColumn Field="@(nameof(Drug.DrugSubclassId))" Title="Group Name" Groupable="false" />
+        <GridColumn Field="@(nameof(Drug.DrugName))" Title="Name" />
+        <GridColumn Field="@(nameof(Drug.DrugAbbr))" Title="Abbr" />
+        <GridColumn Field="@(nameof(Drug.ForPublicUse))" Title="For Public Use" />
+        <GridColumn Field="@(nameof(Drug.CreatedBy))" Title="Created By" />
+        <GridColumn Field="@(nameof(Drug.CreatedDate))" Title="Created Date" />
+        <GridColumn Field="@(nameof(Drug.CombinationDrug))" Title="Combination Drug" />
+        <GridColumn Field="@(nameof(Drug.FixedRatio))" Title="Fixed Ratio" />
+        <GridColumn Field="@(nameof(Drug.Proportion))" Title="Proportion" />
+        <GridColumn Field="@(nameof(Drug.Active))" Title="Active" />
+    </GridColumns>
+</TelerikGrid>
+
 @if (string.IsNullOrWhiteSpace(Props.Drug.DrugName))
 {
     <p><em>Click on a row to select a drug</em></p>

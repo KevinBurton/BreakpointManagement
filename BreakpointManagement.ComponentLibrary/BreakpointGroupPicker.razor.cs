@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Telerik.Blazor.Components;
 
 namespace BreakpointManagement.ComponentLibrary
 {
@@ -60,8 +61,9 @@ namespace BreakpointManagement.ComponentLibrary
                 groupListData = await dataService.GetBreakpointGroupByStandard(Props.Standard.BpstandardId);
             }
         }
-        public void RowClick(Breakpointgroup data)
+        async Task RowClick(GridRowClickEventArgs args)
         {
+            var data = args.Item as Breakpointgroup;
             selected = data;
             StateHasChanged();
             if (Props != null)

@@ -4,3 +4,8 @@
     overflow: scroll;
     -webkit-overflow-scrolling: touch;
 }
+.GroupingButton,
+.GroupingButton:hover {
+    margin-bottom: 20px;
+    width: 80px
+}

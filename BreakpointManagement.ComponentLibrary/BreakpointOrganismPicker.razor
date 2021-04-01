@@ -1,28 +1,29 @@
-﻿@using Radzen
-@using Radzen.Blazor
+﻿@using Telerik.Blazor.Components
 
 @if (!string.IsNullOrWhiteSpace(Props.Project.ProjectName) ||
-   !string.IsNullOrWhiteSpace(Props.Group.BpgroupName))
+ !string.IsNullOrWhiteSpace(Props.Group.BpgroupName))
 {
     <h3>Breakpoint by project (project/group not selected)</h3>
-    <RadzenGrid AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterMode="FilterMode.Advanced" AllowPaging="true" PageSize="4"
-                AllowSorting="true" Data="@data" TItem="OrganismName" ColumnWidth="200px" AllowColumnResize="true"
-                RowClick="@RowClick">
-        <Columns>
-            <RadzenGridColumn TItem="OrganismName" Property="OrganismId" Title="Organism Id" />
-            <RadzenGridColumn TItem="OrganismName" Property="Name" Title="Organism Name" />
-            <RadzenGridColumn TItem="OrganismName" Property="OrganismFamilyId" Title="Family Id" />
-            <RadzenGridColumn TItem="OrganismName" Property="OrganismSubfamilyId" Title="Sub-Family Id" />
-            <RadzenGridColumn TItem="OrganismName" Property="GenusId" Title="Genus Id" />
-            <RadzenGridColumn TItem="OrganismName" Property="PrintOnCodeList" Title="Print on code list" />
-            <RadzenGridColumn TItem="OrganismName" Property="RemapTo" Title="Remap To" />
-            <RadzenGridColumn TItem="OrganismName" Property="Aerobic" Title="Aerobic" />
-            <RadzenGridColumn TItem="OrganismName" Property="Anaerobic" Title="Anaerobic" />
-            <RadzenGridColumn TItem="OrganismName" Property="Fungal" Title="Fungal" />
-            <RadzenGridColumn TItem="OrganismName" Property="CreatedBy" Title="Created By" />
-            <RadzenGridColumn TItem="OrganismName" Property="CreatedDate" Title="Created Date" />
-        </Columns>
-    </RadzenGrid>
+    <TelerikGrid Data="@organismList" Height="400px"
+                 Pageable="true" Sortable="true" Groupable="true"
+                 FilterMode="Telerik.Blazor.GridFilterMode.FilterRow"
+                 Resizable="true" Reorderable="true"
+                 OnRowClick="@RowClick">
+        <GridColumns>
+            <GridColumn Field="@(nameof(OrganismName.OrganismId))" Title="Organism Id" Width="120px" />
+            <GridColumn Field="@(nameof(OrganismName.Name))" Title="Organism Name" Groupable="false" />
+            <GridColumn Field="@(nameof(OrganismName.OrganismFamilyId))" Title="Family Id" />
+            <GridColumn Field="@(nameof(OrganismName.OrganismSubfamilyId))" Title="Sub-Family Id" />
+            <GridColumn Field="@(nameof(OrganismName.GenusId))" Title="Genus Id" />
+            <GridColumn Field="@(nameof(OrganismName.PrintOnCodeList))" Title="Print on code list" />
+            <GridColumn Field="@(nameof(OrganismName.RemapTo))" Title="Remap To" />
+            <GridColumn Field="@(nameof(OrganismName.Aerobic))" Title="Aerobic" />
+            <GridColumn Field="@(nameof(OrganismName.Anaerobic))" Title="Anaerobic" />
+            <GridColumn Field="@(nameof(OrganismName.Fungal))" Title="Fungal" />
+            <GridColumn Field="@(nameof(OrganismName.CreatedBy))" Title="Created By" />
+            <GridColumn Field="@(nameof(OrganismName.CreatedDate))" Title="Created Date" />
+        </GridColumns>
+    </TelerikGrid>
     @if (string.IsNullOrWhiteSpace(Props.Organism?.Name))
     {
         <p><em>Click on a row to select an organism</em></p>

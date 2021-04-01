@@ -1,11 +1,13 @@
-﻿@using Radzen
-@using Radzen.Blazor
+﻿@using Telerik.Blazor.Components
 
-<RadzenGrid AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterMode="FilterMode.Advanced" AllowPaging="true" PageSize="4"
-            AllowSorting="true" Data="@data" TItem="BreakpointManagement.Shared.Models.BreakpointGroupingReport" ColumnWidth="200px" AllowColumnResize="true">
-    <Columns>
-        <RadzenGridColumn TItem="BreakpointManagement.Shared.Models.BreakpointGroupingReport" Property="Standard" Title="Standard" />
-        <RadzenGridColumn TItem="BreakpointManagement.Shared.Models.BreakpointGroupingReport" Property="Group" Title="Group" />
-        <RadzenGridColumn TItem="BreakpointManagement.Shared.Models.BreakpointGroupingReport" Property="Organism" Title="Organism" />
-    </Columns>
-</RadzenGrid>
+<TelerikGrid Data="@groupingReportList" Height="400px"
+             Pageable="true" Sortable="true" Groupable="true"
+             FilterMode="Telerik.Blazor.GridFilterMode.FilterRow"
+             Resizable="true" Reorderable="true"
+             OnRowClick="@RowClick">
+    <GridColumns>
+        <GridColumn Field="@(nameof(BreakpointManagement.Shared.Models.BreakpointGroupingReport.Standard))" Title="Standard" Width="120px" />
+        <GridColumn Field="@(nameof(BreakpointManagement.Shared.Models.BreakpointGroupingReport.Group))" Title="Group" Groupable="false" />
+        <GridColumn Field="@(nameof(BreakpointManagement.Shared.Models.BreakpointGroupingReport.Organism))" Title="Organism" />
+    </GridColumns>
+</TelerikGrid>

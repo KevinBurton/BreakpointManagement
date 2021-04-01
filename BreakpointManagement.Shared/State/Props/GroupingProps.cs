@@ -9,5 +9,6 @@ namespace BreakpointManagement.Shared.State.Props
         public BreakpointStandard Standard { get; set; }
         public Breakpointgroup Group { get; set; }
         public Project Project { get; set; }
+        public EventCallback<BreakpointStandard> UpdateStandard { get; set; }
     }
 }

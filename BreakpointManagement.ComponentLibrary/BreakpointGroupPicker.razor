@@ -1,5 +1,4 @@
-﻿@using Radzen
-@using Radzen.Blazor
+﻿@using Telerik.Blazor.Components
 
 @if (string.IsNullOrWhiteSpace(Props.Standard.Bpstandard))
 {
@@ -8,15 +7,17 @@
 else
 {
     <h3>Group by standard @Props.Standard.Bpstandard</h3>
-    <RadzenGrid AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterMode="FilterMode.Advanced" AllowPaging="true" PageSize="4"
-                AllowSorting="true" Data="@groupListData" TItem="Breakpointgroup" ColumnWidth="200px" AllowColumnResize="true"
-                RowClick="@RowClick">
-        <Columns>
-            <RadzenGridColumn TItem="Breakpointgroup" Property="BpgroupId" Title="Group Id" />
-            <RadzenGridColumn TItem="Breakpointgroup" Property="BpgroupName" Title="Group Name" />
-            <RadzenGridColumn TItem="Breakpointgroup" Property="BpstandardId" Title="Standard Id" />
-        </Columns>
-    </RadzenGrid>
+    <TelerikGrid Data="@groupListData" Height="400px"
+                 Pageable="true" Sortable="true" Groupable="true"
+                 FilterMode="Telerik.Blazor.GridFilterMode.FilterRow"
+                 Resizable="true" Reorderable="true"
+                 OnRowClick="@RowClick">
+        <GridColumns>
+            <GridColumn Field="@(nameof(Breakpointgroup.BpgroupId))" Title="Group Id" Width="120px" />
+            <GridColumn Field="@(nameof(Breakpointgroup.BpgroupName))" Title="Group Name" Groupable="false" />
+            <GridColumn Field="@(nameof(Breakpointgroup.BpstandardId))" Title="Standard Id" />
+        </GridColumns>
+    </TelerikGrid>
 }
 
 @if (string.IsNullOrWhiteSpace(Props.Group.BpgroupName))

@@ -2,13 +2,14 @@
 using BlazorState.Redux.Interfaces;
 using BreakpointManagement.Services;
 using BreakpointManagement.Shared.Models;
+using BreakpointManagement.Shared.State.Actions;
 using BreakpointManagement.Shared.State.BreakpointManagement;
 using BreakpointManagement.Shared.State.Props;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Radzen;
-using BreakpointManagement.Shared.State.Actions;
+
+using Telerik.Blazor.Components;
 
 namespace BreakpointManagement.ComponentLibrary
 {
@@ -29,6 +30,10 @@ namespace BreakpointManagement.ComponentLibrary
 
         private void MapDispatchToProps(IStore<BreakpointManagementState> store, GroupingProps props)
         {
+            props.UpdateStandard = EventCallback.Factory.Create<BreakpointStandard>(this, standard =>
+            {
+                store.Dispatch(new UpdateStandardAction { Standard = standard });
+            });
         }
     }
 
@@ -54,12 +59,11 @@ namespace BreakpointManagement.ComponentLibrary
         public GroupingProps Props { get; set; }
 
         private IList<BreakpointStandard> standardList;
+        private BreakpointStandard selectedStandard;
 
         private IList<Project> _breakpointProjects;
         private IList<OrganismName> _groupingData;
         private IList<OrganismName> _groupingExcludedData;
-
-        object selectedNode = null;
 
         BreakpointStandard breakpointStandardList;
 
@@ -68,33 +72,6 @@ namespace BreakpointManagement.ComponentLibrary
         private List<OrganismName> _selectedOrganisms;
         private List<OrganismName> _selectedExcludedOrganisms;
 
-        private void OnForwardClick(string message)
-        {
-            //console.log($">> {message}");
-        }
-        private void OnReverseClick(string message)
-        {
-            //console.log($"<< {message}");
-        }
-
-        protected void OnChange(TreeEventArgs args)
-        {
-            currentBreakpointGroup = args.Value as Breakpointgroup;
-        }
-        protected void OnExpand(TreeExpandEventArgs args)
-        {
-            System.Diagnostics.Debug.WriteLine(args.Text);
-        }
-        void OnLoad(TreeExpandEventArgs args)
-        {
-            var standard = args.Value as BreakpointStandard;
-
-            args.Children.Data = standard.Groups ?? new List<Breakpointgroup>();
-            args.Children.TextProperty = "BpgroupName";
-            args.Children.HasChildren = (group) => false;
-
-            OnExpand(args);
-        }
         protected override void OnInitialized()
         {
             _selectedOrganisms = new List<OrganismName>();
@@ -114,6 +91,24 @@ namespace BreakpointManagement.ComponentLibrary
                 _groupingData = (await dataService.GetOrganismByGroup(Props.Group.BpgroupId)) ?? new List<OrganismName>();
                 _groupingExcludedData = (await dataService.GetOrganismByExcludedGroup(Props.Group.BpgroupId)) ?? new List<OrganismName>();
             }
+        }
+        async Task RowClick(GridRowClickEventArgs args)
+        {
+            var data = args.Item as BreakpointStandard;
+            selectedStandard = data;
+            if (Props != null)
+            {
+                await Props.UpdateStandard.InvokeAsync(data).ConfigureAwait(false);
+            }
+            StateHasChanged();
+        }
+        async Task OnForwardClick()
+        {
+
+        }
+        async Task OnReverseClick()
+        {
+
         }
     }
 }

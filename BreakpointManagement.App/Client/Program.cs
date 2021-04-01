@@ -23,7 +23,7 @@ namespace BreakpointManagement.App.Client
                 builder.Configuration.GetSection("Logging"));
 
             ConfigureServices(builder.Services);
-            
+
             await builder.Build().RunAsync();
         }
         public static void ConfigureServices(IServiceCollection services)
@@ -48,8 +48,10 @@ namespace BreakpointManagement.App.Client
                 cfg.Map<ProjectListReducer, List<Project>>(s => s.ProjectList);
                 cfg.Map<StandardListReducer, List<BreakpointStandard>>(s => s.StandardList);
                 cfg.Map<GroupListReducer, List<Breakpointgroup>>(s => s.GroupList);
-
             });
+
+            // register the Telerik services
+            services.AddTelerikBlazor();
         }
     }
 }

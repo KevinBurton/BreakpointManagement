@@ -1,20 +1,23 @@
-﻿@using Radzen
-@using Radzen.Blazor
-<RadzenDropDown AllowClear="true" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-                TValue="int" Data=@standardList TextProperty="BpStandard" ValueProperty="BpStandardId" Change=@(args => OnStandardChange(args, "Standard Drop down")) Style="width:400px">
-    <Template>
-        Standard: @((context as BreakpointStandard).Bpstandard)
-    </Template>
-</RadzenDropDown>
-<RadzenDropDown AllowClear="true" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-                TValue="int" Data=@projectList TextProperty="ProjectName" ValueProperty="ProjectId" Change=@(args => OnProjectChange(args, "Project Drop Down")) Style="width:400px">
-    <Template>
-        Project: @((context as Project).ProjectName)
-    </Template>
-</RadzenDropDown>
+﻿
+@using Telerik.Blazor.Components
+
+<TelerikDropDownList Data="@standardList" TextField="Bpstandard" ValueField="BpstandardId"
+                     @bind-Value="@currentBreakpointStandardId" DefaultText="Select standard"
+                     OnChange="@OnStandardChange">
+</TelerikDropDownList>
+<!--
+<TelerikDropDownList Data="@currentBreakpointStandard.Groups" TextField="BpGroupName" ValueField="BpGroupId"
+                     @bind-Value="@currentBreakpointGroupId" DefaultText="Select something">
+</TelerikDropDownList>
+-->
+<TelerikDropDownList Data="@projectList" TextField="ProjectName" ValueField="ProjectId"
+                     @bind-Value="@currentProjectId" DefaultText="Select a project"
+                     OnChange="@OnProjectChange">
+</TelerikDropDownList>
+
 @if (!string.IsNullOrWhiteSpace(currentBreakpointGroup?.BpgroupName))
 {
-<h3>Selected Breakpoint Group: @currentBreakpointGroup.BpgroupName</h3>
+    <h3>Selected Breakpoint Group: @currentBreakpointGroup.BpgroupName</h3>
 }
 @if (string.IsNullOrWhiteSpace(currentBreakpointGroup?.BpgroupName))
 {
@@ -23,40 +26,44 @@
 else
 {
     <h4>Breakpoints by MIC</h4>
-    <RadzenGrid AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterMode="FilterMode.Advanced" AllowPaging="true" PageSize="4"
-                AllowSorting="true" Data="@micData" TItem="Breakpoint" ColumnWidth="200px" AllowColumnResize="true">
-        <Columns>
-            <RadzenGridColumn TItem="Breakpoint" Property="BreakpointId" Title="Breakpoint Id" />
-            <RadzenGridColumn TItem="Breakpoint" Property="ResultType" Title="Result Type" />
-            <RadzenGridColumn TItem="Breakpoint" Property="Group.BpgroupName" Title="Group Name" />
-            <RadzenGridColumn TItem="Breakpoint" Property="Drug.DrugName)" Title="Drug Name" />
-            <RadzenGridColumn TItem="Breakpoint" Property="Susceptible" Title="Susceptible" />
-            <RadzenGridColumn TItem="Breakpoint" Property="LowIntermediate" Title="Low Intermediate" />
-            <RadzenGridColumn TItem="Breakpoint" Property="Intermediate" Title="Intermediate" />
-            <RadzenGridColumn TItem="Breakpoint" Property="Resistant" Title="Resistant" />
-            <RadzenGridColumn TItem="Breakpoint" Property="DisplayedAs" Title="Displayed As" />
-            <RadzenGridColumn TItem="Breakpoint" Property="Dosage" Title="Dosage" />
-            <RadzenGridColumn TItem="Breakpoint" Property="Project.ProjectName" Title="Project Name" />
-            <RadzenGridColumn TItem="Breakpoint" Property="Bpyear" Title="BP Year" />
-        </Columns>
-    </RadzenGrid>
+    <TelerikGrid Data="@micData" Height="400px"
+                 Pageable="true" Sortable="true" Groupable="true"
+                 FilterMode="Telerik.Blazor.GridFilterMode.FilterRow"
+                 Resizable="true" Reorderable="true">
+        <GridColumns>
+            <GridColumn Field="@(nameof(Breakpoint.BreakpointId))" Title="Breakpoint Id" />
+            <GridColumn Field="@(nameof(Breakpoint.ResultType))" Title="Result Type" />
+            <GridColumn Field="@(nameof(Breakpoint.Group.BpgroupName))" Title="Group Name" />
+            <GridColumn Field="@(nameof(Breakpoint.Drug.DrugName))" Title="Drug Name" />
+            <GridColumn Field="@(nameof(Breakpoint.Susceptible))" Title="Susceptible" />
+            <GridColumn Field="@(nameof(Breakpoint.LowIntermediate))" Title="Low Intermediate" />
+            <GridColumn Field="@(nameof(Breakpoint.Intermediate))" Title="Intermediate" />
+            <GridColumn Field="@(nameof(Breakpoint.Resistant))" Title="Resistant" />
+            <GridColumn Field="@(nameof(Breakpoint.DisplayedAs))" Title="Displayed As" />
+            <GridColumn Field="@(nameof(Breakpoint.Dosage))" Title="Dosage" />
+            <GridColumn Field="@(nameof(Breakpoint.Project.ProjectName))" Title="Project Name" />
+            <GridColumn Field="@(nameof(Breakpoint.Bpyear))" Title="BP Year" />
+        </GridColumns>
+    </TelerikGrid>
 
     <h4>Breakpoints by Disk</h4>
-    <RadzenGrid AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterMode="FilterMode.Advanced" AllowPaging="true" PageSize="4"
-                AllowSorting="true" Data="@diskData" TItem="Breakpoint" ColumnWidth="200px" AllowColumnResize="true">
-        <Columns>
-            <RadzenGridColumn TItem="Breakpoint" Property="BreakpointId" Title="Breakpoint Id" />
-            <RadzenGridColumn TItem="Breakpoint" Property="ResultType" Title="Result Type" />
-            <RadzenGridColumn TItem="Breakpoint" Property="Group.BpgroupName" Title="Group Name" />
-            <RadzenGridColumn TItem="Breakpoint" Property="Drug.DrugName)" Title="Drug Name" />
-            <RadzenGridColumn TItem="Breakpoint" Property="Susceptible" Title="Susceptible" />
-            <RadzenGridColumn TItem="Breakpoint" Property="LowIntermediate" Title="Low Intermediate" />
-            <RadzenGridColumn TItem="Breakpoint" Property="Intermediate" Title="Intermediate" />
-            <RadzenGridColumn TItem="Breakpoint" Property="Resistant" Title="Resistant" />
-            <RadzenGridColumn TItem="Breakpoint" Property="DisplayedAs" Title="Displayed As" />
-            <RadzenGridColumn TItem="Breakpoint" Property="Dosage" Title="Dosage" />
-            <RadzenGridColumn TItem="Breakpoint" Property="Project.ProjectName" Title="Project Name" />
-            <RadzenGridColumn TItem="Breakpoint" Property="Bpyear" Title="BP Year" />
-        </Columns>
-    </RadzenGrid>
+    <TelerikGrid Data="@diskData" Height="400px"
+                 Pageable="true" Sortable="true" Groupable="true"
+                 FilterMode="Telerik.Blazor.GridFilterMode.FilterRow"
+                 Resizable="true" Reorderable="true">
+        <GridColumns>
+            <GridColumn Field="@(nameof(Breakpoint.BreakpointId))" Title="Breakpoint Id" />
+            <GridColumn Field="@(nameof(Breakpoint.ResultType))" Title="Result Type" />
+            <GridColumn Field="@(nameof(Breakpoint.Group.BpgroupName))" Title="Group Name" />
+            <GridColumn Field="@(nameof(Breakpoint.Drug.DrugName))" Title="Drug Name" />
+            <GridColumn Field="@(nameof(Breakpoint.Susceptible))" Title="Susceptible" />
+            <GridColumn Field="@(nameof(Breakpoint.LowIntermediate))" Title="Low Intermediate" />
+            <GridColumn Field="@(nameof(Breakpoint.Intermediate))" Title="Intermediate" />
+            <GridColumn Field="@(nameof(Breakpoint.Resistant))" Title="Resistant" />
+            <GridColumn Field="@(nameof(Breakpoint.DisplayedAs))" Title="Displayed As" />
+            <GridColumn Field="@(nameof(Breakpoint.Dosage))" Title="Dosage" />
+            <GridColumn Field="@(nameof(Breakpoint.Project.ProjectName))" Title="Project Name" />
+            <GridColumn Field="@(nameof(Breakpoint.Bpyear))" Title="BP Year" />
+        </GridColumns>
+    </TelerikGrid>
 }

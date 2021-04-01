@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using Telerik.Blazor.Components;
+
 namespace BreakpointManagement.ComponentLibrary
 {
     public class ActiveDrugPickerConnect
@@ -40,7 +42,7 @@ namespace BreakpointManagement.ComponentLibrary
         [Parameter]
         public DrugProps Props { get; set; }
 
-        private IEnumerable<Drug> data;
+        private IList<Drug> drugList;
 
         private Drug selected;
 
@@ -48,10 +50,11 @@ namespace BreakpointManagement.ComponentLibrary
         
         protected override async Task OnInitializedAsync()
         {
-            data = await dataService.GetAllDrugs();
+            drugList = await dataService.GetAllDrugs();
         }
-        public void RowClick(Drug data)
+        async Task RowClick(GridRowClickEventArgs args)
         {
+            var data = args.Item as Drug;
             selected = data;
             StateHasChanged();
             if (Props != null)

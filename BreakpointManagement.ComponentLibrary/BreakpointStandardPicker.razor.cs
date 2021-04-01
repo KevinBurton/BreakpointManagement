@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 
+using Telerik.Blazor.Components;
+
 namespace BreakpointManagement.ComponentLibrary
 {
     public class BreakpointStandardPickerConnect
@@ -53,8 +55,9 @@ namespace BreakpointManagement.ComponentLibrary
         {
             standardListData = await dataService.GetAllBreakpointStandards();
         }
-        public void RowClick(BreakpointStandard data)
+        async Task RowClick(GridRowClickEventArgs args)
         {
+            var data = args.Item as BreakpointStandard;
             selected = data;
             StateHasChanged();
             if (Props != null)

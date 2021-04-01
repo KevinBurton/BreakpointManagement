@@ -5,10 +5,10 @@ using BreakpointManagement.Shared.Models;
 using BreakpointManagement.Shared.State.BreakpointManagement;
 using BreakpointManagement.Shared.State.Props;
 using Microsoft.AspNetCore.Components;
-using Radzen;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using BreakpointManagement.Shared.State.Actions;
 
 namespace BreakpointManagement.ComponentLibrary
 {
@@ -22,12 +22,22 @@ namespace BreakpointManagement.ComponentLibrary
 
         private void MapStateToProps(BreakpointManagementState state, EditBreakpointProps props)
         {
+            props.Standard = state?.Standard ?? new BreakpointStandard();
+            props.Group = state?.Group ?? new Breakpointgroup();
             props.Project = state?.Project ?? new Project();
             props.Drug = state?.Drug ?? new Drug();
         }
 
         private void MapDispatchToProps(IStore<BreakpointManagementState> store, EditBreakpointProps props)
         {
+            props.UpdateStandard = EventCallback.Factory.Create<BreakpointStandard>(this, standard =>
+            {
+                store.Dispatch(new UpdateStandardAction { Standard = standard });
+            });
+            props.UpdateProject = EventCallback.Factory.Create<Project>(this, project =>
+            {
+                store.Dispatch(new UpdateProjectAction { Project = project });
+            });
         }
     }
     public partial class EditBreakpoint
@@ -48,8 +58,10 @@ namespace BreakpointManagement.ComponentLibrary
         private List<Breakpoint> selectedDiskItems = new List<Breakpoint>();
 
         BreakpointStandard currentBreakpointStandard;
+
         Breakpointgroup currentBreakpointGroup;
         Project currentProject;
+
         int currentBreakpointStandardId;
         int currentBreakpointGroupId;
         int currentProjectId;
@@ -60,7 +72,7 @@ namespace BreakpointManagement.ComponentLibrary
             currentBreakpointStandard = standardList.FirstOrDefault();
             currentBreakpointStandardId = currentBreakpointStandard.BpstandardId;
             projectList = (await dataService.GetAllProjects()) ?? new List<Project>();
-            currentProjectId = 0;
+            currentProjectId = -1;
         }
 
         protected override async Task OnParametersSetAsync()
@@ -76,37 +88,13 @@ namespace BreakpointManagement.ComponentLibrary
                                                                                                                         "Disk Diffusion") :
                                                         new List<Breakpoint>();
         }
-        void OnStandardChange(object value, string id)
+        void OnStandardChange(object selectedValue)
         {
-            var str = value is IEnumerable<object> ? string.Join(", ", (IEnumerable<object>)value) : value;
-
-            System.Diagnostics.Debug.WriteLine($"{id} value changed to {str}");
+            currentBreakpointStandardId = (int)selectedValue;
         }
-        void OnGroupChange(object value, string id)
+        void OnProjectChange(object selectedValue)
         {
-            var str = value is IEnumerable<object> ? string.Join(", ", (IEnumerable<object>)value) : value;
-
-            System.Diagnostics.Debug.WriteLine($"{id} value changed to {str}");
-        }
-        void OnProjectChange(object value, string id)
-        {
-            var str = value is IEnumerable<object> ? string.Join(", ", (IEnumerable<object>)value) : value;
-
-            System.Diagnostics.Debug.WriteLine($"{id} value changed to {str}");
-        }
-        protected void OnExpand(TreeExpandEventArgs args)
-        {
-            System.Diagnostics.Debug.WriteLine(args.Text);
-        }
-        void OnLoad(TreeExpandEventArgs args)
-        {
-            var standard = args.Value as BreakpointStandard;
-
-            args.Children.Data = standard.Groups ?? new List<Breakpointgroup>();
-            args.Children.TextProperty = "BpgroupName";
-            args.Children.HasChildren = (group) => false;
-
-            OnExpand(args);
+            currentProjectId = (int)selectedValue;
         }
     }
 }

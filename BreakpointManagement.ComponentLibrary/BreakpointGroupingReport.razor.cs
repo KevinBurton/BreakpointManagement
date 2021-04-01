@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Model = BreakpointManagement.Shared.Models;
 
+using Telerik.Blazor.Components;
+
 namespace BreakpointManagement.ComponentLibrary
 {
     public partial class BreakpointGroupingReport
@@ -11,7 +13,7 @@ namespace BreakpointManagement.ComponentLibrary
         [Inject]
         private IBreakpointManagementDataService dataService { get; set; }
 
-        private IEnumerable<Model.BreakpointGroupingReport> data;
+        private IEnumerable<Model.BreakpointGroupingReport> groupingReportList;
 
         private Model.BreakpointGroupingReport selected;
 
@@ -19,10 +21,11 @@ namespace BreakpointManagement.ComponentLibrary
 
         protected override async Task OnInitializedAsync()
         {
-            data = await dataService.GetBreakpointGroupingReport();
+            groupingReportList = await dataService.GetBreakpointGroupingReport();
         }
-        public void RowClick(Model.BreakpointGroupingReport data)
+        async Task RowClick(GridRowClickEventArgs args)
         {
+            var data = args.Item as Model.BreakpointGroupingReport;
             selected = data;
             StateHasChanged();
         }

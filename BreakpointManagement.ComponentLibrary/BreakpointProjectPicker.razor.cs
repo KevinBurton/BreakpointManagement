@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using Telerik.Blazor.Components;
+
 namespace BreakpointManagement.ComponentLibrary
 {
     public class BreakpointProjectPickerConnect
@@ -55,8 +57,9 @@ namespace BreakpointManagement.ComponentLibrary
         {
             breakpointProjects = await dataService.GetBreakpointProject();
         }
-        public void RowClick(Project data)
+        async Task RowClick(GridRowClickEventArgs args)
         {
+            var data = args.Item as Project;
             selected = data;
             StateHasChanged();
             if (Props != null)
