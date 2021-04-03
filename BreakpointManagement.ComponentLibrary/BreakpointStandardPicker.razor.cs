@@ -33,9 +33,9 @@ namespace BreakpointManagement.ComponentLibrary
             {
                 store.Dispatch(new UpdateStandardAction { Standard = standard });
             });
-            props.UpdateStandardList = EventCallback.Factory.Create<List<BreakpointStandard>>(this, standardList =>
+            props.UpdateGroupList = EventCallback.Factory.Create<List<Breakpointgroup>>(this, groupList =>
             {
-                store.Dispatch(new UpdateStandardListAction { StandardList = standardList });
+                store.Dispatch(new UpdateGroupListAction { GroupList = groupList });
             });
         }
     }
@@ -48,22 +48,30 @@ namespace BreakpointManagement.ComponentLibrary
         public StandardProp Props { get; set; }
 
         private IList<BreakpointStandard> standardListData;
+        bool isLoading { get; set; } = true;
 
         private BreakpointStandard selected;
+
+        protected override void OnInitialized()
+        {
+            isLoading = true;
+        }
 
         protected override async Task OnParametersSetAsync()
         {
             standardListData = await dataService.GetAllBreakpointStandards();
+            isLoading = false;
         }
-        async Task RowClick(GridRowClickEventArgs args)
+        void RowClick(GridRowClickEventArgs args)
         {
+            isLoading = true;
             var data = args.Item as BreakpointStandard;
             selected = data;
             StateHasChanged();
             if (Props != null)
             {
                 Props.UpdateStandard.InvokeAsync(data);
-                Props.UpdateStandardList.InvokeAsync((standardListData.Where(s => s != null)).ToList());
+                Props.UpdateGroupList.InvokeAsync(data.Groups);
             }
         }
     }

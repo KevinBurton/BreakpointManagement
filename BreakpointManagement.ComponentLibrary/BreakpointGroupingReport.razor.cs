@@ -23,7 +23,7 @@ namespace BreakpointManagement.ComponentLibrary
         {
             groupingReportList = await dataService.GetBreakpointGroupingReport();
         }
-        async Task RowClick(GridRowClickEventArgs args)
+        void RowClick(GridRowClickEventArgs args)
         {
             var data = args.Item as Model.BreakpointGroupingReport;
             selected = data;

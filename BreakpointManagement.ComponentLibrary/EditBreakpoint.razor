@@ -26,7 +26,10 @@
 else
 {
     <h4>Breakpoints by MIC</h4>
-    <TelerikGrid Data="@micData" Height="400px"
+    <TelerikGrid OnUpdate="@UpdateHandler"
+                 OnDelete="@DeleteHandler"
+                 OnCreate="@CreateHandler"
+                 Data="@micData" Height="400px"
                  Pageable="true" Sortable="true" Groupable="true"
                  FilterMode="Telerik.Blazor.GridFilterMode.FilterRow"
                  Resizable="true" Reorderable="true">
@@ -43,11 +46,20 @@ else
             <GridColumn Field="@(nameof(Breakpoint.Dosage))" Title="Dosage" />
             <GridColumn Field="@(nameof(Breakpoint.Project.ProjectName))" Title="Project Name" />
             <GridColumn Field="@(nameof(Breakpoint.Bpyear))" Title="BP Year" />
+            <GridCommandColumn Width="190px">
+                <GridCommandButton Command="Save" Icon="save" ShowInEdit="true">Update</GridCommandButton>
+                <GridCommandButton Command="Edit" Icon="edit">Edit</GridCommandButton>
+                <GridCommandButton Command="Delete" Icon="delete">Delete</GridCommandButton>
+                <GridCommandButton Command="Cancel" Icon="cancel" ShowInEdit="true">Cancel</GridCommandButton>
+            </GridCommandColumn>
         </GridColumns>
     </TelerikGrid>
 
     <h4>Breakpoints by Disk</h4>
-    <TelerikGrid Data="@diskData" Height="400px"
+    <TelerikGrid OnUpdate="@UpdateHandler"
+                 OnDelete="@DeleteHandler"
+                 OnCreate="@CreateHandler"
+                 Data="@diskData" Height="400px"
                  Pageable="true" Sortable="true" Groupable="true"
                  FilterMode="Telerik.Blazor.GridFilterMode.FilterRow"
                  Resizable="true" Reorderable="true">
@@ -64,6 +76,12 @@ else
             <GridColumn Field="@(nameof(Breakpoint.Dosage))" Title="Dosage" />
             <GridColumn Field="@(nameof(Breakpoint.Project.ProjectName))" Title="Project Name" />
             <GridColumn Field="@(nameof(Breakpoint.Bpyear))" Title="BP Year" />
+            <GridCommandColumn Width="190px">
+                <GridCommandButton Command="Save" Icon="save" ShowInEdit="true">Update</GridCommandButton>
+                <GridCommandButton Command="Edit" Icon="edit">Edit</GridCommandButton>
+                <GridCommandButton Command="Delete" Icon="delete">Delete</GridCommandButton>
+                <GridCommandButton Command="Cancel" Icon="cancel" ShowInEdit="true">Cancel</GridCommandButton>
+            </GridCommandColumn>
         </GridColumns>
     </TelerikGrid>
 }

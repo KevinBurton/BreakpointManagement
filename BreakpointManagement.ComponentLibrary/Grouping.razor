@@ -2,7 +2,17 @@
 @using Telerik.Blazor.Components
 
 <h3>Breakpoint Grouping</h3>
-@StandardPickerCmp
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-6">
+            @StandardPickerCmp
+        </div>
+        <div class="col-xs-6">
+            @GroupPickerCmp
+        </div>
+    </div>
+</div>
 
 @if (string.IsNullOrWhiteSpace(Props?.Standard?.Bpstandard))
 {
@@ -10,7 +20,6 @@
 }
 else
 {
-    @GroupPickerCmp
 
     @ProjectPickerCmp
 
@@ -19,8 +28,9 @@ else
                  FilterMode="Telerik.Blazor.GridFilterMode.FilterRow"
                  Resizable="true" Reorderable="true"
                  SelectionMode="GridSelectionMode.Multiple"
-                 SelectedItems="@selectedExcludedOrganisms">
+                 @bind-SelectedItems="selectedExcludedOrganisms">
         <GridColumns>
+            <GridCheckboxColumn />
             <GridColumn Field="@(nameof(OrganismName.OrganismId))" Title="Group Id" Width="120px" />
             <GridColumn Field="@(nameof(OrganismName.Name))" Title="Organism Name" Groupable="false" />
             <GridColumn Field="@(nameof(OrganismName.CreatedBy))" Title="Created By" />
@@ -37,17 +47,14 @@ else
                  FilterMode="Telerik.Blazor.GridFilterMode.FilterRow"
                  Resizable="true" Reorderable="true"
                  SelectionMode="GridSelectionMode.Multiple"
-                 SelectedItems="@selectedIncludedOrganisms"
-                 SelectedItemsChanged="@((IEnumerable<OrganismName> includedList) => OnSelectIncluded(includedList))">
+                 @bind-SelectedItems="selectedIncludedOrganisms">
         <GridColumns>
+            <GridCheckboxColumn />
             <GridColumn Field="@(nameof(OrganismName.OrganismId))" Title="Group Id" Width="120px" />
             <GridColumn Field="@(nameof(OrganismName.Name))" Title="Organism Name" Groupable="false" />
             <GridColumn Field="@(nameof(OrganismName.CreatedBy))" Title="Created By" />
         </GridColumns>
     </TelerikGrid>
-
-    <TelerikButton class="GroupingButton" OnClick="@OnForwardClick" Icon="caret-double-alt-right"></TelerikButton>
-    <TelerikButton class="GroupingButton" OnClick="@OnReverseClick" Icon="caret-double-alt-left"></TelerikButton>
 
 
     @if (!string.IsNullOrWhiteSpace(Props?.Group?.BpgroupName))

@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
+using System.Linq;
 
 namespace BreakpointManagement.Services
 {
@@ -119,15 +120,11 @@ namespace BreakpointManagement.Services
             return await response.Content.ReadAsStringAsync();
         }
 
-        public async Task<IList<Breakpointgroup>> GetBreakpointGroupByStandard(int standardId, int top = 100, int skip = 0, string sort = null)
+        public async Task<Breakpointgroup[]> GetBreakpointGroupByStandard(int standardId)
         {
-            var url = $"api/breakpointgroup/standard/{standardId}?top={top}&skip={skip}";
-            if (!string.IsNullOrWhiteSpace(sort))
-            {
-                url += $"&sort={HttpUtility.UrlEncode(sort)}";
-            }
-            return await JsonSerializer.DeserializeAsync<IList<Breakpointgroup>>
-                    (await _httpClient.GetStreamAsync(url), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+            var url = $"api/breakpointgroup/standard/{standardId}";
+            return await JsonSerializer.DeserializeAsync<Breakpointgroup[]>
+                    (await _httpClient.GetStreamAsync(url), new JsonSerializerOptions() { IgnoreNullValues = true, PropertyNameCaseInsensitive = true }).ConfigureAwait(false);
         }
 
         public async Task<string> GetBreakpointGroupByStandardCount(int standardId)

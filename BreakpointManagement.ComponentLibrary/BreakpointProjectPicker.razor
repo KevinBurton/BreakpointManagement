@@ -1,4 +1,5 @@
-﻿@using Telerik.Blazor.Components
+﻿@using Telerik.Blazor
+@using Telerik.Blazor.Components
 
 <h2>Projects</h2>
 
@@ -6,8 +7,10 @@
              Pageable="true" Sortable="true" Groupable="true"
              FilterMode="Telerik.Blazor.GridFilterMode.FilterRow"
              Resizable="true" Reorderable="true"
+             SelectionMode="GridSelectionMode.Single"
              OnRowClick="@RowClick">
     <GridColumns>
+        <GridCheckboxColumn />
         <GridColumn Field="@(nameof(Project.ProjectId))" Title="Project Id" Width="120px" />
         <GridColumn Field="@(nameof(Project.ProjectName))" Title="Project Name" Groupable="false" />
         <GridColumn Field="@(nameof(Project.ClientId))" Title="Client Id" />

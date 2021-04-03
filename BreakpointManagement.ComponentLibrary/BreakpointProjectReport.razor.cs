@@ -22,7 +22,7 @@ namespace BreakpointManagement.ComponentLibrary
         {
             projectReportData = await dataService.GetBreakpointProjectReport();
         }
-        async Task RowClick(GridRowClickEventArgs args)
+        void RowClick(GridRowClickEventArgs args)
         {
             var data = args.Item as Model.BreakpointProjectReport;
             selected = data;

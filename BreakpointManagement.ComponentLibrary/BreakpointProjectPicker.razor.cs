@@ -57,7 +57,7 @@ namespace BreakpointManagement.ComponentLibrary
         {
             breakpointProjects = await dataService.GetBreakpointProject();
         }
-        async Task RowClick(GridRowClickEventArgs args)
+        void RowClick(GridRowClickEventArgs args)
         {
             var data = args.Item as Project;
             selected = data;

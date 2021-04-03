@@ -28,7 +28,7 @@ namespace BreakpointManagement.Services
         Task<IList<BreakpointStandard>> GetAllBreakpointStandards(int top = 100, int skip = 0, string sort = null);
         Task<string> GetBreakpointStandardCount();
 
-        Task<IList<Breakpointgroup>> GetBreakpointGroupByStandard(int standardId, int top = 100, int skip = 0, string sort = null);
+        Task<Breakpointgroup[]> GetBreakpointGroupByStandard(int standardId);
         Task<string> GetBreakpointGroupByStandardCount(int standardId);
 
         Task<IList<OrganismName>> GetOrganismByGroup(int groupId, int top = 100, int skip = 0, string sort = null);

@@ -8,6 +8,6 @@ namespace BreakpointManagement.Shared.State.Props
     {
         public BreakpointStandard Standard { get; set; }
         public EventCallback<BreakpointStandard> UpdateStandard { get; set; }
-        public EventCallback<List<BreakpointStandard>> UpdateStandardList { get; set; }
+        public EventCallback<List<Breakpointgroup>> UpdateGroupList { get; set; }
     }
 }

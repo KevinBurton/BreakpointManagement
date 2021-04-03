@@ -53,7 +53,7 @@ namespace BreakpointManagement.ComponentLibrary
         {
             organismList = await dataService.GetOrganismByProjectGroup(Props.Project.ProjectId, Props.Group.BpgroupId);
         }
-        async Task RowClick(GridRowClickEventArgs args)
+        void RowClick(GridRowClickEventArgs args)
         {
             var data = args.Item as OrganismName;
             selected = data;

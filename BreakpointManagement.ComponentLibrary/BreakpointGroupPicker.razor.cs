@@ -25,7 +25,6 @@ namespace BreakpointManagement.ComponentLibrary
         {
             props.Group = state?.Group ?? new Breakpointgroup();
             props.Standard = state?.Standard ?? new BreakpointStandard();
-            props.StandardList = state?.StandardList ?? new List<BreakpointStandard>();
         }
 
         private void MapDispatchToProps(IStore<BreakpointManagementState> store, BreakpointGroupProps props)
@@ -34,11 +33,7 @@ namespace BreakpointManagement.ComponentLibrary
             {
                 store.Dispatch(new UpdateGroupAction { Group = group });
             });
-            props.UpdateGroupList = EventCallback.Factory.Create<List<Breakpointgroup>>(this, groupList =>
-            {
-                store.Dispatch(new UpdateGroupListAction { GroupList = groupList });
-            });
-        }
+       }
     }
     public partial class BreakpointGroupPicker
     {
@@ -48,28 +43,37 @@ namespace BreakpointManagement.ComponentLibrary
         [Parameter]
         public BreakpointGroupProps Props { get; set; }
 
-        private IList<Breakpointgroup> groupListData;
+        private List<Breakpointgroup> groupListData = new List<Breakpointgroup>();
+        bool isLoading { get; set; } = true;
 
         private Breakpointgroup selected;
-
-        private List<Breakpointgroup> selectedItems = new List<Breakpointgroup>();
 
         protected override async Task OnParametersSetAsync()
         {
             if(!string.IsNullOrWhiteSpace(Props.Standard.Bpstandard))
             {
-                groupListData = await dataService.GetBreakpointGroupByStandard(Props.Standard.BpstandardId);
+                groupListData = (await dataService.GetBreakpointGroupByStandard(Props.Standard.BpstandardId).ConfigureAwait(false)).ToList();
             }
+            isLoading = false;
         }
-        async Task RowClick(GridRowClickEventArgs args)
+        void RowClick(GridRowClickEventArgs args)
         {
+            isLoading = true;
             var data = args.Item as Breakpointgroup;
             selected = data;
             StateHasChanged();
             if (Props != null)
             {
                 Props.UpdateGroup.InvokeAsync(data);
-                Props.UpdateGroupList.InvokeAsync((groupListData.Where(g => g != null)).ToList());
+            }
+        }
+        void ValueChange()
+        {
+            if(true)
+            {
+                if (Props != null)
+                {
+                }
             }
         }
     }

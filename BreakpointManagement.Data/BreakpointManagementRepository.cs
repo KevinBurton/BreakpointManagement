@@ -167,16 +167,11 @@ namespace BreakpointManagement.Data
             return await _context.TblBreakpointStandards.CountAsync().ConfigureAwait(false);
         }
 
-        public async Task<TblBreakpointgroup[]> GetBreakpointGroupByStandard(int standardId, int top = 100, int skip = 0, string sort = null)
+        public async Task<TblBreakpointgroup[]> GetBreakpointGroupByStandard(int standardId)
         {
             var query = (from gp in _context.TblBreakpointgroups
-                         where gp.BpstandardId == standardId
                          select gp);
-            if (string.IsNullOrWhiteSpace(sort))
-            {
-                return await query.OrderBy(b => b.BpgroupId).Skip(skip).Take(top).ToArrayAsync().ConfigureAwait(false);
-            }
-            return await query.OrderBy(sort).Skip(skip).Take(top).ToArrayAsync().ConfigureAwait(false);
+            return await query.Include(g => g.Standard).ToArrayAsync().ConfigureAwait(false);
         }
 
         public async Task<int> GetBreakpointGroupByStandardCount(int standardId)

@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Linq;
 using BreakpointManagement.Shared.State.Actions;
 
+using Telerik.Blazor.Components;
+
 namespace BreakpointManagement.ComponentLibrary
 {
     public class EditBreakpointConnect
@@ -60,7 +62,6 @@ namespace BreakpointManagement.ComponentLibrary
         BreakpointStandard currentBreakpointStandard;
 
         Breakpointgroup currentBreakpointGroup;
-        Project currentProject;
 
         int currentBreakpointStandardId;
         int currentBreakpointGroupId;
@@ -95,6 +96,21 @@ namespace BreakpointManagement.ComponentLibrary
         void OnProjectChange(object selectedValue)
         {
             currentProjectId = (int)selectedValue;
+        }
+        // sample CUD operations
+        void UpdateHandler(GridCommandEventArgs args)
+        {
+            var breakpoint = (Breakpoint)args.Item;
+        }
+
+        void DeleteHandler(GridCommandEventArgs args)
+        {
+            var breakpoint = (Breakpoint)args.Item;
+        }
+
+        void CreateHandler(GridCommandEventArgs args)
+        {
+            var breakpoint = (Breakpoint)args.Item;
         }
     }
 }

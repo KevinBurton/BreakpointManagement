@@ -1,21 +1,25 @@
 ﻿@using Telerik.Blazor.Components
 
-<h2>Standards</h2>
-<TelerikGrid Data="@standardListData" Height="400px"
-             Pageable="true" Sortable="true" Groupable="true"
-             FilterMode="Telerik.Blazor.GridFilterMode.FilterRow"
-             Resizable="true" Reorderable="true"
-             OnRowClick="@RowClick">
-    <GridColumns>
-        <GridColumn Field="@(nameof(BreakpointStandard.BpstandardId))" Title="Id" Width="120px" />
-        <GridColumn Field="@(nameof(BreakpointStandard.Bpstandard))" Title="Standard" Groupable="false" />
-    </GridColumns>
-</TelerikGrid>
-@if (string.IsNullOrWhiteSpace(Props.Standard.Bpstandard))
-{
-    <p><em>Click on a row to select a standard</em></p>
-}
-else
-{
-    <p>Current standard: @Props.Standard.Bpstandard</p>
-}
+<TelerikLoaderContainer Visible="@isLoading"></TelerikLoaderContainer>
+
+<TelerikListView Data=@standardListData
+                 Pageable="true"
+                 PageSize="5">
+    <HeaderTemplate>
+        Breakpoint Standards
+    </HeaderTemplate>
+    <Template>
+        <div class="listview-item">
+            <h4>@context.Bpstandard</h4>
+        </div>
+    </Template>
+</TelerikListView>
+
+    @if (string.IsNullOrWhiteSpace(Props.Standard.Bpstandard))
+    {
+        <p><em>Click on a row to select a standard</em></p>
+    }
+    else
+    {
+        <p>Current standard: @Props.Standard.Bpstandard</p>
+    }

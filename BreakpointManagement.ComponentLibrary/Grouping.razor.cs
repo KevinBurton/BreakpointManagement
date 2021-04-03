@@ -85,11 +85,11 @@ namespace BreakpointManagement.ComponentLibrary
                 excludedOrganisms = (await dataService.GetOrganismByExcludedGroup(Props.Group.BpgroupId)) ?? Enumerable.Empty<OrganismName>();
             }
         }
-        async Task OnForwardClick()
+        void OnForwardClick()
         {
             StateHasChanged();
         }
-        async Task OnReverseClick()
+        void OnReverseClick()
         {
             StateHasChanged();
         }

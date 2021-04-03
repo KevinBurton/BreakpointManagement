@@ -52,7 +52,7 @@ namespace BreakpointManagement.ComponentLibrary
         {
             drugList = await dataService.GetAllDrugs();
         }
-        async Task RowClick(GridRowClickEventArgs args)
+        void RowClick(GridRowClickEventArgs args)
         {
             var data = args.Item as Drug;
             selected = data;

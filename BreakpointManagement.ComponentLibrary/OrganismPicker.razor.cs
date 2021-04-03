@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using Telerik.Blazor.Components;
+
 namespace BreakpointManagement.ComponentLibrary
 {
     public class OrganismPickerConnect
@@ -44,7 +46,7 @@ namespace BreakpointManagement.ComponentLibrary
         [Parameter]
         public OrganismProp Props { get; set; }
 
-        private IList<OrganismName> data;
+        private IList<OrganismName> organismList;
 
         private OrganismName selected;
 
@@ -52,11 +54,12 @@ namespace BreakpointManagement.ComponentLibrary
 
         protected override async Task OnInitializedAsync()
         {
-            data = await dataService.GetAllOrganisms();
-            await Props.UpdateOrganismList.InvokeAsync(data);
+            organismList = await dataService.GetAllOrganisms();
+            await Props.UpdateOrganismList.InvokeAsync(organismList);
         }
-        public void RowClick(OrganismName data)
+        void RowClick(GridRowClickEventArgs args)
         {
+            var data = args.Item as OrganismName;
             selected = data;
             StateHasChanged();
             if (Props != null)
